@@ -153,17 +153,19 @@ function BottomTab() {
             iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
           } else if (route.name === 'My Journal') {
             iconName = focused ? 'bookmark' : 'bookmark-outline';
+          } else if (route.name === 'Volunteers') {
+            iconName = focused ? 'people-outline' : 'people-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'menu' : 'menu';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}>
-        <Tab.Screen name='Chat' component={Chat} />
-        <Tab.Screen name='Assessment' component={Assessment} />
         <Tab.Screen name='Home' component={dashboard} />
-        <Tab.Screen name='My Journal' component={MyJournal} />
+        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Volunteers' component={VolunteersList} />
+        <Tab.Screen name='Assessment' component={Assessment} />
+        <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Profile' component={profile} />
       </Tab.Navigator>
       <StatusBar style='light' />

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginBottom: 10,
-    padding: 10,
+    padding: 20,
   },
   btnStyles: {
     backgroundColor: '#655FF3',
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
   },
 });
 

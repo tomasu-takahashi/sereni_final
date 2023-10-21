@@ -104,8 +104,7 @@ backgroundImage: {
   greeting: {
     color: '#ededed',
     fontSize: 24,
-    marginTop: 60,
-    marginBottom: 10,
+    marginTop: 20,
     paddingLeft: 185 
   },
   BibleVerseText1: {

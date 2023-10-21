@@ -39,36 +39,39 @@ const Assessment = () => {
         <View style={styles.root}>
           <View style={styles.container}>
 
-            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Anxiety')}>
+            <View style={styles.categoryButton}>
               <ImageBackground source={require("../assets/anxiety-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
               <View style={styles.wrapper}>
                 <TouchableOpacity
-                  style={styles.button}>
+                  style={styles.button}
+                  onPress={() => handleCategoryPress('Anxiety')}>
                   <Text style={styles.text}>Anxiety</Text>
                 </TouchableOpacity>
               </View>
-            </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Depression')}            >
+            <View style={styles.categoryButton}>
               <ImageBackground source={require("../assets/depression-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
               <View style={styles.wrapper}>
                 <TouchableOpacity
-                  style={styles.button}>
+                  style={styles.button}
+                  onPress={() => handleCategoryPress('Depression')}>
                   <Text style={styles.text}>Depression</Text>
                 </TouchableOpacity>
               </View>
-            </TouchableOpacity>
+            </View>
 
 
-            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Stress')}>
+            <View style={styles.categoryButton}>
               <ImageBackground source={require("../assets/stress-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
               <View style={styles.wrapper}>
                 <TouchableOpacity
-                  style={styles.button}>
+                  style={styles.button}
+                  onPress={() => handleCategoryPress('Stress')}>
                   <Text style={styles.text}>Stress</Text>
                 </TouchableOpacity>
               </View>
-            </TouchableOpacity>
+            </View>
 
           </View>
         </View>
@@ -148,20 +151,18 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#655FF3',
-    paddingTop: 12,
-    paddingBottom: 12,
-    paddingLeft: 25,
-    paddingRight: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
     borderRadius: 7,
     width: '100%',
     minWidth: 260,
   },
   text: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 16,
     textAlign: 'center',
   },
-  
   headerContainer: {
     flex: 1,
     height: screenHeight,

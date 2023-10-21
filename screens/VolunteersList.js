@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     color: '#ededed',
     textAlign: 'center',
     backgroundColor: '#2C2B56',
-    padding: 50,
+    padding: 20,
     paddingBottom: 20,
   },
   loaderContainer: {
