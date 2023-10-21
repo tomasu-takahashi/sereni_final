@@ -102,6 +102,7 @@ import AssessmentResultDepression from './screens/AssessmentResultDepression';
 import AssessmentResultStressAcademic from './screens/AssessmentResultStressAcademic';
 import AssessmentResultStressRelationship from './screens/AssessmentResultStressRelationship';
 import AssessmentResultStressWork from './screens/AssessmentResultStressWork';
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -110,28 +111,28 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Register' component={Register}/>
-        <Stack.Screen name='dashboard' component={BottomTab}/>
+        <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='Register' component={Register} />
+        <Stack.Screen name='dashboard' component={BottomTab} />
         <Stack.Screen name='Chat' component={Chat}/>
-        <Stack.Screen name='ChatScreen' component={ChatScreen}/>
-        <Stack.Screen name='Assessment' component={Assessment}/>
-        <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety}/>
-        <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression}/>
-        <Stack.Screen name='AssessmentResultStressAcademic' component={AssessmentResultStressAcademic}/>
-        <Stack.Screen name='AssessmentResultStressRelationship' component={AssessmentResultStressRelationship}/>
-        <Stack.Screen name='AssessmentResultStressWork' component={AssessmentResultStressWork}/>
-        <Stack.Screen name='AssessmentAnxiety' component={AssessmentAnxiety}/>
-        <Stack.Screen name='AssessmentDepression' component={AssessmentDepression}/>
-        <Stack.Screen name='AssessmentStress' component={AssessmentStress}/>
-        <Stack.Screen name='AssessmentStressAcademic' component={AssessmentStressAcademic}/>
-        <Stack.Screen name='AssessmentStressRelationship' component={AssessmentStressRelationship}/>
-        <Stack.Screen name='AssessmentStressWork' component={AssessmentStressWork}/>
-        <Stack.Screen name='MyJournal' component={MyJournal}/>
-        <Stack.Screen name='profile' component={profile}/>
-        <Stack.Screen name='AddJournal' component={AddJournal}/>
-        <Stack.Screen name='EditJournal' component={EditJournal}/>
-        <Stack.Screen name='VolunteersList' component={VolunteersList}/>
+        <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen name='Assessment' component={Assessment} />
+        <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
+        <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression} />
+        <Stack.Screen name='AssessmentResultStressAcademic' component={AssessmentResultStressAcademic} />
+        <Stack.Screen name='AssessmentResultStressRelationship' component={AssessmentResultStressRelationship} />
+        <Stack.Screen name='AssessmentResultStressWork' component={AssessmentResultStressWork} />
+        <Stack.Screen name='AssessmentAnxiety' component={AssessmentAnxiety} />
+        <Stack.Screen name='AssessmentDepression' component={AssessmentDepression} />
+        <Stack.Screen name='AssessmentStress' component={AssessmentStress} />
+        <Stack.Screen name='AssessmentStressAcademic' component={AssessmentStressAcademic} />
+        <Stack.Screen name='AssessmentStressRelationship' component={AssessmentStressRelationship} />
+        <Stack.Screen name='AssessmentStressWork' component={AssessmentStressWork} />
+        <Stack.Screen name='MyJournal' component={MyJournal} />
+        <Stack.Screen name='profile' component={profile} />
+        <Stack.Screen name='AddJournal' component={AddJournal} />
+        <Stack.Screen name='EditJournal' component={EditJournal} />
+        <Stack.Screen name='VolunteersList' component={VolunteersList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -140,12 +141,29 @@ export default function App() {
 function BottomTab() {
   return (
     <>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name='Home' component={dashboard} />
+      <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'ios-home' : 'ios-home-outline';
+          } else if (route.name === 'Assessment') {
+            iconName = focused ? 'bulb-sharp' : 'bulb-outline';
+          } else if (route.name === 'Chat') {
+            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
+          } else if (route.name === 'My Journal') {
+            iconName = focused ? 'bookmark' : 'bookmark-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'menu' : 'menu';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}>
+        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Assessment' component={Assessment} />
+        <Tab.Screen name='Home' component={dashboard} />
         <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Volunteers' component={VolunteersList} />
-        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Profile' component={profile} />
       </Tab.Navigator>
       <StatusBar style='light' />

@@ -32,7 +32,7 @@ const MyJournal = () => {
         >
         
     <View style={styles.container}>
-      <Text style={styles.heading}>My Journal</Text>
+      {/* <Text style={styles.heading}>My Journal</Text> */}
       <FlashList
         data={notes}
         numColumns={1}

@@ -6,7 +6,11 @@ const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const Assessment = () => {
   const navigation = useNavigation();
-
+  const handlePress = () => {
+    // Define what happens when the button is pressed
+    console.log('Button pressed!');
+    // Add your logic here
+  };
   const handleCategoryPress = (category) => {
     // Redirect to the respective JS file based on the selected category
     switch (category) {
@@ -26,49 +30,49 @@ const Assessment = () => {
 
   return (
     <ImageBackground
-        style={styles.backgroundImage}
-        resizeMode="cover"
-        source={require("../assets/bgMain.png")}
-        >
-    <Text style={styles.AssessmentText}>Selecting a topic will redirect you to answer a survey. Sereni will provide results based on the survey.</Text>
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-    <View style={styles.root}>
-    <View style={styles.container}>
+      style={styles.backgroundImage}
+      resizeMode="cover"
+      source={require("../assets/bgMain.png")}
+    >
+      <Text style={styles.AssessmentText}>Selecting a topic will redirect you to answer a survey. Sereni will provide results based on the survey.</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.root}>
+          <View style={styles.container}>
 
-      <TouchableOpacity
-        style={styles.categoryButton}
-        onPress={() => handleCategoryPress('Anxiety')}
-      >
-      <Image
-              source={require("../assets/anxietyIcon.jpeg")}
-              style={styles.categoryButtonImage}
-      />
+            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Anxiety')}>
+              <ImageBackground source={require("../assets/anxiety-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
+              <View style={styles.wrapper}>
+                <TouchableOpacity
+                  style={styles.button}>
+                  <Text style={styles.text}>Anxiety</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
 
-        <Text style={styles.categoryButtonText}>Anxiety</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.categoryButton}
-        onPress={() => handleCategoryPress('Depression')}
-      >
-      <Image
-              source={require("../assets/depressionIcon.jpeg")}
-              style={styles.categoryButtonImage}
-      />
-        <Text style={styles.categoryButtonText}>Depression</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.categoryButton}
-        onPress={() => handleCategoryPress('Stress')}
-      >
-      <Image
-              source={require("../assets/stressIcon.png")}
-              style={styles.categoryButtonImage}
-      />
-        <Text style={styles.categoryButtonText}>Stress</Text>
-      </TouchableOpacity>
-    </View>
-    </View>
-    </ScrollView>
+            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Depression')}            >
+              <ImageBackground source={require("../assets/depression-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
+              <View style={styles.wrapper}>
+                <TouchableOpacity
+                  style={styles.button}>
+                  <Text style={styles.text}>Depression</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+
+
+            <TouchableOpacity style={styles.categoryButton} onPress={() => handleCategoryPress('Stress')}>
+              <ImageBackground source={require("../assets/stress-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
+              <View style={styles.wrapper}>
+                <TouchableOpacity
+                  style={styles.button}>
+                  <Text style={styles.text}>Stress</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+
+          </View>
+        </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -84,13 +88,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-},
-scrollViewContent: {
-  flexGrow: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingTop: '60%'
-},
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '60%'
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -100,15 +104,11 @@ scrollViewContent: {
     paddingTop: '5%',
   },
   AssessmentText: {
-    color: '#ededed',
-    fontSize: 18,
-    height: screenHeight/5.5,
-    width: screenWidth,
-    backgroundColor: 'rgba(21, 21, 21, 0.8)',
-    justifyContent: 'center',
-    alignSelf: 'center',
     padding: 10,
-    paddingTop: '16%',
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '400',
+    wordWrap: 'break-word',
   },
   categoryButton: {
     width: '100%',
@@ -121,22 +121,58 @@ scrollViewContent: {
     margin: 10,
     elevation: 5,
     ...Platform.select({
-        ios: {
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
-        },
-      }),
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
+      },
+    }),
   },
   categoryButtonImage: {
-    width: '90%',
-    height: '70%',
+    width: '100%',
+    maxWidth: 205,
+    height: 236,
     marginBottom: 20,
-    borderRadius: 10
+    borderRadius: '50%',
   },
   categoryButtonText: {
     fontSize: 24,
+    color: '#FFF',
+    backgroundColor: '#655FF3',
+  },
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#655FF3',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 25,
+    paddingRight: 25,
+    borderRadius: 7,
+    width: '100%',
+    minWidth: 260,
+  },
+  text: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  
+  headerContainer: {
+    flex: 1,
+    height: screenHeight,
+    width: screenWidth,
+  },
+  heading: {
+    fontSize: 24,
     color: '#ededed',
+    textAlign: 'center',
+    backgroundColor: '#2C2B56',
+    padding: 50,
+    paddingBottom: 20,
   },
 });
