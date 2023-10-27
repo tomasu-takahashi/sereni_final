@@ -1,80 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { NavigationContainer } from '@react-navigation/native';
-// import Login from './screens/Login';
-// import Register from './screens/Register';
-// import dashboard from './screens/dashboard';
-// import Chat from './screens/Chat';
-// import ChatScreen from './screens/ChatScreen';
-// import Assessment from './screens/Assessment';
-// import BibleVerse from './screens/BibleVerse';
-// import profile from './screens/profile';
-
-
-// const Stack = createNativeStackNavigator();
-// const Tab = createBottomTabNavigator();
-
-// function App(){
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator screenOptions={{ headerShown: false }}>
-//         <Stack.Screen name='Login' component={Login}/>
-//         <Stack.Screen name='Register' component={Register}/>
-//         <Stack.Screen name='dashboard' component={dashboard}/>
-//         <Stack.Screen name='Chat' component={Chat}/>
-//         <Stack.Screen name='ChatScreen' component={ChatScreen}/>
-//         <Stack.Screen name='Assessment' component={Assessment}/>
-//         <Stack.Screen name='Bible Verse' component={BibleVerse}/>
-//         <Stack.Screen name='Profile' component={profile}/>
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// }
-// export default () => {
-// //   return (
-// //     <NavigationContainer>
-// //       <Stack.Navigator>
-// //         <Stack.Screen name='Login' component={Login}/>
-// //         <Stack.Screen name='Register' component={Register}/>
-// //         <Stack.Screen name='dashboard' component={BottomTab}/>
-// //         <Stack.Screen name='Chat' component={Chat}/>
-// //         <Stack.Screen name='ChatScreen' component={ChatScreen}/>
-// //         <Stack.Screen name='Assessment' component={Assessment}/>
-// //         <Stack.Screen name='Bible Verse' component={BibleVerse}/>
-// //         <Stack.Screen name='Profile' component={profile}/>
-// //       </Stack.Navigator>
-// //     </NavigationContainer>
-// //   );
-// // }
-
-// // function BottomTab() {
-//   return (
-//     <NavigationContainer>
-//     <App />
-//       <Tab.Navigator screenOptions={{ headerShown: false }}>
-//         <Tab.Screen name='Home' component={dashboard} />
-//         <Tab.Screen name='Assessment' component={Assessment} />
-//         <Tab.Screen name='Chat' component={Chat} />
-//         <Tab.Screen name='Bible Verse' component={BibleVerse} />
-//         <Tab.Screen name='Profile' component={profile} />
-//       </Tab.Navigator>
-//       <StatusBar style='light' />
-//     </NavigationContainer>
-//   )
-// }
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -162,8 +85,8 @@ function BottomTab() {
         },
       })}>
         <Tab.Screen name='Home' component={dashboard} />
-        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Volunteers' component={VolunteersList} />
+        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Assessment' component={Assessment} />
         <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Profile' component={profile} />

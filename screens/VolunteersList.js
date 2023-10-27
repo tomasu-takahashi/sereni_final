@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, Dimensions, ActivityIndicator, ImageBackground} from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, Dimensions, ActivityIndicator, ImageBackground, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { auth, db } from '../firebase';
@@ -21,7 +21,11 @@ const VolunteerList = () => {
   const [loading ,setLoading] = useState(false);
   const user = auth.currentUser;
   const uid = user.uid
-  
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredUserList = userList.filter((user) =>
+  user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
 //handleChatPress should be optimized with the instant uid registration in the database
   // const handleChatPress = (user) => {
@@ -251,7 +255,6 @@ const props = { userId, chatExist, chatRefKey };
       <View style={styles.userItem}>
         <Text style={styles.userName}>{item.fullname}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>
-        <Icon name="chat" size={24} color="blue" style={styles.chatIcon} />
       </View>
     </TouchableOpacity>
   );
@@ -264,10 +267,18 @@ const props = { userId, chatExist, chatRefKey };
     source={require("../assets/bgMain.png")}
     >
     
-    <Text style={styles.heading}>List of Volunteers</Text>
     <View style={styles.container}>
+
+    <TextInput
+      style={styles.searchInput}
+      placeholder="Search"
+      placeholderTextColor="#ededed"
+      value={searchQuery}
+      onChangeText={(text) => setSearchQuery(text)}
+    />
+
     <FlatList
-      data={userList.filter((user) => user.userType === 'volunteer')}
+      data={filteredUserList.filter((user) => user.userType === 'volunteer')}
       renderItem={renderItem}
       keyExtractor={(item) => item.uid}
     />
@@ -305,14 +316,22 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-},
-  heading: {
-    fontSize: 24,
+  },
+  searchInput: {
     color: '#ededed',
-    textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 20,
-    paddingBottom: 20,
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'rgba(27, 26, 69, 0.5)',
+    borderRadius: 10,
+    elevation: 5,
+        ...Platform.select({
+            ios: {
+              shadowColor: 'black',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 3
+            },
+          }),
   },
   loaderContainer: {
     position: 'absolute',

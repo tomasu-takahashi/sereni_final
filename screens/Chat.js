@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, Dimensions, ActivityIndicator, ImageBackground} from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, Dimensions, ActivityIndicator, ImageBackground, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { auth, db } from '../firebase';
 import { onValue, ref, push, update, off, orderByChild, query, child, set, refFromURL } from 'firebase/database';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 const {height: screenHeight, width: screenWidth} = Dimensions.get('screen');
@@ -21,8 +22,12 @@ const Chat = () => {
   const [loading ,setLoading] = useState(false);
   const user = auth.currentUser;
   const uid = user.uid
+  const [searchQuery, setSearchQuery] = useState('');
   
-
+  const filteredUserList = userList.filter((item) => {
+    return item.fullname.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+  
 //handleChatPress should be optimized with the instant uid registration in the database
   // const handleChatPress = (user) => {
     
@@ -251,7 +256,7 @@ const props = { userId, chatExist, chatRefKey };
       <View style={styles.userItem}>
         <Text style={styles.userName}>{item.fullname}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>
-        <Icon name="chat" size={24} color="blue" style={styles.chatIcon} />
+        <Icon name="chat" size={24} style={styles.chatIcon} />
       </View>
     </TouchableOpacity>
   );
@@ -265,8 +270,16 @@ const props = { userId, chatExist, chatRefKey };
     >
 
     <View style={styles.container}>
+    <TextInput
+      style={styles.searchInput}
+      placeholder="Search"
+      placeholderTextColor="#ededed"
+      value={searchQuery}
+      onChangeText={(text) => setSearchQuery(text)}
+    />
+
       <FlatList
-        data={userList}
+        data={filteredUserList}
         renderItem={renderItem}
         keyExtractor={(item) => item.uid}
       />
@@ -305,6 +318,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
 },
+  searchInput: {
+      padding: 10,
+      color: '#ededed',
+      backgroundColor: 'rgba(27, 26, 69, 0.5)',
+      borderRadius: 10,
+      elevation: 5,
+          ...Platform.select({
+              ios: {
+                shadowColor: 'black',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 3
+              },
+            }),
+  },
   loaderContainer: {
     position: 'absolute',
     top: 0,
@@ -342,13 +370,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    padding: 10
   },
   userItem: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    padding: 10,
   },
   userName: {
     fontSize: 20,
