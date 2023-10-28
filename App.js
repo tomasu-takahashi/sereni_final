@@ -17,14 +17,9 @@ import VolunteersList from './screens/VolunteersList';
 import AssessmentAnxiety from './screens/AssessmentAnxiety';
 import AssessmentDepression from './screens/AssessmentDepression';
 import AssessmentStress from './screens/AssessmentStress';
-import AssessmentStressAcademic from './screens/AssessmentStressAcademic';
-import AssessmentStressRelationship from './screens/AssessmentStressRelationship';
-import AssessmentStressWork from './screens/AssessmentStressWork';
 import AssessmentResultAnxiety from './screens/AssessmentResultAnxiety';
 import AssessmentResultDepression from './screens/AssessmentResultDepression';
-import AssessmentResultStressAcademic from './screens/AssessmentResultStressAcademic';
-import AssessmentResultStressRelationship from './screens/AssessmentResultStressRelationship';
-import AssessmentResultStressWork from './screens/AssessmentResultStressWork';
+import AssessmentResultStress from './screens/AssessmentResultStress';
 import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
@@ -42,15 +37,10 @@ export default function App() {
         <Stack.Screen name='Assessment' component={Assessment} />
         <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
         <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression} />
-        <Stack.Screen name='AssessmentResultStressAcademic' component={AssessmentResultStressAcademic} />
-        <Stack.Screen name='AssessmentResultStressRelationship' component={AssessmentResultStressRelationship} />
-        <Stack.Screen name='AssessmentResultStressWork' component={AssessmentResultStressWork} />
+        <Stack.Screen name='AssessmentResultStress' component={AssessmentResultStress} />
         <Stack.Screen name='AssessmentAnxiety' component={AssessmentAnxiety} />
         <Stack.Screen name='AssessmentDepression' component={AssessmentDepression} />
         <Stack.Screen name='AssessmentStress' component={AssessmentStress} />
-        <Stack.Screen name='AssessmentStressAcademic' component={AssessmentStressAcademic} />
-        <Stack.Screen name='AssessmentStressRelationship' component={AssessmentStressRelationship} />
-        <Stack.Screen name='AssessmentStressWork' component={AssessmentStressWork} />
         <Stack.Screen name='MyJournal' component={MyJournal} />
         <Stack.Screen name='profile' component={profile} />
         <Stack.Screen name='AddJournal' component={AddJournal} />
