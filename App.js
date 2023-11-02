@@ -20,6 +20,7 @@ import AssessmentStress from './screens/AssessmentStress';
 import AssessmentResultAnxiety from './screens/AssessmentResultAnxiety';
 import AssessmentResultDepression from './screens/AssessmentResultDepression';
 import AssessmentResultStress from './screens/AssessmentResultStress';
+import bibleVerse from './screens/bibleVerse';
 import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
@@ -46,6 +47,7 @@ export default function App() {
         <Stack.Screen name='AddJournal' component={AddJournal} />
         <Stack.Screen name='EditJournal' component={EditJournal} />
         <Stack.Screen name='VolunteersList' component={VolunteersList} />
+        <Stack.Screen name='bibleVerse' component={bibleVerse} />
       </Stack.Navigator>
     </NavigationContainer>
   );

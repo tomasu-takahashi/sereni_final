@@ -29,6 +29,12 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 const firedb = getFirestore(app);
 
+if (auth.currentUser) {
+  // User is signed in
+} else {
+  // Handle the case when the user is not signed in
+}
+
 export { db };
 export { auth };
 export { storage };

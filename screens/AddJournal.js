@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native';
 import { db } from '../firebase'; // Import the database object from Firebase.js
 import { ref, push } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native'
+import { getAuth } from "firebase/auth";
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -10,12 +11,23 @@ const AddJournal = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    // Get the userId from the logged-in user
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      setUserId(user.uid);
+    }
+  }, []);
 
   const handleAdd = () => {
     // Add the journal entry to the database
     push(ref(db, 'notes'), {
       title,
       note,
+      userId, // Add the userId to the note object
     })
       .then(() => {
         setTitle('');

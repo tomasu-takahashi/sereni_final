@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { db } from '../firebase'; // Import the database object from Firebase.js
 import { FlashList } from '@shopify/flash-list';
 import { ref, onValue } from 'firebase/database';
+import { auth } from 'firebase/auth';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -12,13 +13,15 @@ const MyJournal = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Get the notes data from the database
+    // Get the notes data from the database for the current user
     const notesRef = ref(db, 'notes');
     onValue(notesRef, (snapshot) => {
       const newNotes = [];
       snapshot.forEach((child) => {
-        const { note, title } = child.val();
-        newNotes.push({ note, title, id: child.key });
+        const { note, title, uid } = child.val();
+         if (uid === auth?.currentUser?.uid) { // Add optional chaining (?)
+          newNotes.push({ note, title, id: child.key });
+        }
       });
       setNotes(newNotes);
     });
@@ -32,7 +35,6 @@ const MyJournal = () => {
         >
         
     <View style={styles.container}>
-      {/* <Text style={styles.heading}>My Journal</Text> */}
       <FlashList
         data={notes}
         numColumns={1}
@@ -66,14 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: screenHeight,
     width: screenWidth,
-  },
-  heading: {
-    fontSize: 24,
-    color: '#ededed',
-    textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 50,
-    paddingBottom: 20,
   },
   Button: {
     backgroundColor: '#655FF3',
