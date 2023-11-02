@@ -48,16 +48,18 @@ const AddJournal = () => {
         source={require("../assets/bgMain.png")}
         >
       <View style={styles.container}>
-      <Text style={styles.heading}>My Journal</Text>
+      <View style={styles.heading}></View>
       <TextInput
         style={styles.inputTitle}
         placeholder="Title"
+        placeholderTextColor="#ededed"
         value={title}
         onChangeText={(Text) => setTitle(Text)}
       />
       <TextInput
         style={styles.inputNote}
         placeholder="Enter Journal"
+        placeholderTextColor="#ededed"
         value={note}
         onChangeText={(Text) => setNote(Text)}
         multiline={true}
@@ -82,12 +84,9 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   heading: {
-    fontSize: 24,
-    marginBottom: 10,
     color: '#ededed',
     textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 50,
+    padding: 30,
     paddingBottom: 20,
   },
   inputTitle: {
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 10,
     height: 50,
     borderRadius: 10,
-    color: '#ededed'
+    color: '#ededed',
 },
 inputNote: {
     backgroundColor: 'rgba(21, 21, 21, 0.5)',
@@ -120,7 +119,7 @@ inputNote: {
     margin: 10,
     padding: 10,
     paddingTop: 10,
-    height: 500,
+    height: 570,
     borderRadius: 10,
     color: '#ededed',
 },

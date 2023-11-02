@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     alignItems: 'center',
-    backgroundColor: 'rgba(27, 26, 69, 0.5)',
     borderRadius: 10,
     padding: 20,
     elevation: 5,
