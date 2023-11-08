@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   verseItem: {
     marginBottom: 10,
-    padding: 10,
+    padding: 20,
     backgroundColor: 'rgb(27, 26, 69)',
     borderRadius: 10,
   },

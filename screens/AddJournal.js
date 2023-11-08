@@ -24,7 +24,7 @@ const AddJournal = () => {
 
   const handleAdd = () => {
     // Add the journal entry to the database
-    push(ref(db, 'notes'), {
+    push(ref(db, 'notes/123'), {
       title,
       note,
       userId, // Add the userId to the note object

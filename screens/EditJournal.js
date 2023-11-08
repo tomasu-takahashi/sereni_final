@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { getDatabase, ref, set, remove } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -10,13 +11,24 @@ const EditJournal = () => {
     const route = useRoute();
     const [note, setNote] = useState(route.params.item.note);
     const [title, setTitle] = useState(route.params.item.title);
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+        // Get the userId from the logged-in user
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user) {
+            setUserId(user.uid);
+        }
+    }, []);
 
     const handleUpdate = () => {
         if (title && note.length > 0) {
-            const dbRef = ref(getDatabase(), 'notes/' + route.params.item.id);
+            const dbRef = ref(getDatabase(), 'notes/123/' + route.params.item.id);
             set(dbRef, {
                 title,
                 note,
+                userId
             })
             .then(() => {
                 navigation.navigate('dashboard');
@@ -28,7 +40,7 @@ const EditJournal = () => {
     };
     
     const handleDelete = () => {
-        const dbRef = ref(getDatabase(), 'notes/' + route.params.item.id);
+        const dbRef = ref(getDatabase(), 'notes/123/' + route.params.item.id);
         remove(dbRef)
         .then(() => {
             navigation.navigate('dashboard');
@@ -45,15 +57,17 @@ const EditJournal = () => {
         source={require("../assets/bgMain.png")}
         >
         <View style={styles.container}>
-        <Text style={styles.heading}>My Journal</Text>
+        <View style={styles.heading}></View>
             <TextInput
                 placeholder='Title'
+                placeholderTextColor="#ededed"
                 value={title}
                 onChangeText={(text) => setTitle(text)}
                 style={styles.inputTitle}
             />
             <TextInput
                 placeholder='Enter Journal'
+                placeholderTextColor="#ededed"
                 value={note}
                 onChangeText={(text) => setNote(text)}
                 style={styles.inputNote}
@@ -92,12 +106,9 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     heading: {
-        fontSize: 24,
-        marginBottom: 10,
         color: '#ededed',
         textAlign: 'center',
-        backgroundColor: '#2C2B56',
-        padding: 50,
+        padding: 30,
         paddingBottom: 20,
     },
     inputTitle: {
@@ -119,20 +130,20 @@ const styles = StyleSheet.create({
     },
     inputNote: {
         backgroundColor: 'rgba(21, 21, 21, 0.5)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        elevation: 5,
-        fontSize: 18,
-        margin: 10,
-        padding: 10,
-        paddingTop: 10,
-        height: 500,
-        borderRadius: 10,
-        color: '#ededed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
+    fontSize: 18,
+    margin: 10,
+    padding: 10,
+    paddingTop: 10,
+    height: 570,
+    borderRadius: 10,
+    color: '#ededed',
     },
     buttonView: {
         flexDirection: 'row',

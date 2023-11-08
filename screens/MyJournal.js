@@ -14,14 +14,17 @@ const MyJournal = () => {
 
   useEffect(() => {
     // Get the notes data from the database for the current user
-    const notesRef = ref(db, 'notes');
+    const notesRef = ref(db, 'notes/123');
     onValue(notesRef, (snapshot) => {
       const newNotes = [];
       snapshot.forEach((child) => {
         const { note, title, uid } = child.val();
-         if (uid === auth?.currentUser?.uid) { // Add optional chaining (?)
-          newNotes.push({ note, title, id: child.key });
+  
+        // Only display the note if the uid is not the same as the current user's uid
+        if (!uid === auth?.currentUser?.uid) {
+          return;
         }
+        newNotes.push({ note, title, id: child.key });
       });
       setNotes(newNotes);
     });
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
   noteView: {
     backgroundColor: 'rgba(21, 21, 21, 0.5)',
     padding: 10,
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

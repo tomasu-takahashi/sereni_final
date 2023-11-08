@@ -43,7 +43,7 @@ const AssessmentDepression = ({ navigation }) => {
     'I feel overwhelmingly sad at times',
     'When I think of the future I feel hopeless',
     'I feel like a complete failure',
-    'I get a lot of satisfaction / joy from doing things',
+    'I get a lot of satisfaction/joy from doing things',
     'I feel guilty about something most of the time',
     'I feel like I am being punished',
     'I feel disappointed (even disgusted) with myself',
