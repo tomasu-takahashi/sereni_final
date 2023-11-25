@@ -15,7 +15,7 @@ const ChatScreen = () => {
   const route = useRoute();
   const user = auth.currentUser;
   const uid = user.uid;
-  const { userId, chatExist, chatRefKey } = route.params;
+  const { userId, chatExist, chatRefKey, chatRef } = route.params;
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading
   const [userDetail, setUserDetail] = useState('');
@@ -60,7 +60,7 @@ const ChatScreen = () => {
 
     
 
-     
+  
   }, [chatExist, chatRefKey]);
 
   const onSend = useCallback((messages = []) => {

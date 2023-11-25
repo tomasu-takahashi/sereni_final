@@ -26,6 +26,12 @@ const VolunteerList = () => {
   const filteredUserList = userList.filter((user) =>
   user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
 );
+const volunteer = filteredUserList.filter((user) => user.userType === 'volunteer');
+
+
+// useEffect(() => {
+//   console.log(volunteer);
+// },[])
 
 //handleChatPress should be optimized with the instant uid registration in the database
   // const handleChatPress = (user) => {
@@ -43,18 +49,20 @@ const VolunteerList = () => {
   //       setVisible(false);
   //       navigation.navigate('ChatScreen', {...props});
   //       }
-  //  }
+  //  }f
   // };
 
-  useEffect(() => {
-    checkChat(user);
-}, [counter])
+//   useEffect(() => {
+//     checkChat(user);
+// }, [counter])
+
+const props = { userId, chatExist, chatRefKey };
 
   const handleChatPress = async (user) => {
     setUserId(user);
-    console.log(userId);
+    
     // Check if a chat exists with this user
-    checkChat(user);
+    
     
 
     if (chatExist) {
@@ -83,11 +91,9 @@ const VolunteerList = () => {
 const confirmChat = async () => {
   // Close the modal
   setVisible(false);
-
   // Create the chat and get the chat key
   try {
     const chatKey = await createChat(userId);
-
     // Navigate to ChatScreen with the chat key
     navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: chatKey });
   } catch (error) {
@@ -96,10 +102,6 @@ const confirmChat = async () => {
   }
 };
 
-// const confirmChat = () => {
-//   setCreateChats(true);
-//   setVisible(false);
-// };
 
 
 const createChat = (user) => {
@@ -155,14 +157,17 @@ const createChat = (user) => {
                 setParticipants(participantData)
                 
             })
+            
             setChatExist(true);
+            handleChatPress(user)
+            // navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: participants.map((part) => part.key)});
+
         } else {
             //  if parent node "chatParticipants" doesn't exist, will create an initial data
             // console.log('chat doesnt exist')
+            setVisible(true);
         }
     })
-
-   
 }
 
 useEffect(() => {
@@ -228,17 +233,25 @@ useEffect(() => {
 
 
 
-const props = { userId, chatExist, chatRefKey };
+// const props = { userId, chatExist, chatRefKey };
 
   
   useEffect(() => {
     // Fetch the list of users from the 'logged_users' node in Firebase
     const usersRef = ref(db, 'users/logged_users');
     onValue(usersRef, (snapshot) => {
-      if (snapshot.exists()) {
+      if (snapshot.exists() ) {
         const data = snapshot.val();
         const users = Object.values(data);
-        setUserList(users);
+
+        let uList = []
+
+        users.map((member) => {
+          if(member.uid !== uid) {
+            uList.push(member);
+          }
+        })
+        setUserList(uList);
       }
     });
 
@@ -247,6 +260,10 @@ const props = { userId, chatExist, chatRefKey };
       off(usersRef); // Unsubscribe from usersRef updates
     };
   }, []);
+
+  // useEffect(() => {
+  //   console.log(volunteer.map((pips) => pips.uid))
+  // },[])
 
   
 
@@ -277,35 +294,37 @@ const props = { userId, chatExist, chatRefKey };
       onChangeText={(text) => setSearchQuery(text)}
     />
 
-    <FlatList
-      data={filteredUserList.filter((user) => user.userType === 'volunteer')}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.uid}
-    />
+{/* {volunteer.map((pip) => (
+  
+))} */}
+<FlatList
+  data={volunteer}
+  renderItem={renderItem}
+  // keyExtractor={(item) => item.uid}
+/>
 
-      <Modal visible={visible} transparent animationType='slide'>
-      <View style={styles.modalRoot}>
-        <View style={styles.modalContainer}>
-          <Text>Do you want to chat with this user?</Text>
+<Modal visible={visible} transparent animationType='slide'>
+  <View style={styles.modalRoot}>
+    <View style={styles.modalContainer}>
+      <Text style={{fontSize:18, color: '#ededed'}}>Do you want to chat with this user?</Text>
 
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.btnStyle} onPress={() => setVisible(false)}>
-            <Text>No</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnStyle} onPress={() => {confirmChat()}}>
-            <Text>Yes</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      <View style={styles.btnContainer}>
+      <TouchableOpacity style={{ ...styles.btnStyles, backgroundColor: '#444382' }} onPress={() => {confirmChat()}}>
+          <Text style={{fontSize:18, color: '#ededed'}}>Chat</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ ...styles.btnStyles, borderColor: '#444382', borderWidth: 1.5, marginTop: 10 }} onPress={() => setVisible(false)}>
+          <Text style={{fontSize:18, color: '#ededed'}}>Cancel</Text>
+        </TouchableOpacity>
       </View>
+    </View>
+  </View>
+</Modal>
 
-      </Modal>
-
-      {loading && (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    )}
+{loading && (
+  <View style={styles.loaderContainer}>
+    <ActivityIndicator size="large" color="#0000ff" />
+  </View>
+)}
     </View>
     </ImageBackground>
   );
@@ -343,21 +362,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  btnStyle: {
-    borderWidth: 2,
-    borderColor: 'red',
-    margin: 20,
-    height: '60%',
-    width: '30%',
+  btnContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '90%',
+    marginTop: '60%',
+},
+  btnStyles: {
+    padding: 15,
+    width: '100%',
+    paddingHorizontal: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    marginTop: 20,
+    ...Platform.select({
+      ios: {
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 3
+      },
+  }),
   },
   modalContainer: {
-    borderWidth: 2,
-    borderColor: 'red',
-    height: '35%',
-    width: '80%',
-    backgroundColor: 'white',
+    height: '50%',
+    width: '95%',
+    backgroundColor: 'rgba(27, 26, 69, 0.9)',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center'
@@ -367,6 +398,9 @@ const styles = StyleSheet.create({
     width: screenWidth,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  modalText :{
+
   },
   container: {
     flex: 1,
@@ -395,12 +429,6 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 14,
     color: '#ededed',
-  },
-  chatIcon: {
-    position: 'absolute',
-    top: 15,
-    right: 20,
-    color: '#ededed'
   },
 });
 
