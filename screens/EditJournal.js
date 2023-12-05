@@ -12,11 +12,14 @@ const EditJournal = () => {
     const [note, setNote] = useState(route.params.item.note);
     const [title, setTitle] = useState(route.params.item.title);
     const [userId, setUserId] = useState('');
+    const auth = getAuth();
+        const user = auth.currentUser;
+        const uid = user.uid;
 
     useEffect(() => {
         // Get the userId from the logged-in user
-        const auth = getAuth();
-        const user = auth.currentUser;
+        // const auth = getAuth();
+        // const user = auth.currentUser;
         if (user) {
             setUserId(user.uid);
         }
@@ -24,7 +27,7 @@ const EditJournal = () => {
 
     const handleUpdate = () => {
         if (title && note.length > 0) {
-            const dbRef = ref(getDatabase(), 'notes/123/' + route.params.item.id);
+            const dbRef = ref(getDatabase(), 'notes/' + uid + route.params.item.id);
             set(dbRef, {
                 title,
                 note,

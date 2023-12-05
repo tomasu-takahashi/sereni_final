@@ -55,7 +55,7 @@ const Chat = () => {
 
 const handleItemPress = (key) => {
   console.log('item presseedd', key)
-  navigation.navigate('ChatScreen', { chatRefKey: key, chatExist: true});
+  navigation.navigate('ChatScreen', { chatRef: key, chatExist: true});
 };
 
   // const handleChatPress = async (user) => {
@@ -203,7 +203,7 @@ const createChat = (user) => {
   }, []);
   
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleItemPress(item.element)}>
+    <TouchableOpacity onPress={() => handleItemPress(item.uid)}>
       <View style={styles.userItem}>
         <Text style={styles.userName}>{item.fullname}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>
@@ -232,27 +232,9 @@ const createChat = (user) => {
       <FlatList
         data={userList}
         renderItem={renderItem}
-        keyExtractor={(item) => item.uid}
+        // keyExtractor={(item) => item.uid}
       />
-      
 
-      <Modal visible={visible} transparent animationType='slide'>
-      <View style={styles.modalRoot}>
-        <View style={styles.modalContainer}>
-          <Text>Do you want to chat with this user?</Text>
-
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.btnStyle} onPress={() => setVisible(false)}>
-            <Text>No</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.btnStyle} onPress={() => {confirmChat()}}>
-            <Text>Yes</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-      </Modal>
 
       {loading && (
       <View style={styles.loaderContainer}>

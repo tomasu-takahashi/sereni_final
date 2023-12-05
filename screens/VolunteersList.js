@@ -60,11 +60,12 @@ const props = { userId, chatExist, chatRefKey };
 
   const handleChatPress = async (user) => {
     setUserId(user);
-    
-    // Check if a chat exists with this user
-    
-    
+    checkChat(user)
 
+    console.log(
+      chatRefKey, 'ese'
+    )
+    // Check if a chat exists with this user
     if (chatExist) {
       navigation.navigate('ChatScreen', { ...props });
     } else {
@@ -159,7 +160,7 @@ const createChat = (user) => {
             })
             
             setChatExist(true);
-            handleChatPress(user)
+            
             // navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: participants.map((part) => part.key)});
 
         } else {

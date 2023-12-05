@@ -2,7 +2,7 @@ import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import React, { useState, useCallback, useEffect } from 'react';
 import { Appbar } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { auth } from '../firebase';
 import { onValue, ref, push, update, off, orderByChild, query } from 'firebase/database';
 import { db } from '../firebase';
@@ -15,7 +15,7 @@ const ChatScreen = () => {
   const route = useRoute();
   const user = auth.currentUser;
   const uid = user.uid;
-  const { userId, chatExist, chatRefKey, chatRef } = route.params;
+  const { userId, chatExist, chatRefKey} = route.params;
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading
   const [userDetail, setUserDetail] = useState('');
@@ -23,7 +23,7 @@ const ChatScreen = () => {
   useEffect(() => {
     const userRef = ref(db, 'users/logged_users/' + uid);
     onValue(userRef, (snapshot) => {
-      setUserDetail(snapshot.val()?.first_name || ''); // Handle the case when user data is not available
+      setUserDetail(snapshot.val()?.fullname || ''); // Handle the case when user data is not available
       setLoading(false); // Set loading to false once data is retrieved
     });
   }, [uid]);
@@ -57,10 +57,6 @@ const ChatScreen = () => {
         off(chatRoomRef); // Unsubscribe from chatroomsRef updates
       };
     }
-
-    
-
-  
   }, [chatExist, chatRefKey]);
 
   const onSend = useCallback((messages = []) => {
@@ -113,14 +109,38 @@ const ChatScreen = () => {
     }
   };
 
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#444382', // Change the background color of your own messages
+          },
+          left: {
+            backgroundColor: '#ededed', // Change the background color of other person's messages
+          },
+        }}
+        containerStyle={{
+        right: {
+          marginRight: 0,
+        },
+        left: {
+          marginLeft: -40,
+        },
+      }}
+      />
+    );
+  };
+
   return (
     <View style={styles.root}>
-      <View style={styles.container}>
-        <Appbar.Header>
-          <Appbar.BackAction onPress={navigation.goBack} />
-        </Appbar.Header>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={navigation.goBack} />
+      </Appbar.Header>
 
-        {!loading && (
+      {!loading && (
+        <View style={styles.container}>
           <View style={styles.chatStyle}>
             <GiftedChat
               messages={messages}
@@ -131,10 +151,12 @@ const ChatScreen = () => {
               user={{
                 _id: uid,
               }}
+              renderBubble={renderBubble}
+              inverted={true}
             />
           </View>
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -143,18 +165,19 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     height: screenHeight,
-    width: screenWidth
+    width: screenWidth,
   },
   container: {
     flex: 1,
+    flexGrow: 1,
+    justifyContent: 'flex-start'
   },
   chatStyle: {
-    borderTopWidth: 0.5,
-    borderTopColor: '#000000',
-    borderBottomWidth: 1,
+    borderTopWidth: 0,
+    borderTopColor: '#efefef',
+    borderBottomWidth: 0,
     flex: 1,
   },
 });
 
 export default ChatScreen;
-

@@ -5,16 +5,37 @@ import { db } from '../firebase'; // Import the database object from Firebase.js
 import { FlashList } from '@shopify/flash-list';
 import { ref, onValue } from 'firebase/database';
 import { auth } from 'firebase/auth';
+import { getAuth } from "firebase/auth";
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
+
 
 const MyJournal = () => {
   const [notes, setNotes] = useState([]);
   const navigation = useNavigation();
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const uid = user.uid;
+  const [counter, setCounter] = useState(0);
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        // Update the count every second
+        setCounter(prevCount => prevCount + 1);
+    }, 500);
+
+    console.log(counter)
+    // Clean up the interval when the component unmounts
+    return () => {
+        clearInterval(interval);
+    };
+}, []);
+  
 
   useEffect(() => {
     // Get the notes data from the database for the current user
-    const notesRef = ref(db, 'notes/123');
+    const notesRef = ref(db, 'notes/' + uid);
     onValue(notesRef, (snapshot) => {
       const newNotes = [];
       snapshot.forEach((child) => {
@@ -28,7 +49,7 @@ const MyJournal = () => {
       });
       setNotes(newNotes);
     });
-  }, []);
+  }, [counter]);
 
   return (
     <ImageBackground

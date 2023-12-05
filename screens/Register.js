@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { auth, db } from '../firebase';
 import { set, ref } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
+import ImagePicker from 'react-native-image-picker';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -15,6 +16,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [userType, setUserType] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const handleSignup = () => {
     if (fullname === '' || email === '' || password === '' || confirmPassword === '' || userType === '') {
@@ -39,6 +41,7 @@ const Register = () => {
             email: email,
             uid: user.uid,
             userType: userType,
+            profile_picture: profilePicture, // Update profile picture field with the selected image
           });
         };
 
@@ -48,6 +51,7 @@ const Register = () => {
             email: email,
             uid: user.uid,
             userType: userType,
+            profile_picture: profilePicture, // Update profile picture field with the selected image
           });
         };
 
@@ -65,6 +69,29 @@ const Register = () => {
     setUserType(type);
   };
 
+  const handleImageUpload = () => {
+    ImagePicker.launchImageLibrary(
+      {
+        title: 'Select Profile Picture',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      },
+      (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          // Here you can upload the selected image to your server or store it locally
+          // You can access the selected image using response.uri
+          setProfilePicture(response.uri); // Set the selected image as the profile picture
+        }
+      },
+    );
+  };
+
   return (
     <ImageBackground
       style={styles.backgroundImage}
@@ -74,16 +101,19 @@ const Register = () => {
       <KeyboardAvoidingView style={styles.root} behavior="padding">
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <SafeAreaView>
-            <View>
-              <ImageBackground
-                style={{
-                  height: screenHeight/2.5,
-                  width: screenWidth,
-                }}
-                resizeMode="contain"
-                source={require("../assets/logo.png")}
-              />
-            </View>
+          <TouchableOpacity
+              style={styles.profilePictureButton}
+              onPress={() => handleImageUpload()}
+            >
+              {profilePicture ? (
+                <Image
+                  source={{ uri: profilePicture }}
+                  style={styles.profilePicture}
+                />
+              ) : (
+                <Text style={styles.profilePictureText}>Add Profile Picture</Text>
+              )}
+            </TouchableOpacity>
           </SafeAreaView>
           <View style={styles.container}>
           <View style={styles.userTypeContainer}>
@@ -188,6 +218,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
+  profilePictureButton: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profilePicture: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  profilePictureText: {
+    fontSize: 16,
+    color: '#444',
+  },
   root: {
     height: screenHeight,
     width: screenWidth
@@ -204,7 +252,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     padding: 20,
-    marginTop: 20,
+    marginTop: '30%',
     bottom: screenHeight/10
   },
   inputContainer: {

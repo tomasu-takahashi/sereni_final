@@ -12,11 +12,15 @@ const AddJournal = () => {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [userId, setUserId] = useState('');
+  const auth = getAuth();
+    const user = auth.currentUser;
+    const uid = user.uid;
 
   useEffect(() => {
     // Get the userId from the logged-in user
-    const auth = getAuth();
-    const user = auth.currentUser;
+    // const auth = getAuth();
+    // const user = auth.currentUser;
+    // const uid = user.uid;
     if (user) {
       setUserId(user.uid);
     }
@@ -24,7 +28,7 @@ const AddJournal = () => {
 
   const handleAdd = () => {
     // Add the journal entry to the database
-    push(ref(db, 'notes/123'), {
+    push(ref(db, 'notes/' + uid), {
       title,
       note,
       userId, // Add the userId to the note object
