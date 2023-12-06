@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native';
 import { db } from '../firebase'; // Import the database object from Firebase.js
-import { ref, push } from 'firebase/database';
+import { ref, push, set } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native'
 import { getAuth } from "firebase/auth";
 
@@ -28,10 +28,15 @@ const AddJournal = () => {
 
   const handleAdd = () => {
     // Add the journal entry to the database
-    push(ref(db, 'notes/' + uid), {
+    const noteRef = ref(db, 'notes/' + uid);
+    const noteRefKey = push(noteRef).key;
+    const newNoteRef = ref(db, 'notes/' + uid +'/'+ noteRefKey);
+
+    set(newNoteRef, {
       title,
       note,
-      userId, // Add the userId to the note object
+      userId,
+      noteRefKey
     })
       .then(() => {
         setTitle('');

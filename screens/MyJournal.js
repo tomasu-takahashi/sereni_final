@@ -17,6 +17,7 @@ const MyJournal = () => {
   const user = auth.currentUser;
   const uid = user.uid;
   const [counter, setCounter] = useState(0);
+  const [noteKey, setNoteKey ]= useState();
 
 
   useEffect(() => {
@@ -39,15 +40,24 @@ const MyJournal = () => {
     onValue(notesRef, (snapshot) => {
       const newNotes = [];
       snapshot.forEach((child) => {
-        const { note, title, uid } = child.val();
+        
+        const note = child.val().note;
+        const title = child.val().title;
+        const userId = child.val().userId;
+        const noteRefKey = child.val().noteRefKey;
+        
   
         // Only display the note if the uid is not the same as the current user's uid
         if (!uid === auth?.currentUser?.uid) {
           return;
         }
-        newNotes.push({ note, title, id: child.key });
+        
+        newNotes.push({ note, title, userId, noteRefKey});
+
+
       });
       setNotes(newNotes);
+      
     });
   }, [counter]);
 
@@ -64,7 +74,7 @@ const MyJournal = () => {
         numColumns={1}
         estimatedItemSize={100}
         renderItem={({ item }) => (
-          <View style={styles.noteView} key={item.id}>
+          <View style={styles.noteView} key={item.userId}>
           <Pressable
             onPress={() => navigation.navigate('EditJournal', {item})}
           >

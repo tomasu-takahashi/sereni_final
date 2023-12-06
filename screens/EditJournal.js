@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { getDatabase, ref, set, remove } from "firebase/database";
+import { ref, set, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { db } from '../firebase';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -11,6 +12,7 @@ const EditJournal = () => {
     const route = useRoute();
     const [note, setNote] = useState(route.params.item.note);
     const [title, setTitle] = useState(route.params.item.title);
+    const [noteRefKey, setNoteRefKey] = useState(route.params.item.noteRefKey);
     const [userId, setUserId] = useState('');
     const auth = getAuth();
         const user = auth.currentUser;
@@ -27,11 +29,12 @@ const EditJournal = () => {
 
     const handleUpdate = () => {
         if (title && note.length > 0) {
-            const dbRef = ref(getDatabase(), 'notes/' + uid + route.params.item.id);
-            set(dbRef, {
+            set(ref(db, 'notes/' + uid + '/' + noteRefKey),{
                 title,
                 note,
-                userId
+                userId,
+                noteRefKey
+                
             })
             .then(() => {
                 navigation.navigate('dashboard');
@@ -43,8 +46,7 @@ const EditJournal = () => {
     };
     
     const handleDelete = () => {
-        const dbRef = ref(getDatabase(), 'notes/123/' + route.params.item.id);
-        remove(dbRef)
+        remove(ref(db, 'notes/'))
         .then(() => {
             navigation.navigate('dashboard');
         })
