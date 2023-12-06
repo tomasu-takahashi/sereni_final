@@ -45,14 +45,19 @@ const EditJournal = () => {
         }
     };
     
-    const handleDelete = () => {
-        remove(ref(db, 'notes/'))
-        .then(() => {
+    const handleDelete = async () => {
+        const noteRef = ref(db, 'notes/' + uid + '/' + noteRefKey);
+
+        console.log(noteRefKey);
+        try {
+            await remove(noteRef);
+            console.log('Note deleted successfully.');
             navigation.navigate('dashboard');
-        })
-        .catch((error) => {
-            alert(error);
-        });
+        } catch (error) {
+            console.error('Error deleting note:', error);
+            alert(error.message);
+        }
+        
     };
 
     return (
@@ -87,7 +92,7 @@ const EditJournal = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={handleDelete}
+                    onPress={() => handleDelete()}
                 >
                     <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>
