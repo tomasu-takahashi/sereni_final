@@ -10,7 +10,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 const {height: screenHeight, width: screenWidth} = Dimensions.get('screen');
 
 const Chat = () => {
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([] || null);
   const navigation = useNavigation();
   const [chatExist, setChatExist] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -141,8 +141,6 @@ const createChat = (user) => {
   });
 };
 
-   
-
 // useEffect(() => {
 //   let foundParticipantKey = null
 
@@ -173,18 +171,6 @@ const createChat = (user) => {
     let userChatData = []
     const usersRef = ref(db, 'userChats/' + uid);
     onValue(usersRef, (snapshot) => {
-      // if (snapshot.exists()) {
-      //   const data = snapshot.val();
-      //   const users = Object.values(data);
-      //   console.log(users);
-      //   setUserList(users);
-
-      //   userList.map((mem) => {
-      //     console.log(mem)
-      //   })
-      // } else {
-      //   console.log('print')
-      // }
             snapshot.forEach((child) => {
                 userChatData.push({
                     key: child.key,
@@ -194,16 +180,16 @@ const createChat = (user) => {
             // console.log(userChatData)
     setUserList(userChatData)
     });
-    // console.log(userChatData)
+    console.log(userList)
     // setUserList(userChatData)
     // Clean up the Firebase listener when the component unmounts
     return () => {
       off(usersRef); // Unsubscribe from usersRef updates
     };
-  }, []);
+  }, [counter]);
   
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleItemPress(item.uid)}>
+    <TouchableOpacity onPress={() => handleItemPress(item.element)}>
       <View style={styles.userItem}>
         <Text style={styles.userName}>{item.fullname}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>

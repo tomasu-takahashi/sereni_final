@@ -15,7 +15,7 @@ const ChatScreen = () => {
   const route = useRoute();
   const user = auth.currentUser;
   const uid = user.uid;
-  const { userId, chatExist, chatRefKey} = route.params;
+  const { userId, chatExist, chatRef} = route.params;
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true); // New state to track loading
   const [userDetail, setUserDetail] = useState('');
@@ -29,7 +29,7 @@ const ChatScreen = () => {
   }, [uid]);
 
   useEffect(() => {
-    console.log(chatRefKey)
+    console.log(chatRef)
   },[])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const ChatScreen = () => {
       
     } else if (chatExist) {
       
-      const chatRoomRef = query(ref(db, 'chatroom/' + chatRefKey), orderByChild('createdAt'));
+      const chatRoomRef = query(ref(db, 'chatroom/' + chatRef), orderByChild('createdAt'));
       onValue(chatRoomRef, (snapshot) => {
         const messageList = [];
         snapshot.forEach((child) => {
@@ -57,7 +57,7 @@ const ChatScreen = () => {
         off(chatRoomRef); // Unsubscribe from chatroomsRef updates
       };
     }
-  }, [chatExist, chatRefKey]);
+  }, [chatExist, chatRef]);
 
   const onSend = useCallback((messages = []) => {
     if (!messages || messages.length === 0) {
@@ -71,7 +71,7 @@ const ChatScreen = () => {
     }
 
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-    const chatRoomRef = push(ref(db, 'chatroom/' + chatRefKey));
+    const chatRoomRef = push(ref(db, 'chatroom/' + chatRef));
     const newMessage = {
       _id,
       createdAt: createdAt.getTime(),

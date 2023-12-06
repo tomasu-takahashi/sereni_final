@@ -14,7 +14,7 @@ const VolunteerList = () => {
   const [chatExist, setChatExist] = useState(false);
   const [counter, setCounter] = useState(0);
   const [userId, setUserId] = useState();
-  const [chatRefKey, setChatRefKey] = useState(null);
+  const [chatRef, setChatRefKey] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [visible, setVisible] = useState(false);
   const [createChats, setCreateChats] = useState(false);
@@ -28,66 +28,32 @@ const VolunteerList = () => {
 );
 const volunteer = filteredUserList.filter((user) => user.userType === 'volunteer');
 
+const props = { userId, chatExist, chatRef };
 
-// useEffect(() => {
-//   console.log(volunteer);
-// },[])
+useEffect(() => {
+  const interval = setInterval(() => {
+      // Update the count every second
+      setCounter(prevCount => prevCount + 1);
+  }, 500);
 
-//handleChatPress should be optimized with the instant uid registration in the database
-  // const handleChatPress = (user) => {
-    
-  //   setUserId(user);
-  //   checkChat(user)
-  //  if (chatExist) {
-  //    navigation.navigate('ChatScreen', {...props});
-  //  }else {
-  //   // Chat doesn't exist, create a new chatRefKey and navigate to ChatScreen
-
-  //     setVisible(true);
-  //       if(createChats){
-  //       createChat(user)
-  //       setVisible(false);
-  //       navigation.navigate('ChatScreen', {...props});
-  //       }
-  //  }f
-  // };
-
-//   useEffect(() => {
-//     checkChat(user);
-// }, [counter])
-
-const props = { userId, chatExist, chatRefKey };
-
-  const handleChatPress = async (user) => {
-    setUserId(user);
-    checkChat(user)
-
-    console.log(
-      chatRefKey, 'ese'
-    )
-    // Check if a chat exists with this user
-    if (chatExist) {
-      navigation.navigate('ChatScreen', { ...props });
-    } else {
-      // Show the loader
-      setLoading(true);
-
-      // Chat doesn't exist, create a new chatRefKey and navigate to ChatScreen
-      try {
-        const chatKey = await createChat(user);
-        
-        // Hide the loader
-        setLoading(false);
-        
-        // Navigate to ChatScreen with the chat key
-        navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: chatKey });
-      } catch (error) {
-        console.error('Error creating chat:', error);
-        // Handle the error as needed
-        setLoading(false);
-      }
-    }
+  console.log(counter)
+  // Clean up the interval when the component unmounts
+  return () => {
+      clearInterval(interval);
   };
+}, []);
+
+  
+
+  const handleClick = () => {
+    if (chatExist) {
+        navigation.navigate('Chat', { ...props });
+    } else {
+        setVisible(true);
+        // console.log('chater')
+    }
+    setCounter(prevCount => prevCount + 1)
+}
 
 const confirmChat = async () => {
   // Close the modal
@@ -96,7 +62,7 @@ const confirmChat = async () => {
   try {
     const chatKey = await createChat(userId);
     // Navigate to ChatScreen with the chat key
-    navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: chatKey });
+    navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRef: chatKey });
   } catch (error) {
     console.error('Error creating chat:', error);
     // Handle the error as needed
@@ -137,39 +103,80 @@ const createChat = (user) => {
 };
 
 
-  //problem with the code is check chat 
-  //add uid to chatParticipants and check the chat participants for the existing gig
-   //checks if user already has a chat with this user
-    const checkChat = (user) => {
-    const chatRef = ref(db, 'chatParticipants')
-    // const chatRef = ref(db, 'userChats/' + uid)
-    // const userChatRef = ref(db, 'userChats/' + userId);
-    let participantData = [];
-    onValue(chatRef, (snapshot) => {
-        participantData = [];
+
+  const handleChatPress = async (user) => {
+    try {
+      setUserId(user);
+  
+      // Check chat for the selected user
+      const chatKey = await checkChat(user);
+
+      if (chatKey === null) {
+        setVisible(true);
+      }else{
+        console.log(chatKey)
+      setChatRefKey(chatKey);
+      navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRef: chatKey });
+      }
+    } catch (error) {
+      console.error('Error handling chat press:', error);
+      // Handle the error as needed
+    }
+  };
+
+  const checkChat = async (user) => {
+    return new Promise((resolve, reject) => {
+      const chatRef = ref(db, 'chatParticipants');
+      onValue(chatRef, (snapshot) => {
         if (snapshot.exists()) {
-            snapshot.forEach((child) => {
-                participantData.push({
-                    key: child.key,
-                    uid: child.val()[uid],
-                    userId: child.val()[user]
-                })
-
-                setParticipants(participantData)
-                
-            })
-            
-            setChatExist(true);
-            
-            // navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRefKey: participants.map((part) => part.key)});
-
+          let chatKey = null;
+  
+          snapshot.forEach((child) => {
+            const otherUserId = Object.keys(child.val()).find((key) => key !== uid);
+            if (otherUserId === user) {
+              chatKey = child.key;
+            }
+          });
+  
+          resolve(chatKey);
         } else {
-            //  if parent node "chatParticipants" doesn't exist, will create an initial data
-            // console.log('chat doesnt exist')
-            setVisible(true);
+          // If parent node "chatParticipants" doesn't exist, create an initial data
+          console.log('Chat doesn\'t exist');
+          resolve(null);
         }
-    })
-}
+      }, (error) => {
+        reject(error);
+      });
+    });
+  };
+
+
+//    const checkChat = (user) => {
+//     const chatRef = ref(db, 'chatParticipants')
+//     let participantData = [];
+//     onValue(chatRef, (snapshot) => {
+//         participantData = [];
+//         if (snapshot.exists()) {
+//             snapshot.forEach((child) => {
+//                 participantData.push({
+//                     key: child.key,
+//                     uid: child.val()[uid],
+//                     userId: child.val()[user]
+//                 })
+
+//                 setParticipants(participantData)
+//             })
+
+//             // setChatExist(true);
+//             console.log(chatExist)
+
+//         } else {
+//             //  if parent node "chatParticipants" doesn't exist, will create an initial data
+//             // console.log('chat doesnt exist')
+//         }
+//     })
+// }
+
 
 useEffect(() => {
   let foundParticipantKey = null
@@ -185,6 +192,7 @@ useEffect(() => {
   if (chatExists) {
       setChatExist(true);
       setChatRefKey(foundParticipantKey);
+      setChatExist(true);
       // console.log('chat exists')
       // console.log(chatRefKey)
   } else {
@@ -194,47 +202,6 @@ useEffect(() => {
   }
 }, [counter])
 
-
-
-//add uid to chatparticipants in createChat to be able to check of existing chat
-//modal will appear if chat is non-existent to this user or the current user
-//possible user chat will go with the asynchronous function 
- //create chat to users with non existing chat
-//  const createChat = (user) => {
-
-//   let chatRefcontainer = null;
-  
-//       const chatRef = ref(db, 'chatParticipants');
-//       const newChatRefKey = push(chatRef).key;
-//       const newChatRef = ref(db, 'chatParticipants/' + newChatRefKey);
-//       const userChat = ref(db, 'userChats/' + uid);
-//       const secondUserChat = ref(db, 'userChats/' + user);
-
-//       const chatData = {
-//           [uid]: true,
-//           [user]: true
-//       }
-//       const userChatData = {
-//           [newChatRefKey]: newChatRefKey,
-//       }
-//       const secondUserChatData = {
-//           [newChatRefKey]: newChatRefKey,
-//       }
-//       set(newChatRef, chatData);
-//       update(userChat, userChatData);
-//       update(secondUserChat, secondUserChatData);
-
-//       chatRefcontainer = newChatRefKey;
-  
-//   setChatExist(true);
-//   setChatRefKey(chatRefcontainer);
-//   setVisible(false);
-  
-// };
-
-
-
-// const props = { userId, chatExist, chatRefKey };
 
   
   useEffect(() => {
@@ -262,11 +229,7 @@ useEffect(() => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(volunteer.map((pips) => pips.uid))
-  // },[])
 
-  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
