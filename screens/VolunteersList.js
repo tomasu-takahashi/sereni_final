@@ -270,8 +270,7 @@ useEffect(() => {
 <Modal visible={visible} transparent animationType='slide'>
   <View style={styles.modalRoot}>
     <View style={styles.modalContainer}>
-      <Text style={{fontSize:18, color: '#ededed'}}>Do you want to chat with this user?</Text>
-
+      <Text style={styles.modalText}>Do you want to chat with this user?</Text>
       <View style={styles.btnContainer}>
       <TouchableOpacity style={{ ...styles.btnStyles, backgroundColor: '#444382' }} onPress={() => {confirmChat()}}>
           <Text style={{fontSize:18, color: '#ededed'}}>Chat</Text>
@@ -330,7 +329,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '90%',
-    marginTop: '60%',
+    marginTop: '10%',
 },
   btnStyles: {
     padding: 15,
@@ -350,7 +349,7 @@ const styles = StyleSheet.create({
   }),
   },
   modalContainer: {
-    height: '50%',
+    height: '30%',
     width: '95%',
     backgroundColor: 'rgba(27, 26, 69, 0.9)',
     borderRadius: 20,
@@ -364,7 +363,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modalText :{
-
+    fontSize: 20,
+    color: '#ededed',
   },
   container: {
     flex: 1,

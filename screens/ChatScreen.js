@@ -83,31 +83,31 @@ const ChatScreen = () => {
     update(chatRoomRef, newMessage);
   }, []);
 
-  const createChat = () => {
-    if (chatExist) {
-      return;
-    } else {
-      const chatRef = ref(db, 'chatParticipants');
-      const newChatRefKey = push(chatRef).key;
-      const newChatRef = ref(db, 'chatParticipants/' + newChatRefKey);
-      const userChat = ref(db, 'userChats/' + uid);
-      const secondUserChat = ref(db, 'userChats/' + userId);
+  // const createChat = () => {
+  //   if (chatExist) {
+  //     return;
+  //   } else {
+  //     const chatRef = ref(db, 'chatParticipants');
+  //     const newChatRefKey = push(chatRef).key;
+  //     const newChatRef = ref(db, 'chatParticipants/' + newChatRefKey);
+  //     const userChat = ref(db, 'userChats/' + uid);
+  //     const secondUserChat = ref(db, 'userChats/' + userId);
 
-      const chatData = {
-        [uid]: true,
-        [userId]: true
-      };
-      const userChatData = {
-        [newChatRefKey]: newChatRefKey,
-      };
-      const secondUserChatData = {
-        [newChatRefKey]: newChatRefKey,
-      };
-      set(newChatRef, chatData);
-      update(userChat, userChatData);
-      update(secondUserChat, secondUserChatData);
-    }
-  };
+  //     const chatData = {
+  //       [uid]: true,
+  //       [userId]: true
+  //     };
+  //     const userChatData = {
+  //       [newChatRefKey]: newChatRefKey,
+  //     };
+  //     const secondUserChatData = {
+  //       [newChatRefKey]: newChatRefKey,
+  //     };
+  //     set(newChatRef, chatData);
+  //     update(userChat, userChatData);
+  //     update(secondUserChat, secondUserChatData);
+  //   }
+  // };
 
   const renderBubble = (props) => {
     return (

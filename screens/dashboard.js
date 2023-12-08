@@ -11,8 +11,12 @@ const dashboard = ({ fullname }) => {
     navigation.navigate('bibleVerse');
   };
 
-  const handleNavigateToTab = () => {
+  const handleNavigateToTabAssessment = () => {
     navigation.navigate('Assessment');
+  };
+
+  const handleNavigateToTabJournal = () => {
+    navigation.navigate('My Journal');
   };
 
   return (
@@ -31,8 +35,15 @@ const dashboard = ({ fullname }) => {
           <View style={styles.TakeSurveyContainer}>
             <Text style={styles.TakeSurveyText}>How are you feeling recently?</Text>
             <Text style={styles.TakeSurveyText}>Do you want to take a test?</Text>
-            <TouchableOpacity style={styles.TakeSurveyButton} onPress={handleNavigateToTab}>
+            <TouchableOpacity style={styles.TakeSurveyButton} onPress={handleNavigateToTabAssessment}>
               <Text style={styles.buttonText}>Take Test</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.myJournalContainer}>
+            <Text style={styles.myJournalText}>Do you want to create your Journal?</Text>
+            <TouchableOpacity style={styles.myJournalButton} onPress={handleNavigateToTabJournal}>
+              <Text style={styles.buttonText}>My Journal</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -62,7 +73,7 @@ const styles = StyleSheet.create({
   greeting: {
     color: '#ededed',
     fontSize: 24,
-    marginTop: 20,
+    marginTop: 30,
     paddingLeft: 185,
   },
   BibleVerseText1: {
@@ -111,7 +122,7 @@ const styles = StyleSheet.create({
   BibleVerseContainer: {
     width: '95%',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
     backgroundColor: 'rgba(27, 26, 69, 0.5)',
     borderRadius: 10,
     padding: 20,
@@ -123,8 +134,8 @@ const styles = StyleSheet.create({
   },
   TakeSurveyContainer: {
     alignItems: 'center',
-    marginTop: 20,
-    backgroundColor: 'rgba(103, 95, 243, 0.5)',
+    marginTop: 30,
+    backgroundColor: 'rgba(103, 95, 243, 0.2)',
     borderRadius: 10,
     padding: 20,
     elevation: 5,
@@ -143,6 +154,39 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '100%',
     paddingHorizontal: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    marginTop: 10,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  myJournalContainer: {
+    width: '95%',
+    alignItems: 'center',
+    marginTop: 30,
+    backgroundColor: 'rgba(103, 95, 243, 0.5)',
+    borderRadius: 10,
+    padding: 20,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  myJournalText: {
+    color: '#ededed',
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  myJournalButton: {
+    backgroundColor: '#655FF3',
+    padding: 15,
+    width: '100%',
+    paddingHorizontal: 100,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
