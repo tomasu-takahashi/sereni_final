@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from "../firebase";
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -46,6 +47,7 @@ const dashboard = ({ fullname }) => {
               <Text style={styles.buttonText}>My Journal</Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </View>
     </ImageBackground>
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   greeting: {
     color: '#ededed',
     fontSize: 24,
-    marginTop: 30,
+    marginTop: 20,
     paddingLeft: 185,
   },
   BibleVerseText1: {
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   BibleVerseContainer: {
     width: '95%',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 10,
     backgroundColor: 'rgba(27, 26, 69, 0.5)',
     borderRadius: 10,
     padding: 20,
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   },
   TakeSurveyContainer: {
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 15,
     backgroundColor: 'rgba(103, 95, 243, 0.2)',
     borderRadius: 10,
     padding: 20,
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
   myJournalContainer: {
     width: '95%',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 15,
     backgroundColor: 'rgba(103, 95, 243, 0.5)',
     borderRadius: 10,
     padding: 20,
@@ -196,6 +198,33 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
+  },
+  btnContainer: {
+    marginBottom: 10,
+    padding: 20,
+    width: '95%'
+  },
+  btnStyles: {
+    backgroundColor: '#655FF3',
+    padding: 15,
+    width: '100%',
+    paddingHorizontal: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
+      },
+    }),
+  },
+  btnText: {
+    color: "white",
+    fontSize: 18,
   },
   verseItem: {
     marginBottom: 10,

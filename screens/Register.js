@@ -1,69 +1,11 @@
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, SafeAreaView, ImageBackground, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { auth, db } from '../firebase';
-import { set, ref } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const Register = () => {
   const navigation = useNavigation();
-  const [fullname, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [hidePassword, setHidePassword] = useState(true);
-  const [userType, setUserType] = useState('');
-
-  const handleSignup = () => {
-    if (fullname === '' || email === '' || password === '' || confirmPassword === '' || userType === '') {
-      Alert.alert('Register Error', 'Please input all the fields');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Passwords do not match');
-      return;
-    }
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-
-        sendEmailVerification(user); // Send email verification
-
-        const writeUserData = () => {
-          set(ref(db, `users/logged_users/${user.uid}`), {
-            fullname: fullname,
-            email: email,
-            uid: user.uid,
-            userType: userType,
-          });
-        };
-
-        const writeLoggedUserData = () => {
-          set(ref(db, `users/logged_users/${user.uid}`), {
-            fullname: fullname,
-            email: email,
-            uid: user.uid,
-            userType: userType,
-          });
-        };
-
-        writeUserData();
-        writeLoggedUserData();
-
-        Alert.alert('Email Verification Sent', 'The email verification has been sent. Please check your inbox.');
-
-        navigation.navigate('Login');
-      })
-      .catch(error => alert(error.message));
-  };
-
-  const handleUserTypeSelection = (type) => {
-    setUserType(type);
-  };
 
   return (
     <ImageBackground
@@ -71,8 +13,6 @@ const Register = () => {
       resizeMode="cover"
       source={require("../assets/bgLogin.png")}
     >
-      <KeyboardAvoidingView style={styles.root} behavior="padding">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
           <SafeAreaView>
           <View>
                     <ImageBackground
@@ -86,98 +26,28 @@ const Register = () => {
                     </View>
           </SafeAreaView>
           <View style={styles.container}>
-          <View style={styles.userTypeContainer}>
+          <Text style={{ fontSize: 20, marginBottom: 20, color: '#ededed' }}>Register as</Text>
+          <View style={styles.btnContainer2}>
                 <TouchableOpacity
-                  style={userType === 'user' ? styles.userTypeButtonSelected : styles.userTypeButton}
-                  onPress={() => handleUserTypeSelection('user')}
+                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
+                  onPress={() => navigation.navigate('RegisterUser')}
                 >
-                  <Text style={styles.userTypeButtonText}>User</Text>
+                  <Text style={{ fontSize: 18, color: '#ededed' }}>Client</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={userType === 'volunteer' ? styles.userTypeButtonSelected : styles.userTypeButton}
-                  onPress={() => handleUserTypeSelection('volunteer')}
+                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
+                  onPress={() => navigation.navigate('RegisterVolunteer')}
                 >
-                  <Text style={styles.userTypeButtonText}>Volunteer</Text>
+                  <Text style={{ fontSize: 18, color: '#ededed' }}>Volunteer</Text>
                 </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-              <View style={styles.inputRoot}>
-                <TextInput
-                  value={fullname}
-                  placeholder="Full Name"
-                  onChangeText={text => setFullName(text)}
-                  keyboardType="default"
-                  autoCorrect={false}
-                  style={styles.inputStyle}
-                />
-              </View>
-
-              <View style={styles.inputRoot}>
-                <TextInput
-                  value={email}
-                  placeholder="Email"
-                  onChangeText={text => setEmail(text)}
-                  keyboardType="email-address"
-                  style={styles.inputStyle}
-                />
-              </View>
-
-              <View style={styles.inputRoot}>
-                <View style={styles.passwordInputContainer}>
-                  <TextInput
-                    value={password}
-                    placeholder="Password"
-                    onChangeText={text => setPassword(text)}
-                    secureTextEntry={hidePassword}
-                    style={styles.inputStyle}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setHidePassword(!hidePassword)}
-                    style={styles.hidePasswordButton}
-                  >
-                    <Text style={styles.hidePasswordButtonText}>
-                      {hidePassword ? 'Show' : 'Hide'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={styles.inputRoot}>
-                <View style={styles.passwordInputContainer}>
-                  <TextInput
-                    value={confirmPassword}
-                    placeholder="Confirm Password"
-                    onChangeText={text => setConfirmPassword(text)}
-                    secureTextEntry={hidePassword}
-                    style={styles.inputStyle}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setHidePassword(!hidePassword)}
-                    style={styles.hidePasswordButton}
-                  >
-                    <Text style={styles.hidePasswordButtonText}>
-                      {hidePassword ? 'Show' : 'Hide'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
               </View>
 
               <View style={styles.btnContainer2}>
-                <TouchableOpacity
-                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
-                  onPress={() => handleSignup()}
-                >
-                  <Text style={{ fontSize: 18, color: '#ededed' }}>Register</Text>
-                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                   <Text style={{ marginTop: 20, color: '#ededed' }}>Already have an Account?</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-
-        </ScrollView>
-      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };

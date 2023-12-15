@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, SafeAreaView, ImageBackground, Linking, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
@@ -39,21 +39,6 @@ const Login = () => {
                 } else if (errorCode === 'auth/wrong-password') {
                     Alert.alert('Login Error', 'Wrong password');
                 }
-            });
-    }
-
-    const handleForgotPassword = () => {
-        if (email === '') {
-            Alert.alert('Please enter your email to reset your password');
-            return;
-        }
-
-        sendPasswordResetEmail(auth, email)
-            .then(() => {
-                Alert.alert('Password Reset', 'Password reset email sent. Please check your email.');
-            })
-            .catch(error => {
-                Alert.alert('Password Reset Error', 'User not registered');
             });
     }
 
@@ -110,7 +95,7 @@ const Login = () => {
                         </View>
                     </View>
 
-                    <TouchableOpacity onPress={() => handleForgotPassword()}>
+                    <TouchableOpacity onPress={() => navigation.navigate('forgotPassword')}>
                         <Text style={{ marginTop: 20, color: '#ededed' }}>Forgot your Password?</Text>
                     </TouchableOpacity>
 

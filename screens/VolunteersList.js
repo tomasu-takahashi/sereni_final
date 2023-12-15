@@ -124,6 +124,32 @@ const createChat = (user) => {
     }
   };
 
+  // const checkChat = async (user) => {
+  //   return new Promise((resolve, reject) => {
+  //     const chatRef = ref(db, 'chatParticipants');
+  //     onValue(chatRef, (snapshot) => {
+  //       if (snapshot.exists()) {
+  //         let chatKey = null;
+  
+  //         snapshot.forEach((child) => {
+  //           const otherUserId = Object.keys(child.val()).find((key) => key !== uid);
+  //           if (otherUserId === user) {
+  //             chatKey = child.key;
+  //           }
+  //         });
+  
+  //         resolve(chatKey);
+  //       } else {
+  //         // If parent node "chatParticipants" doesn't exist, create an initial data
+  //         console.log('Chat doesn\'t exist');
+  //         resolve(null);
+  //       }
+  //     }, (error) => {
+  //       reject(error);
+  //     });
+  //   });
+  // };
+
   const checkChat = async (user) => {
     return new Promise((resolve, reject) => {
       const chatRef = ref(db, 'chatParticipants');
@@ -151,56 +177,85 @@ const createChat = (user) => {
   };
 
 
-//    const checkChat = (user) => {
-//     const chatRef = ref(db, 'chatParticipants')
-//     let participantData = [];
-//     onValue(chatRef, (snapshot) => {
-//         participantData = [];
-//         if (snapshot.exists()) {
-//             snapshot.forEach((child) => {
-//                 participantData.push({
-//                     key: child.key,
-//                     uid: child.val()[uid],
-//                     userId: child.val()[user]
-//                 })
-
-//                 setParticipants(participantData)
-//             })
-
-//             // setChatExist(true);
-//             console.log(chatExist)
-
-//         } else {
-//             //  if parent node "chatParticipants" doesn't exist, will create an initial data
-//             // console.log('chat doesnt exist')
-//         }
-//     })
-// }
-
-
-useEffect(() => {
-  let foundParticipantKey = null
-
-  // Check if chat exists for participants
-  const chatExists = participants.some((item) => {
+  useEffect(() => {
+    let foundParticipantKey = null;
+  
+    // Check if chat exists for participants
+    const chatExists = participants.some((item) => {
       const participantUid = item.uid;
       const participantUserId = item.userId;
       const participantKey = item.key;
       foundParticipantKey = participantKey;
-      return participantUid === true && participantUserId === true;
-  });
-  if (chatExists) {
+      return participantUid === uid && participantUserId === userId; // Update this line
+    });
+  
+    if (chatExists) {
       setChatExist(true);
       setChatRefKey(foundParticipantKey);
-      setChatExist(true);
+      // console.log('Chat exists for this user')
       // console.log('chat exists')
       // console.log(chatRefKey)
-  } else {
+    } else {
       setChatExist(false);
       // console.log('chat doesnt exist with this user')
       // console.log(chatRefKey)
-  }
-}, [counter])
+    }
+  }, [counter]);
+
+  // useEffect(() => {
+
+  // },[])
+
+
+
+// useEffect(() => {
+//   let foundParticipantKey = null
+
+//   // Check if chat exists for participants
+//   const chatExists = participants.some((item) => {
+//       const participantUid = item.uid;
+//       const participantUserId = item.userId;
+//       const participantKey = item.key;
+//       foundParticipantKey = participantKey;
+//       return participantUid === true && participantUserId === true;
+//   });
+//   // console.log(chatExists);
+//   if (chatExists) {
+//       setChatExist(true);
+//       setChatRefKey(foundParticipantKey);
+//       setChatExist(true);
+//       // console.log('Chat exists for this user')
+//       // console.log('chat exists')
+//       // console.log(chatRefKey)
+//   } else {
+//       setChatExist(false);
+//       // console.log('chat doesnt exist with this user')
+//       // console.log(chatRefKey)
+//   }
+// }, [counter])
+
+useEffect(() => {
+  const pip = volunteer.map((user) => user.uid);
+
+  // Use Promise.all to wait for all checkChat promises to resolve
+  Promise.all(pip.map((user) => checkChat(user)))
+    .then((chatKeys) => {
+      // Check if any chat exists for the volunteers
+      const chatExists = chatKeys.some((key) => key !== null);
+
+      if (chatExists) {
+        console.log('At least one user has an existing chat');
+        // Additional logic if at least one user has an existing chat
+      } else {
+        console.log('No user has an existing chat');
+        // Additional logic if no user has an existing chat
+      }
+    })
+    .catch((error) => {
+      console.error('Error checking chats:', error);
+      // Handle the error as needed
+    });
+}, [volunteer]); 
 
 
   
@@ -231,15 +286,33 @@ useEffect(() => {
 
 
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
-      <View style={styles.userItem}>
-        <Text style={styles.userName}>{item.fullname}</Text>
-        <Text style={styles.userEmail}>{item.email}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  // const renderItem = ({ item }) => {
+  //   const hasExistingChat = item.uid === userId && chatExist;
+  
+  //   return (
+  //     <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
+  //       <View style={[styles.userItem, hasExistingChat && styles.userItemWithChat]}>
+  //         <Text style={styles.userName}>{item.fullname}</Text>
+  //         <Text style={styles.userEmail}>{item.email}</Text>
+  //         {hasExistingChat && <Text style={styles.indicatorText}>Existing Chat</Text>}
+  //       </View>
+  //     </TouchableOpacity>
+  //   );
+  // };
 
+  const renderItem = ({ item }) => {
+    const hasExistingChat = item.uid === userId && chatExist;
+  
+    return (
+      <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
+        <View style={[styles.userItem, hasExistingChat && styles.userItemWithChat]}>
+          <Text style={styles.userName}>{item.fullname}</Text>
+          <Text style={styles.userEmail}>{item.email}</Text>
+          {hasExistingChat && <Text style={styles.indicatorText}>Existing Chat</Text>}
+        </View>
+      </TouchableOpacity>
+    );
+  };
   return (
 
     <ImageBackground
@@ -294,6 +367,14 @@ useEffect(() => {
 };
 
 const styles = StyleSheet.create({
+  userItemWithChat: {
+    backgroundColor: 'rgba(0, 255, 0, 0.5)', // Green background for users with existing chats
+  },
+  indicatorText: {
+    fontSize: 12,
+    color: '#fff', // Text color for the indicator
+    alignSelf: 'flex-end', // Adjust the position of the indicator text
+  },
   backgroundImage: {
     flex: 1,
     width: '100%',

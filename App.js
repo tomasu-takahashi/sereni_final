@@ -21,17 +21,29 @@ import AssessmentResultAnxiety from './screens/AssessmentResultAnxiety';
 import AssessmentResultDepression from './screens/AssessmentResultDepression';
 import AssessmentResultStress from './screens/AssessmentResultStress';
 import bibleVerse from './screens/bibleVerse';
+import RegisterUser from './screens/RegisterUser';
+import RegisterVolunteer from './screens/RegisterVolunteer';
+import forgotPassword from './screens/forgotPassword';
 import { Ionicons } from '@expo/vector-icons';
+import { LogBox } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  useEffect(()=> {
+    LogBox.ignoreAllLogs();
+  })    
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='forgotPassword' component={forgotPassword} />
         <Stack.Screen name='Register' component={Register} />
+        <Stack.Screen name='RegisterUser' component={RegisterUser} />
+        <Stack.Screen name='RegisterVolunteer' component={RegisterVolunteer} />
         <Stack.Screen name='dashboard' component={BottomTab} />
         <Stack.Screen name='Chat' component={Chat}/>
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
@@ -87,7 +99,6 @@ function BottomTab() {
     </>
   )
 }
-
 
 const styles = StyleSheet.create({
   container: {
