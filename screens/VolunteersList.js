@@ -22,13 +22,17 @@ const VolunteerList = () => {
   const user = auth.currentUser;
   const uid = user.uid
   const [searchQuery, setSearchQuery] = useState('');
+  const [userTypeVolunteer, setUserTypeVolunteer] = useState(true)
+  const [userType, setUserType] = useState(null);
 
   const filteredUserList = userList.filter((user) =>
   user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
 );
 const volunteer = filteredUserList.filter((user) => user.userType === 'volunteer');
+const users = filteredUserList.filter((user) => user.userType === 'user');
 
 const props = { userId, chatExist, chatRef };
+
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -114,7 +118,7 @@ const createChat = (user) => {
       if (chatKey === null) {
         setVisible(true);
       }else{
-        console.log(chatKey)
+        
       setChatRefKey(chatKey);
       navigation.navigate('ChatScreen', { userId: userId, chatExist: true, chatRef: chatKey });
       }
@@ -124,31 +128,6 @@ const createChat = (user) => {
     }
   };
 
-  // const checkChat = async (user) => {
-  //   return new Promise((resolve, reject) => {
-  //     const chatRef = ref(db, 'chatParticipants');
-  //     onValue(chatRef, (snapshot) => {
-  //       if (snapshot.exists()) {
-  //         let chatKey = null;
-  
-  //         snapshot.forEach((child) => {
-  //           const otherUserId = Object.keys(child.val()).find((key) => key !== uid);
-  //           if (otherUserId === user) {
-  //             chatKey = child.key;
-  //           }
-  //         });
-  
-  //         resolve(chatKey);
-  //       } else {
-  //         // If parent node "chatParticipants" doesn't exist, create an initial data
-  //         console.log('Chat doesn\'t exist');
-  //         resolve(null);
-  //       }
-  //     }, (error) => {
-  //       reject(error);
-  //     });
-  //   });
-  // };
 
   const checkChat = async (user) => {
     return new Promise((resolve, reject) => {
@@ -167,7 +146,7 @@ const createChat = (user) => {
           resolve(chatKey);
         } else {
           // If parent node "chatParticipants" doesn't exist, create an initial data
-          console.log('Chat doesn\'t exist');
+          
           resolve(null);
         }
       }, (error) => {
@@ -192,47 +171,16 @@ const createChat = (user) => {
     if (chatExists) {
       setChatExist(true);
       setChatRefKey(foundParticipantKey);
-      // console.log('Chat exists for this user')
-      // console.log('chat exists')
-      // console.log(chatRefKey)
     } else {
       setChatExist(false);
-      // console.log('chat doesnt exist with this user')
-      // console.log(chatRefKey)
     }
   }, [counter]);
 
-  // useEffect(() => {
-
-  // },[])
 
 
 
-// useEffect(() => {
-//   let foundParticipantKey = null
 
-//   // Check if chat exists for participants
-//   const chatExists = participants.some((item) => {
-//       const participantUid = item.uid;
-//       const participantUserId = item.userId;
-//       const participantKey = item.key;
-//       foundParticipantKey = participantKey;
-//       return participantUid === true && participantUserId === true;
-//   });
-//   // console.log(chatExists);
-//   if (chatExists) {
-//       setChatExist(true);
-//       setChatRefKey(foundParticipantKey);
-//       setChatExist(true);
-//       // console.log('Chat exists for this user')
-//       // console.log('chat exists')
-//       // console.log(chatRefKey)
-//   } else {
-//       setChatExist(false);
-//       // console.log('chat doesnt exist with this user')
-//       // console.log(chatRefKey)
-//   }
-// }, [counter])
+
 
 useEffect(() => {
   const pip = volunteer.map((user) => user.uid);
@@ -244,10 +192,10 @@ useEffect(() => {
       const chatExists = chatKeys.some((key) => key !== null);
 
       if (chatExists) {
-        console.log('At least one user has an existing chat');
+     
         // Additional logic if at least one user has an existing chat
       } else {
-        console.log('No user has an existing chat');
+    
         // Additional logic if no user has an existing chat
       }
     })
@@ -286,19 +234,13 @@ useEffect(() => {
 
 
 
-  // const renderItem = ({ item }) => {
-  //   const hasExistingChat = item.uid === userId && chatExist;
-  
-  //   return (
-  //     <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
-  //       <View style={[styles.userItem, hasExistingChat && styles.userItemWithChat]}>
-  //         <Text style={styles.userName}>{item.fullname}</Text>
-  //         <Text style={styles.userEmail}>{item.email}</Text>
-  //         {hasExistingChat && <Text style={styles.indicatorText}>Existing Chat</Text>}
-  //       </View>
-  //     </TouchableOpacity>
-  //   );
-  // };
+  useEffect(() => {
+    const userRef = ref(db, 'users/logged_users/' + uid + '/userType'); 
+    onValue(userRef, (snap) => {
+      const accType = snap.val()
+      setUserType(accType);
+    })
+  }, [])
 
   const renderItem = ({ item }) => {
     const hasExistingChat = item.uid === userId && chatExist;
@@ -331,14 +273,41 @@ useEffect(() => {
       onChangeText={(text) => setSearchQuery(text)}
     />
 
-{/* {volunteer.map((pip) => (
-  
-))} */}
-<FlatList
+<View style={styles.filterRoot}>
+  <View style={styles.filterContainer}>
+    <TouchableOpacity
+      style={[styles.btnStyle, userType === 'volunteer' && styles.selectedButton]}
+      onPress={() => setUserTypeVolunteer(true)}
+    >
+      <Text style={[styles.buttonText, userType === 'volunteer' && styles.selectedButtonText]}>Volunteer</Text>
+    </TouchableOpacity>
+
+    {userType === 'user' ? (
+      null
+    ) : (
+      <TouchableOpacity
+        style={[styles.btnStyle, userType === 'user' && styles.selectedButton]}
+        onPress={() => setUserTypeVolunteer(false)}
+      >
+        <Text style={[styles.buttonText, userType === 'user' && styles.selectedButtonText]}>Client</Text>
+      </TouchableOpacity>
+    )}
+  </View>
+</View>
+
+
+{userTypeVolunteer ? (
+  <FlatList
   data={volunteer}
   renderItem={renderItem}
   // keyExtractor={(item) => item.uid}
 />
+): (
+  <FlatList
+    data={users}
+    renderItem={renderItem}
+  />
+)}
 
 <Modal visible={visible} transparent animationType='slide'>
   <View style={styles.modalRoot}>
@@ -367,6 +336,30 @@ useEffect(() => {
 };
 
 const styles = StyleSheet.create({
+  btnStyle: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterContainer: {
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  filterRoot:{
+    height: '８%'
+  },
+  selectedButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0)', 
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#ededed',
+  },
+  selectedButtonText: {
+    fontSize: 20,
+    color: '#000000', 
+  },
   userItemWithChat: {
     backgroundColor: 'rgba(0, 255, 0, 0.5)', // Green background for users with existing chats
   },

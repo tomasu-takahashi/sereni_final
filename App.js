@@ -76,9 +76,11 @@ function BottomTab() {
             iconName = focused ? 'ios-home' : 'ios-home-outline';
           } else if (route.name === 'Assessment') {
             iconName = focused ? 'bulb-sharp' : 'bulb-outline';
-          } else if (route.name === 'Chat') {
-            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
-          } else if (route.name === 'My Journal') {
+          }
+          //  else if (route.name === 'Chat') {
+          //   iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
+          // } 
+          else if (route.name === 'My Journal') {
             iconName = focused ? 'bookmark' : 'bookmark-outline';
           } else if (route.name === 'Volunteers') {
             iconName = focused ? 'people-outline' : 'people-outline';
@@ -90,7 +92,7 @@ function BottomTab() {
       })}>
         <Tab.Screen name='Home' component={dashboard} />
         <Tab.Screen name='Volunteers' component={VolunteersList} />
-        <Tab.Screen name='Chat' component={Chat} />
+        {/* <Tab.Screen name='Chat' component={Chat} /> */}
         <Tab.Screen name='Assessment' component={Assessment} />
         <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Profile' component={profile} />
