@@ -15,9 +15,12 @@ const RegisterVolunteer = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [userType, setUserType] = useState('volunteer');
+  const [workName, setWorkName] = useState('');
+  const [workRole, setWorkRole] = useState('');
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleSignup = () => {
-    if (fullname === '' || email === '' || password === '' || confirmPassword === '' || userType === '') {
+    if (fullname === '' || email === '' || password === '' || confirmPassword === '' || userType === '' || workName === '' || workRole === '') {
       Alert.alert('Register Error', 'Please input all the fields');
       return;
     }
@@ -39,6 +42,8 @@ const RegisterVolunteer = () => {
             email: email,
             uid: user.uid,
             userType: userType,
+            workName: workName,
+            workRole: workRole,
           });
         };
 
@@ -48,7 +53,9 @@ const RegisterVolunteer = () => {
             email: email,
             uid: user.uid,
             userType: userType,
-          });
+            workName: workName,
+            workRole: workRole,
+              });
         };
 
         writeUserData();
@@ -62,27 +69,24 @@ const RegisterVolunteer = () => {
   };
 
   return (
-    <ImageBackground
-      style={styles.backgroundImage}
-      resizeMode="cover"
-      source={require("../assets/bgLogin.png")}
-    >
-      <KeyboardAvoidingView style={styles.root} behavior="padding">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <SafeAreaView>
-          <View>
-                    <ImageBackground
-                        style={{
-                            height: screenHeight / 2.5,
-                            width: screenWidth,
-                        }}
-                        resizeMode="contain"
-                        source={require("../assets/logo.png")}
-                    />
-                    </View>
-          </SafeAreaView>
-          <View style={styles.container}>
-            <View style={styles.inputContainer}>
+  <ImageBackground
+    style={styles.backgroundImage}
+    resizeMode="cover"
+    source={require("../assets/bgLogin.png")}
+  >
+    <KeyboardAvoidingView style={styles.root} behavior="padding">
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          {isClicked ? (
+            <View>
+            <Text style={{ fontSize: 18, color: '#000000' }}>Upload Proof of work legitimacy</Text>
+            <TouchableOpacity style={{...styles.imgRoot, alignSelf: 'center'}}>
+                <Text style={{ fontSize: 64, color: 'grey'}}>+</Text>
+            </TouchableOpacity>
+            </View>
+          ) : (
+            <View>
+            <Text style={{ fontSize: 18, color: '#000000', marginBottom: 10 }}>User Information</Text>
               <View style={styles.inputRoot}>
                 <TextInput
                   value={fullname}
@@ -144,27 +148,84 @@ const RegisterVolunteer = () => {
                 </View>
               </View>
 
-              <View style={styles.btnContainer2}>
-                <TouchableOpacity
-                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
-                  onPress={() => handleSignup()}
-                >
-                  <Text style={{ fontSize: 18, color: '#ededed' }}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                  <Text style={{ marginTop: 20, color: '#ededed' }}>Already have an Account?</Text>
-                </TouchableOpacity>
+              <Text style={{ fontSize: 18, color: '#000000', marginBottom: 10 }}>Work Information</Text>
+              <View style={styles.inputRoot}>
+                <TextInput
+                  value={workName}
+                  placeholder="Name of Work"
+                  onChangeText={text => setWorkName(text)}
+                  keyboardType="default"
+                  autoCorrect={false}
+                  style={styles.inputStyle}
+                />
+              </View>
+
+              <View style={styles.inputRoot}>
+                <TextInput
+                  value={workRole}
+                  placeholder="Work Role"
+                  onChangeText={text => setWorkRole(text)}
+                  keyboardType="default"
+                  autoCorrect={false}
+                  style={styles.inputStyle}
+                />
               </View>
             </View>
-          </View>
+          )}
 
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ImageBackground>
-  );
+          <View style={styles.btnContainer2}>
+            {isClicked ? (
+              <>
+                <TouchableOpacity 
+                  onPress={handleSignup}
+                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}>
+                  <Text style={{ fontSize: 18, color: '#ededed' }}>Register</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                  onPress={() => setIsClicked(false)}
+                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}>
+                  <Text style={{ fontSize: 18, color: '#ededed' }}>Back</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <TouchableOpacity
+                style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
+                onPress={() => setIsClicked(true)}
+              >
+                <Text style={{ fontSize: 18, color: '#ededed' }}>Next</Text>
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={{ marginTop: 20, color: '#ededed' }}>Already have an Account?</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
+  </ImageBackground>
+);
 };
 
 const styles = StyleSheet.create({
+    imgRoot: {
+        borderWidth: 2,
+        borderColor: 'black',
+        height: 300,
+        width: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 30,
+        borderRadius: '10%'
+    },
+    // imgContainer: {
+    //     borderWidth: 2,
+    //     borderColor: 'red',
+    //     borderRadius: '100%',
+    //     height: 70,
+    //     width: 70
+    // },
   backgroundImage: {
     flex: 1,
     width: '100%',
@@ -174,6 +235,9 @@ const styles = StyleSheet.create({
     height: screenHeight,
     width: screenWidth
   },
+  title: {
+    fontSize: 22
+  },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -181,7 +245,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: '50%',
+    height: '130%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

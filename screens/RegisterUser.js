@@ -17,7 +17,7 @@ const RegisterUser = () => {
   const [userType, setUserType] = useState('user');
 
   const handleSignup = () => {
-    if (fullname === '' || email === '' || password === '' || confirmPassword === '' || userType === 'user') {
+    if (fullname === '' || email === '' || password === '' || confirmPassword === '') {
       Alert.alert('Register Error', 'Please input all the fields');
       return;
     }

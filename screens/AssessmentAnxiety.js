@@ -23,12 +23,16 @@ const AssessmentAnxiety = ({ navigation }) => {
     });
 
     let result = '';
-    if (totalScore >= 0 && totalScore <= 16) {
-      result = 'Mild Anxiety';
-    } else if (totalScore >= 17 && totalScore <= 24) {
-      result = 'Moderate Anxiety';
-    } else if (totalScore >= 25) {
-      result = 'Severe Anxiety';
+    if (totalScore >= 0 && totalScore <= 3) {
+      result = 'Normal';
+    } else if (totalScore >= 4 && totalScore <= 5) {
+      result = 'Mild';
+    } else if (totalScore >= 6 && totalScore <= 7) {
+      result = 'Moderate';
+    } else if (totalScore >= 8 && totalScore <= 9) {
+      result = 'Severe';
+    } else if (totalScore >= 10) {
+      result = 'Extremely Severe';
     }
 
     // Redirect to the AssessmentResult component and pass the result and totalScore as props
@@ -36,20 +40,13 @@ const AssessmentAnxiety = ({ navigation }) => {
   };
 
   const questionText = [
-    'Anxious mood:\nWorries, anticipation of the worst, fearful anticipation, irritability',
-    'Tension:\nFeelings of tension, fatigability, startle response, moved to tears easily, trembling, feelings of restlessness, inability to relax',
-    'Fears:\nOf dark, of strangers, of being left alone, of animals, of traffic, of crowds',
-    'Insomnia:\nDifficulty in falling asleep, broken sleep, unsatisfying sleep and fatigue on waking, dreams, nightmares, night terrors',
-    'Intellectual:\nDifficulty in concentration, poor memory',
-    'Depressed mood:\nLoss of interest, lack of pleasure in hobbies, depression, early waking, diurnal swing',
-    'Somatic(muscular):\nPains and aches, twitching, stiffness, myoclonic jerks, grinding of teeth, unsteady voice, increased muscular tone',
-    'Somatic(sensory):\nTinnitus, blurring of vision, hot and cold flushes, feelings of weakness, pricking sensation',
-    'Cardiovascular symptoms:\nTachycardia, palpitations, pain in chest, throbbing of vessels, fainting feelings, missing beat',
-    'Respiratory symptoms:\nPressure or constriction in chest, choking feelings, sighing, dyspnea',
-    'Gastrointestinal symptoms:\nDifficulty in swallowing, wind abdominal pain, burning sensations, abdominal fullness, nausea, vomiting, borborygmi, looseness of bowels, loss of weight, constipation',
-    'Genitourinary symptoms:\nFrequency of micturition, urgency of micturition, amenorrhea, menorrhagia, development of frigidity, premature ejaculation, loss of libido, impotence',
-    'Autonomic symptoms:\nDry mouth, flushing, pallor, tendency to sweat, giddiness, tension headache, raising of hair',
-    'Behavior at interview:\nFidgeting, restlessness or pacing, tremor of hands, furrowed brow, strained face, sighing or rapid respiration, facial pallor, swallowing, etc.'
+    'I was aware of dryness of my mouth',
+    'I experienced breathing difficulty (eg, excessively rapid breathing, breathlessness in the absence of physical exertion)',
+    'I experienced trembling (eg, in the hands)',
+    'I was worried about situation in which I might panic and make a fool of myself',
+    'I felt I was close to panic',
+    'I was aware of the action of my heart in the absence of physicalexertion (eg, sence of heart rate increase, heart missing a beat)',
+    'I felt scared without any good reason'
   ];
 
   return (
@@ -63,11 +60,10 @@ const AssessmentAnxiety = ({ navigation }) => {
             </Text>
             <View style={styles.buttonContainer}>
               {[
-                { label: 'Not present', value: 0 },
-                { label: 'Mild', value: 1 },
-                { label: 'Moderate', value: 2 },
-                { label: 'Severe', value: 3 },
-                { label: 'Very Severe', value: 4 },
+                { label: 'Never', value: 0 },
+                { label: 'Sometimes', value: 1 },
+                { label: 'Often', value: 2 },
+                { label: 'Almost Always', value: 3 },
               ].map((answer, buttonIndex) => (
                 <TouchableOpacity
                   key={buttonIndex}

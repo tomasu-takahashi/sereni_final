@@ -17,13 +17,15 @@ const VolunteerList = () => {
   const [chatRef, setChatRefKey] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [createChats, setCreateChats] = useState(false);
+  const [createChats, seqtCreateChats] = useState(false);
   const [loading ,setLoading] = useState(false);
   const user = auth.currentUser;
   const uid = user.uid
   const [searchQuery, setSearchQuery] = useState('');
   const [userTypeVolunteer, setUserTypeVolunteer] = useState(true)
   const [userType, setUserType] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [secUserData, setSecUserData] = useState([]);
 
   const filteredUserList = userList.filter((user) =>
   user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
@@ -59,6 +61,12 @@ useEffect(() => {
     setCounter(prevCount => prevCount + 1)
 }
 
+// useEffect(() => {
+//   console.log(userId)
+// },[])
+
+
+
 const confirmChat = async () => {
   // Close the modal
   setVisible(false);
@@ -74,6 +82,46 @@ const confirmChat = async () => {
 };
 
 
+useEffect(() => {
+  const dbRef = ref(db, 'users/logged_users/' + userId);
+  onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+          setSecUserData({
+              fName: data.fullname || '',
+              email: data.email || '',
+              userType: data.userType || '',
+              uid: data.uid || '',
+              // profilePic: data.profile_pic || '',
+          });
+      }
+  });
+
+}, [userId])
+
+useEffect(() => {
+  secUserData.map((user) => {
+    console.log(user)
+  })
+},[])
+
+useEffect(() => {
+  const dbRef = ref(db, 'users/logged_users/' + uid);
+  onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+          setUserData({
+              fName: data.fullname || '',
+              email: data.email || '',
+              userType: data.userType || '',
+              uid: data.uid || '',
+              // profilePic: data.profile_pic || '',
+          });
+      }
+  });
+}, [uid])
+
+
 
 const createChat = (user) => {
   return new Promise((resolve, reject) => {
@@ -82,6 +130,34 @@ const createChat = (user) => {
     const newChatRef = ref(db, 'chatParticipants/' + newChatRefKey);
     const userChat = ref(db, 'userChats/' + uid);
     const secondUserChat = ref(db, 'userChats/' + user);
+    const contactRef = ref(db, 'contacts/' + uid + '/' + newChatRefKey);
+    const secContactRef = ref(db, 'contacts/' + userId + '/' + newChatRefKey);
+    const userFName = userData?.fName || '';
+    const userEmail = userData?.email || '';
+    const userUID = userData?.uid || '';
+    const userUType = userData?.userType || '';
+    const user2Fname = secUserData?.fName || '';
+    const user2Email= secUserData?.email || '';
+    const user2UID = secUserData?.uid || '';
+    const user2UType = secUserData?.userType || '';
+
+    const contactData = {
+      fName: user2Fname,
+      email: user2Email,
+      uid: user2UID,
+      userType: user2UType,
+    
+      newChatRefKey
+  }
+
+  const secContactData = {
+      fName: userFName,
+      email: userEmail,
+      uid: userUID,
+      userType: userUType,
+    
+      newChatRefKey
+  }
 
     const chatData = {
       [uid]: true,
@@ -95,6 +171,10 @@ const createChat = (user) => {
     }
 
     set(newChatRef, chatData)
+    // update(contactRef, contactData);
+    //         update(secContactRef, secContactData);
+      .then(() => update(contactRef, contactData))
+      .then(() => update(secContactRef, secContactData))
       .then(() => update(userChat, userChatData))
       .then(() => update(secondUserChat, secondUserChatData))
       .then(() => {
@@ -184,6 +264,7 @@ const createChat = (user) => {
 
 useEffect(() => {
   const pip = volunteer.map((user) => user.uid);
+  
 
   // Use Promise.all to wait for all checkChat promises to resolve
   Promise.all(pip.map((user) => checkChat(user)))
@@ -191,11 +272,15 @@ useEffect(() => {
       // Check if any chat exists for the volunteers
       const chatExists = chatKeys.some((key) => key !== null);
 
+      
+
       if (chatExists) {
-     
+        
+        setChatExist(true)
+        
         // Additional logic if at least one user has an existing chat
       } else {
-    
+        setChatExist(false)
         // Additional logic if no user has an existing chat
       }
     })
@@ -203,7 +288,7 @@ useEffect(() => {
       console.error('Error checking chats:', error);
       // Handle the error as needed
     });
-}, [volunteer]); 
+}, [counter]); 
 
 
   
@@ -243,14 +328,17 @@ useEffect(() => {
   }, [])
 
   const renderItem = ({ item }) => {
-    const hasExistingChat = item.uid === userId && chatExist;
+    const pip = filteredUserList.map((use) => use.uid)
+    
+    const hasExistingChat = pip.includes(item.uid) && chatExist;
+    
   
     return (
       <TouchableOpacity onPress={() => handleChatPress(item.uid)}>
         <View style={[styles.userItem, hasExistingChat && styles.userItemWithChat]}>
           <Text style={styles.userName}>{item.fullname}</Text>
           <Text style={styles.userEmail}>{item.email}</Text>
-          {hasExistingChat && <Text style={styles.indicatorText}>Existing Chat</Text>}
+          {hasExistingChat && <Text style={styles.indicatorText}></Text>}
         </View>
       </TouchableOpacity>
     );
@@ -360,9 +448,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000000', 
   },
-  userItemWithChat: {
-    backgroundColor: 'rgba(0, 255, 0, 0.5)', // Green background for users with existing chats
-  },
+  // userItemWithChat: {
+  //   backgroundColor: 'rgba(0, 255, 0, 0.5)', // Green background for users with existing chats
+  // },
   indicatorText: {
     fontSize: 12,
     color: '#fff', // Text color for the indicator

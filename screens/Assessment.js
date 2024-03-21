@@ -14,14 +14,11 @@ const Assessment = () => {
   const handleCategoryPress = (category) => {
     // Redirect to the respective JS file based on the selected category
     switch (category) {
-      case 'Anxiety':
-        navigation.navigate('AssessmentAnxiety');
+      case 'guideQuestions':
+        navigation.navigate('AssessmentGuideQuestions');
         break;
-      case 'Depression':
-        navigation.navigate('AssessmentDepression');
-        break;
-      case 'Stress':
-        navigation.navigate('AssessmentStress');
+      case 'selectTopic':
+        navigation.navigate('AssessmentTopic');
         break;
       default:
         break;
@@ -34,48 +31,34 @@ const Assessment = () => {
       resizeMode="cover"
       source={require("../assets/bgMain.png")}
     >
-      <Text style={styles.AssessmentText}>Selecting a topic will redirect you to answer a survey. Sereni will provide results based on the survey.</Text>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.root}>
           <View style={styles.container}>
+          <Text style={styles.AssessmentText}>Assessment Guide</Text>
 
             <View style={styles.categoryButton}>
-              <ImageBackground source={require("../assets/anxiety-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
+            <Text style={styles.text}>Selecting this option will redirect you to our guide questions to know what are you feeling. Is it either Anxiety, Depression, or Stress.</Text>
               <View style={styles.wrapper}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => handleCategoryPress('Anxiety')}>
-                  <Text style={styles.text}>Anxiety</Text>
+                  onPress={() => handleCategoryPress('guideQuestions')}>
+                  <Text style={styles.text}>Proceed</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.categoryButton}>
-              <ImageBackground source={require("../assets/depression-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
+            <Text style={styles.text}>Selecting this option will redirect you to where you select your own topic </Text>
               <View style={styles.wrapper}>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => handleCategoryPress('Depression')}>
-                  <Text style={styles.text}>Depression</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-
-            <View style={styles.categoryButton}>
-              <ImageBackground source={require("../assets/stress-image.png")} style={styles.categoryButtonImage} resizeMode="contain" />
-              <View style={styles.wrapper}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleCategoryPress('Stress')}>
-                  <Text style={styles.text}>Stress</Text>
+                  onPress={() => handleCategoryPress('selectTopic')}>
+                  <Text style={styles.text}>Proceed</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
           </View>
         </View>
-      </ScrollView>
     </ImageBackground>
   );
 };
@@ -92,36 +75,31 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: '60%'
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
-    paddingBottom: '65%',
-    paddingTop: '5%',
+    paddingBottom: '50%',
   },
   AssessmentText: {
-    padding: 10,
+    marginTop: 20,
+    marginBottom: '15%',
+    justifyContent: 'center',
+    textAlign: 'center',
     color: 'white',
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 24,
     wordWrap: 'break-word',
   },
   categoryButton: {
     width: '100%',
-    height: '60%',
+    height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(21, 21, 21, 0.5)',
     padding: 10,
     borderRadius: 10,
-    margin: 10,
+    marginBottom: '10%',
     elevation: 5,
     ...Platform.select({
       ios: {
@@ -131,13 +109,6 @@ const styles = StyleSheet.create({
         shadowRadius: 3
       },
     }),
-  },
-  categoryButtonImage: {
-    width: '100%',
-    maxWidth: 205,
-    height: 236,
-    marginBottom: 20,
-    borderRadius: '50%',
   },
   categoryButtonText: {
     fontSize: 24,
@@ -160,7 +131,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
   },
   headerContainer: {

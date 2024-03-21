@@ -23,16 +23,16 @@ const AssessmentDepression = ({ navigation }) => {
     });
 
     let result = '';
-    if (totalScore >= 0 && totalScore <= 10) {
-      result = 'No Depression';
-    } else if (totalScore >= 11 && totalScore <= 16) {
+    if (totalScore >= 0 && totalScore <= 4) {
+      result = 'Normal';
+    } else if (totalScore >= 5 && totalScore <= 6) {
       result = 'Mild';
-    } else if (totalScore >= 17 && totalScore <= 20) {
+    } else if (totalScore >= 7 && totalScore <= 10) {
       result = 'Moderate';
-    } else if (totalScore >= 21 && totalScore <= 30) {
-      result = 'High';
-    } else if (totalScore >= 31) {
+    } else if (totalScore >= 11 && totalScore <= 13) {
       result = 'Severe';
+    } else if (totalScore >= 14) {
+      result = 'Extremely Severe';
     }
 
     // Redirect to the AssessmentResult component and pass the result and totalScore as props
@@ -40,27 +40,13 @@ const AssessmentDepression = ({ navigation }) => {
   };
 
   const questionText = [
-    'I feel overwhelmingly sad at times',
-    'When I think of the future I feel hopeless',
-    'I feel like a complete failure',
-    'I get a lot of satisfaction/joy from doing things',
-    'I feel guilty about something most of the time',
-    'I feel like I am being punished',
-    'I feel disappointed (even disgusted) with myself',
-    'The bad things in my life aren’t all my fault',
-    'I am often on the brink of tears or cry',
-    'I feel irritated and annoyed by things in my life',
-    'I am very interested in other people’s lives and like to listen to them',
-    'I find it easy to make decisions, big and small',
-    'I think I am unattractive or ugly',
-    'I find it really hard to do anything, especially work',
-    'My sleep patterns have been really disrupted',
-    'I am so tired I don’t have the energy to do anything',
-    'My appetite has changed a lot',
-    'I have lost a lot of weight',
-    'I am very concerned, even preoccupied, with my physical health',
-    'I am not interested in sexual relations at all',
-    'I have thought about ending my life',
+    'I could not seem to experience any positive feeling at all',
+    'I found it difficult to work up the initiative to do things',
+    'I felt that I had nothing to look forward to',
+    'I felt down-hearted and blue',
+    'I was unable to become enthusiastic about anything',
+    'I felt I was not worth much as a person',
+    'I felt that life was meaningless'
   ];
 
   return (
@@ -74,10 +60,10 @@ const AssessmentDepression = ({ navigation }) => {
             </Text>
             <View style={styles.buttonContainer}>
               {[
-                { label: 'Definitely Disagree', value: 0 },
-                { label: 'Slightly Disagree', value: 1 },
-                { label: 'Slightly Agree', value: 2 },
-                { label: 'Definitely Agree', value: 3 },
+                { label: 'Never', value: 0 },
+                { label: 'Sometimes', value: 1 },
+                { label: 'Often', value: 2 },
+                { label: 'Almost Always', value: 3 },
               ].map((answer, buttonIndex) => (
                 <TouchableOpacity
                   key={buttonIndex}

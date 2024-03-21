@@ -23,6 +23,7 @@ const Chat = () => {
   const user = auth.currentUser;
   const uid = user.uid
   const [searchQuery, setSearchQuery] = useState('');
+  const [contacts, setContacts] = useState([]);
   
   // const filteredUserList = userList.filter((item) => {
   //   return item.fullname.toLowerCase().includes(searchQuery.toLowerCase());
@@ -117,6 +118,7 @@ const createChat = (user) => {
     const newChatRef = ref(db, 'chatParticipants/' + newChatRefKey);
     const userChat = ref(db, 'userChats/' + uid);
     const secondUserChat = ref(db, 'userChats/' + user);
+    
 
     const chatData = {
       [uid]: true,
@@ -187,12 +189,31 @@ const createChat = (user) => {
       off(usersRef); // Unsubscribe from usersRef updates
     };
   }, [counter]);
+
+  //extracting user chat rooms
+  useEffect(() => {
+    const userChatRef = ref(db, 'contacts/' + uid);
+    onValue(userChatRef, (snapshot) => {
+        let userChatData = []
+        snapshot.forEach((child) => {
+            userChatData.push({
+                newChatRefKey: child.val().newChatRefKey,
+                fName: child.val().fName,
+                email: child.val().email,
+                uid: child.val().uid,
+                userType: child.val().userType
+            })
+        })
+        setContacts(userChatData);
+    })
+}, [])
   
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleItemPress(item.element)}>
+    <TouchableOpacity onPress={() => handleItemPress(item.newChatRefKey)}>
       <View style={styles.userItem}>
-        <Text style={styles.userName}>{item.fullname}</Text>
+        <Text style={styles.userName}>{item.fName}</Text>
         <Text style={styles.userEmail}>{item.email}</Text>
+        <Text>{item.userType}</Text>
         <Icon name="chat" size={24} style={styles.chatIcon} />
       </View>
     </TouchableOpacity>
@@ -216,7 +237,7 @@ const createChat = (user) => {
     />
 
       <FlatList
-        data={userList}
+        data={contacts}
         renderItem={renderItem}
         // keyExtractor={(item) => item.uid}
       />

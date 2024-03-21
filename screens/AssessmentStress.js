@@ -23,16 +23,16 @@ const AssessmentStress = ({ navigation }) => {
     });
 
     let result = '';
-    if (totalScore >= 0 && totalScore <= 18) {
-      result = 'No Stress';
-    } else if (totalScore >= 19 && totalScore <= 32) {
-      result = 'Mild Stress';
-    } else if (totalScore >= 33 && totalScore <= 49) {
-      result = 'Severe Stress';
-    } else if (totalScore >= 50 && totalScore <= 59) {
-      result = 'Dangerous';
-    } else if (totalScore >= 60) {
-      result = 'Extremely Dangerous';
+    if (totalScore >= 0 && totalScore <= 7) {
+      result = 'Normal';
+    } else if (totalScore >= 8 && totalScore <= 9) {
+      result = 'Mild';
+    } else if (totalScore >= 10 && totalScore <= 12) {
+      result = 'Moderate';
+    } else if (totalScore >= 13 && totalScore <= 16) {
+      result = 'Severe';
+    } else if (totalScore >= 17) {
+      result = 'Extremely Severe';
     }
 
     // Redirect to the AssessmentResult component and pass the result and totalScore as props
@@ -40,21 +40,13 @@ const AssessmentStress = ({ navigation }) => {
   };
 
   const questionText = [
-    'I feel run down and drained of physical or emotional energy.',
-    'I have negative thoughts about my job.',
-    'I am harder and less sympathetic with people than perhaps they deserve.',
-    'I am easily irritated by small problems, or by my co-workers and team.',
-    'I feel misunderstood or unappreciated by my co-workers.',
-    'I feel that I have no one to talk to.',
-    'I feel that I am achieving less than I should.',
-    'I feel under an unpleasant level of pressure to succeed.',
-    'I feel I am not getting what I want out of my job.',
-    'I feel that I am in the wrong organization or the wrong profession.',
-    'I am frustrated with parts of my job.',
-    'I feel that organizational politics or bureaucracy frustrate my ability to do a good job.',
-    'I feel that there is more work to do than I practically have the ability to do.',
-    'I feel that I do not have time to do many of the things that are important to doing a good quality job.',
-    'I find that I do not have time to plan as much as I would like to.',
+    'I found it hard to wind down',
+    'I tender to over-react to situations',
+    'I felt that I was using a lot of nervous energy',
+    'I found myself getting agitated',
+    'I found it difficult to relax',
+    'I was intolerant of anything that kept me from getting on with what I was doing',
+    'I felt that I was rather touchy'
   ];
 
   return (
@@ -68,11 +60,10 @@ const AssessmentStress = ({ navigation }) => {
             </Text>
             <View style={styles.buttonContainer}>
               {[
-                { label: 'Not at All', value: 1 },
-                { label: 'Rarely', value: 2 },
-                { label: 'Sometimes', value: 3 },
-                { label: 'Often', value: 4 },
-                { label: 'Very Often', value: 5 }
+                { label: 'Never', value: 0 },
+                { label: 'Sometimes', value: 1 },
+                { label: 'Often', value: 2 },
+                { label: 'Almost Always', value: 3 },
               ].map((answer, buttonIndex) => (
                 <TouchableOpacity
                   key={buttonIndex}

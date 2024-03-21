@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { AppRegistry } from 'react-native';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import dashboard from './screens/dashboard';
@@ -24,9 +25,12 @@ import bibleVerse from './screens/bibleVerse';
 import RegisterUser from './screens/RegisterUser';
 import RegisterVolunteer from './screens/RegisterVolunteer';
 import forgotPassword from './screens/forgotPassword';
-import { Ionicons } from '@expo/vector-icons';
+import AssessmentTopic from './screens/AssessmentTopic';
+import AssessmentGuideQuestions from './screens/AssessmentGuideQuestions';
+import AssessmentGuideResults from './screens/AssessmentGuideResults';
+import { Ionicons } from '@expo/vector-icons'; 
 import { LogBox } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +38,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   useEffect(()=> {
     LogBox.ignoreAllLogs();
-  })    
+  }, [])    
 
   return (
     <NavigationContainer>
@@ -48,6 +52,9 @@ export default function App() {
         <Stack.Screen name='Chat' component={Chat}/>
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='Assessment' component={Assessment} />
+        <Stack.Screen name='AssessmentTopic' component={AssessmentTopic} />
+        <Stack.Screen name='AssessmentGuideQuestions' component={AssessmentGuideQuestions} />
+        <Stack.Screen name='AssessmentGuideResults' component={AssessmentGuideResults} />
         <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
         <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression} />
         <Stack.Screen name='AssessmentResultStress' component={AssessmentResultStress} />
@@ -77,9 +84,9 @@ function BottomTab() {
           } else if (route.name === 'Assessment') {
             iconName = focused ? 'bulb-sharp' : 'bulb-outline';
           }
-          //  else if (route.name === 'Chat') {
-          //   iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
-          // } 
+           else if (route.name === 'Chat') {
+            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
+          } 
           else if (route.name === 'My Journal') {
             iconName = focused ? 'bookmark' : 'bookmark-outline';
           } else if (route.name === 'Volunteers') {
@@ -92,7 +99,7 @@ function BottomTab() {
       })}>
         <Tab.Screen name='Home' component={dashboard} />
         <Tab.Screen name='Volunteers' component={VolunteersList} />
-        {/* <Tab.Screen name='Chat' component={Chat} /> */}
+        <Tab.Screen name='Chat' component={Chat} />
         <Tab.Screen name='Assessment' component={Assessment} />
         <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Profile' component={profile} />
