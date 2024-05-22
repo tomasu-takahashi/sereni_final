@@ -96,11 +96,10 @@ const BottomSheet = ({ setStatus }) => {
             </TouchableOpacity>
 
             
-            <View style={{ flex: 1 }}>
-                        <ScrollView style={styles.renderedItemsContainer}>
-                            {renderedItems}
-                        </ScrollView>
-                    </View>
+            <ScrollView 
+                style={styles.renderedItemsContainer}>
+                {renderedItems}
+            </ScrollView>
             
             
           </View>
