@@ -137,14 +137,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   resultText: {
     fontSize: 26,
@@ -157,14 +153,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   messageContainer: {
     justifyContent: 'center',
@@ -173,14 +165,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   messageText: {
     color: '#ededed',
@@ -204,14 +192,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   showButton: {
     backgroundColor: '#C1A9CF',
@@ -220,14 +204,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   exitButton: {
     backgroundColor: '#444382',
@@ -236,14 +216,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   buttonText: {
     color: 'white',

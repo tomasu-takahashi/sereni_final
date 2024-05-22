@@ -113,14 +113,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   question: {
     fontSize: 18,
@@ -139,14 +135,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   selectedAnswerButton: {
     backgroundColor: '#655FF3', // Change the color of the selected button

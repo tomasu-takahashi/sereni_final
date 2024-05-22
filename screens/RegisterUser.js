@@ -187,14 +187,10 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
     elevation: 5,
-        ...Platform.select({
-            ios: {
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.3,
                 shadowRadius: 3
-            },
-        }),
   },
   inputRoot: {
     flexDirection: 'row',
@@ -241,14 +237,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     elevation: 5,
-        ...Platform.select({
-            ios: {
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.3,
                 shadowRadius: 3
-            },
-        }),
   },
 });
 

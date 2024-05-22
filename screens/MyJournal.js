@@ -45,6 +45,7 @@ const MyJournal = () => {
         const title = child.val().title;
         const userId = child.val().userId;
         const noteRefKey = child.val().noteRefKey;
+        const lastEdit = child.val().lastEdit || new Date().getTime();
         
   
         // Only display the note if the uid is not the same as the current user's uid
@@ -52,14 +53,18 @@ const MyJournal = () => {
           return;
         }
         
-        newNotes.push({ note, title, userId, noteRefKey});
-
-
+        newNotes.push({ note, title, userId, noteRefKey, lastEdit });
       });
       setNotes(newNotes);
-      
     });
   }, [counter]);
+
+  const updateNote = (note) => {
+    const notesRef = ref(db, 'notes/' + uid + '/' + note.noteRefKey);
+    update(notesRef, {
+      lastEdit: new Date().getTime(),
+    });
+  };
 
   return (
     <ImageBackground
@@ -79,7 +84,7 @@ const MyJournal = () => {
             onPress={() => navigation.navigate('EditJournal', {item})}
           >
             <Text style={styles.noteTitle}>{item.title}</Text>
-            <Text style={styles.noteDescription}>{item.note}</Text>
+            <Text style={styles.noteDescription}>Last Edited: {new Date(item.lastEdit).toLocaleString()}</Text>
           </Pressable>
           </View>
         )}
@@ -100,11 +105,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: 20,
     height: screenHeight,
     width: screenWidth,
   },
   Button: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#90C8AC',
     padding: 15,
     margin: 20,
     justifyContent: 'center',
@@ -112,14 +118,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   buttonText: {
     color: '#ededed',
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
   noteView: {
     backgroundColor: 'rgba(21, 21, 21, 0.5)',
     padding: 10,
-    margin: 5,
+    margin: 10,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

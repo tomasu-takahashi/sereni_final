@@ -265,14 +265,10 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(27, 26, 69, 0.5)',
       borderRadius: 10,
       elevation: 5,
-          ...Platform.select({
-              ios: {
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.3,
                 shadowRadius: 3
-              },
-            }),
   },
   loaderContainer: {
     position: 'absolute',

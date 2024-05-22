@@ -1,11 +1,62 @@
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, SafeAreaView, ImageBackground, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
 import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { set, ref } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const Register = () => {
   const navigation = useNavigation();
+  const [fullname, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const handleSignup = () => {
+    if (fullname === '' || email === '' || password === '' || confirmPassword === '') {
+      Alert.alert('Register Error', 'Please input all the fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Passwords do not match');
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredentials => {
+        const user = userCredentials.user;
+
+        sendEmailVerification(user); // Send email verification
+
+        const writeUserData = () => {
+          set(ref(db, `users/logged_users/${user.uid}`), {
+            fullname: fullname,
+            email: email,
+            uid: user.uid,
+          });
+        };
+
+        const writeLoggedUserData = () => {
+          set(ref(db, `users/logged_users/${user.uid}`), {
+            fullname: fullname,
+            email: email,
+            uid: user.uid,
+          });
+        };
+
+        writeUserData();
+        writeLoggedUserData();
+
+        Alert.alert('Email Verification Sent', 'The email verification has been sent. Please check your inbox.');
+
+        navigation.navigate('Login');
+      })
+      .catch(error => alert(error.message));
+  };
 
   return (
     <ImageBackground
@@ -13,41 +64,91 @@ const Register = () => {
       resizeMode="cover"
       source={require("../assets/bgLogin.png")}
     >
-          <SafeAreaView>
-          <View>
-                    <ImageBackground
-                        style={{
-                            height: screenHeight / 2.5,
-                            width: screenWidth,
-                        }}
-                        resizeMode="contain"
-                        source={require("../assets/logo.png")}
-                    />
-                    </View>
-          </SafeAreaView>
+      <KeyboardAvoidingView style={styles.root} behavior="padding">
           <View style={styles.container}>
-          <Text style={{ fontSize: 20, marginBottom: 20, color: '#ededed' }}>Register as</Text>
-          <View style={styles.btnContainer2}>
-                <TouchableOpacity
-                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
-                  onPress={() => navigation.navigate('RegisterUser')}
-                >
-                  <Text style={{ fontSize: 18, color: '#ededed' }}>Client</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
-                  onPress={() => navigation.navigate('RegisterVolunteer')}
-                >
-                  <Text style={{ fontSize: 18, color: '#ededed' }}>Volunteer</Text>
-                </TouchableOpacity>
+            <View style={styles.inputContainer}>
+            
+            <TouchableOpacity style={{...styles.imgRoot, alignSelf: 'center'}}>
+                <Text style={{ fontSize: 64, color: '#ededed' }}>+</Text>
+            </TouchableOpacity>
+
+              <View style={styles.inputRoot}>
+                <TextInput
+                  value={fullname}
+                  placeholder="Full Name"
+                  onChangeText={text => setFullName(text)}
+                  keyboardType="default"
+                  autoCorrect={false}
+                  style={styles.inputStyle}
+                />
               </View>
 
+              <View style={styles.inputRoot}>
+                <TextInput
+                  value={email}
+                  placeholder="Email"
+                  onChangeText={text => setEmail(text)}
+                  keyboardType="email-address"
+                  style={styles.inputStyle}
+                />
+              </View>
+
+              <View style={styles.inputRoot}>
+                <View style={styles.passwordInputContainer}>
+                  <TextInput
+                    value={password}
+                    placeholder="Password"
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={hidePassword}
+                    style={styles.inputStyle}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setHidePassword(!hidePassword)}
+                    style={styles.hidePasswordButton}
+                  >
+                    <Text style={styles.hidePasswordButtonText}>
+                      {hidePassword ? 'Show' : 'Hide'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.inputRoot}>
+                <View style={styles.passwordInputContainer}>
+                  <TextInput
+                    value={confirmPassword}
+                    placeholder="Confirm Password"
+                    onChangeText={text => setConfirmPassword(text)}
+                    secureTextEntry={hidePassword}
+                    style={styles.inputStyle}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setHidePassword(!hidePassword)}
+                    style={styles.hidePasswordButton}
+                  >
+                    <Text style={styles.hidePasswordButtonText}>
+                      {hidePassword ? 'Show' : 'Hide'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <SafeAreaView>
               <View style={styles.btnContainer2}>
+                <TouchableOpacity
+                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
+                  onPress={() => handleSignup()}
+                >
+                  <Text style={{ fontSize: 18, color: '#ededed' }}>Register</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                   <Text style={{ marginTop: 20, color: '#ededed' }}>Already have an Account?</Text>
                 </TouchableOpacity>
               </View>
+              </SafeAreaView>
             </View>
+          </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 };
@@ -62,14 +163,20 @@ const styles = StyleSheet.create({
     height: screenHeight,
     width: screenWidth
   },
-  scrollContainer: {
-    flexGrow: 1,
+  imgRoot: {
+    borderWidth: 2,
+    borderColor: '#ddd',
+    height: 200,
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+    margin: 30,
+    borderRadius: '10%',
+    backgroundColor: '#fff',
+},
   container: {
     width: '100%',
-    height: '50%',
+    height: '125%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
@@ -78,16 +185,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 10,
     elevation: 5,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            },
-        }),
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   inputRoot: {
     flexDirection: 'row',
@@ -122,41 +225,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 20,
   },
-  userTypeButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '40%',
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
-    borderWidth: 2,
-    backgroundColor: 'rgba(68, 67, 130, 0.4)',
-    borderColor: '#444382',
-    elevation: 5,
-        ...Platform.select({
-            ios: {
-                shadowColor: 'black',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            },
-        }),
-  },
-  userTypeButtonSelected: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '40%',
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#444382',
-    backgroundColor: '#444382',
-  },
-  userTypeButtonText: {
-    fontSize: 16,
-    color: '#ededed',
-  },
   btnContainer2: {
     width: '100%',
     alignItems: 'center',
@@ -169,14 +237,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     elevation: 5,
-        ...Platform.select({
-            ios: {
+
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.3,
                 shadowRadius: 3
-            },
-        }),
   },
 });
 

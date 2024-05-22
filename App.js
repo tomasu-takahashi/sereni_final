@@ -80,31 +80,37 @@ function BottomTab() {
           let iconName;
 
           if (route.name === 'Home') {
-            iconName = focused ? 'ios-home' : 'ios-home-outline';
+            iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Assessment') {
             iconName = focused ? 'bulb-sharp' : 'bulb-outline';
-          }
-           else if (route.name === 'Chat') {
+          } else if (route.name === 'Chat') {
             iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
-          } 
-          else if (route.name === 'My Journal') {
+          } else if (route.name === 'My Journal') {
             iconName = focused ? 'bookmark' : 'bookmark-outline';
           } else if (route.name === 'Volunteers') {
             iconName = focused ? 'people-outline' : 'people-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'menu' : 'menu';
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={'#B99470'} />;
         },
-      })}>
-        <Tab.Screen name='Home' component={dashboard} />
-        <Tab.Screen name='Volunteers' component={VolunteersList} />
+      })}
+        tabBarOptions={{
+          activeTintColor: '#B99470', // Change this to the color you want for active tabs
+          inactiveTintColor: '#B99470', // Change this to the color you want for inactive tabs
+        }}
+        tabBarStyle={{
+          backgroundColor: '#F4D03F', // Change this to the background color you want for the bottom tab
+        }}
+      >
+        <Tab.Screen name='Home' component={dashboard} options={{headerShown: false, headerStyle: {backgroundColor:'#F4D03F', height: '4.8%',}}} />
+        {/* <Tab.Screen name='Volunteers' component={VolunteersList} />
         <Tab.Screen name='Chat' component={Chat} />
-        <Tab.Screen name='Assessment' component={Assessment} />
+        <Tab.Screen name='Assessment' component={Assessment} /> */}
         <Tab.Screen name='My Journal' component={MyJournal} />
         <Tab.Screen name='Profile' component={profile} />
       </Tab.Navigator>
-      <StatusBar style='light' />
+      <StatusBar style='' />
     </>
   )
 }

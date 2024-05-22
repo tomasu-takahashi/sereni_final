@@ -29,12 +29,13 @@ const EditJournal = () => {
 
     const handleUpdate = () => {
         if (title && note.length > 0) {
+            const currentTime = new Date().getTime();
             set(ref(db, 'notes/' + uid + '/' + noteRefKey),{
                 title,
                 note,
                 userId,
-                noteRefKey
-                
+                noteRefKey,
+                lastEdit: currentTime,
             })
             .then(() => {
                 navigation.navigate('dashboard');
@@ -171,14 +172,10 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginTop: 10,
         elevation: 5,
-    ...Platform.select({
-        ios: {
             shadowColor: 'black',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.3,
             shadowRadius: 3
-        },
-        }),
     },
     buttonText: {
         color: '#ededed',

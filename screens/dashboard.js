@@ -2,11 +2,13 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, 
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from "../firebase";
+import BottomSheet from './BottomSheet';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const dashboard = ({ fullname }) => {
   const navigation = useNavigation();
+  const [status, setStatus] = React.useState(false);
 
   const handleNavigateToResult = () => {
     navigation.navigate('bibleVerse');
@@ -21,16 +23,16 @@ const dashboard = ({ fullname }) => {
   };
 
   return (
-    <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.png")}>
+    // <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.png")}>
       <View style={styles.root}>
-        <Text style={styles.greeting}>Hello, {fullname} Welcome!</Text>
         <View style={styles.container}>
           <View style={styles.BibleVerseContainer}>
             <Text style={styles.BibleVerseText1}>Search Your</Text>
             <Text style={styles.BibleVerseText2}>Bible Verse</Text>
-              <TouchableOpacity style={styles.button} onPress={handleNavigateToResult}>
+              <TouchableOpacity style={styles.button} onPress={() => setStatus(true)}>
                 <Text style={styles.buttonText}>Search</Text>
               </TouchableOpacity>
+              
           </View>
 
           <View style={styles.TakeSurveyContainer}>
@@ -47,10 +49,11 @@ const dashboard = ({ fullname }) => {
               <Text style={styles.buttonText}>My Journal</Text>
             </TouchableOpacity>
           </View>
-
+          
         </View>
+        {status && <BottomSheet setStatus={setStatus}/>}
       </View>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
   root: {
     height: screenHeight,
     width: screenWidth,
+    backgroundColor: '#FFFFFF',
   },
   backgroundImage: {
     flex: 1,
@@ -70,24 +74,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 1,
-  },
-  greeting: {
-    color: '#ededed',
-    fontSize: 24,
-    marginTop: 20,
-    paddingLeft: 185,
   },
   BibleVerseText1: {
     color: '#ededed',
     fontSize: 20,
-    marginBottom: 5,
+    paddingTop: 27,
     paddingRight: 190,
   },
   BibleVerseText2: {
     color: '#ededed',
     fontSize: 36,
-    marginBottom: 5,
     paddingRight: 130,
   },
   searchContainer: {
@@ -103,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3E3E3',
   },
   button: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#90C8AC',
     padding: 15,
     width: '100%',
     paddingHorizontal: 120,
@@ -122,11 +118,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   BibleVerseContainer: {
-    width: '95%',
+    width: '100%',
+    height: '24%',
     alignItems: 'center',
-    marginTop: 10,
-    backgroundColor: 'rgba(27, 26, 69, 0.5)',
-    borderRadius: 10,
+    backgroundColor: 'rgba(115, 169, 173, 0.5)',
+    borderRadius: 25,
     padding: 20,
     elevation: 5,
     shadowColor: 'black',
@@ -213,14 +209,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
     elevation: 5,
-    ...Platform.select({
-      ios: {
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 3
-      },
-    }),
   },
   btnText: {
     color: "white",

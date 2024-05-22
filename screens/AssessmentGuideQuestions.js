@@ -18,18 +18,22 @@ const AssessmentGuideQuestions = ({ navigation }) => {
         ...(prevState[topicIndex] ?? {}),
         [questionIndex]: value,
       };
+      console.log(updatedSelectedButton);
       return updatedSelectedButton;
     });
   };
 
   const handleSubmit = () => {
     // Calculate the total scores for each category
+    
     let anxietyScore = 0;
     let depressionScore = 0;
     let stressScore = 0;
+
   
     Object.entries(selectedButton).forEach(([topicIndex, answers]) => {
       Object.values(answers).forEach((answer, questionIndex) => {
+        console.log('topic: ',topicIndex,' score: ',answer);
         if (topicIndex === '0') {
           anxietyScore += answer;
         } else if (topicIndex === '1') {
@@ -42,7 +46,7 @@ const AssessmentGuideQuestions = ({ navigation }) => {
 
     let result = '';
     let highestScore = Math.max(anxietyScore, depressionScore, stressScore);
-
+    console.log('HIGHESTTT',highestScore)
     if (highestScore === anxietyScore) {
       result = 'Anxiety';
     } else if (highestScore === depressionScore) {
@@ -50,6 +54,7 @@ const AssessmentGuideQuestions = ({ navigation }) => {
     } else if (highestScore === stressScore) {
       result = 'Stress';
     }
+    console.log(result);
   
     // Redirect to the AssessmentResult component and pass the result
     navigation.navigate('AssessmentGuideResults', { result });
@@ -157,14 +162,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   question: {
     fontSize: 18,
@@ -183,14 +184,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   selectedAnswerButton: {
     backgroundColor: '#655FF3', // Change the color of the selected button

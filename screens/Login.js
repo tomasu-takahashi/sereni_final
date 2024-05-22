@@ -140,14 +140,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: screenWidth,
         elevation: 5,
-        ...Platform.select({
-            ios: {
                 shadowColor: 'black',
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.3,
                 shadowRadius: 3
-            },
-        }),
     },
     inputStyle: {
         padding: 10,

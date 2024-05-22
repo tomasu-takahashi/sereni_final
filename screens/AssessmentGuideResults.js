@@ -3,24 +3,35 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView }
 
 const AssessmentGuideResults = ({ route, navigation }) => {
     const [selectedButton, setSelectedButton] = useState({});
-    // const [showActivities, setShowActivities] = useState(false);
-    // const [showVerse, setShowVerse] = useState(false);
-    const { highestScore, anxietyScore, depressionScore, stressScore } = route.params;
+    const { result } = route.params;
+    console.log(result);
     
-    let result = '';
-    if (highestScore === anxietyScore) {
-      result = 'Anxiety';
-    } else if (highestScore === depressionScore) {
-      result = 'Depression';
-    } else if (highestScore === stressScore) {
-      result = 'Stress';
+    const topicAssessment = () => {
+      console.log('REDIRECTTT',result);
+      switch (result) {
+        case 'Anxiety':
+          navigation.navigate('AssessmentAnxiety');
+          break;
+        case 'Depression':
+          navigation.navigate('AssessmentDepression');
+          break;
+        case 'Stress':
+          navigation.navigate('AssessmentStress');
+          break;
+        default:
+          //no error page
+          navigation.navigate('AssessmentGuideQuestions');
+          break;
+      }
     }
+    
+    
 
   const handleRetakeTest = () => {
     // Reset the selectedButton state to an empty object
     setSelectedButton({});
     // Navigate back to the assessment screen
-    navigation.navigate('AssessmentAnxiety');
+    navigation.navigate('AssessmentGuideQuestions');
   };
 
   const handleClose = () => {
@@ -66,6 +77,9 @@ const AssessmentGuideResults = ({ route, navigation }) => {
         </TouchableOpacity> */}
       </View>
       <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={topicAssessment}>
+          <Text style={styles.buttonText}>PROCEED ANXIETY TEST</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleRetakeTest}>
           <Text style={styles.buttonText}>Take Test Again</Text>
         </TouchableOpacity>
@@ -106,14 +120,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   resultText: {
     fontSize: 26,
@@ -126,14 +136,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   messageContainer: {
     justifyContent: 'center',
@@ -142,14 +148,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   messageText: {
     color: '#ededed',
@@ -173,14 +175,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   showButton: {
     backgroundColor: '#C1A9CF',
@@ -189,14 +187,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
+
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   exitButton: {
     backgroundColor: '#444382',
@@ -205,14 +200,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     elevation: 5,
-    ...Platform.select({
-        ios: {
           shadowColor: 'black',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.3,
           shadowRadius: 3
-        },
-      }),
   },
   buttonText: {
     color: 'white',
