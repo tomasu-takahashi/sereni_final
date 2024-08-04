@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, SafeAreaView, ImageBackground, Linking, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, SafeAreaView, ImageBackground, Alert, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { AntDesign, Fontisto, Ionicons } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -13,6 +14,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handleNavigation = () => {
         navigation.navigate('Register');
@@ -23,7 +25,9 @@ const Login = () => {
             Alert.alert('Please enter your email and password');
             return;
         }
-
+    
+        setLoading(true); // Set loading state to true
+    
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
@@ -33,12 +37,15 @@ const Login = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-
+    
                 if (errorCode === 'auth/user-not-found') {
                     Alert.alert('Login Error', 'User not registered');
                 } else if (errorCode === 'auth/wrong-password') {
                     Alert.alert('Login Error', 'Wrong password');
                 }
+            })
+            .finally(() => {
+                setLoading(false); // Set loading state to false
             });
     }
 
@@ -46,37 +53,44 @@ const Login = () => {
         <ImageBackground
         style={styles.backgroundImage}
         resizeMode="cover"
-        source={require("../assets/bgLogin.png")}
+        source={require("../assets/bg.jpg")}
         >
         <View style={styles.root}>
             <SafeAreaView>
                 <View>
                     <ImageBackground
                         style={{
-                            height: screenHeight / 2.5,
+                            height: "80%",
                             width: screenWidth,
                         }}
                         resizeMode="contain"
-                        source={require("../assets/logo.png")}
+                        source={require("../assets/logo2.png")}
                     />
-                    </View>
-                    </SafeAreaView>
+                </View>
+            </SafeAreaView>
                 
 
             <View style={styles.container}>
                 <View style={styles.inputContainer}>
+
                     <View style={styles.inputRoot}>
+                    <Fontisto name="email" size={24} color="black" />
+                    <View style={styles.input}>
                         <TextInput
                             value={email}
                             placeholder="Email"
                             onChangeText={text => setEmail(text)}
                             keyboardType="email-address"
+                            autoCorrect={false}
+                            clearButtonMode='always'
                             style={styles.inputStyle}
                         />
                         </View>
+                    </View>
 
                         <View style={styles.inputRoot}>
-                        <View style={styles.passwordInputContainer}>
+                        <AntDesign name="lock" size={24} color="black" />
+                        <View style={styles.input}>
                         <TextInput
                             value={password}
                             placeholder="Password"
@@ -88,26 +102,32 @@ const Login = () => {
                             onPress={() => setHidePassword(!hidePassword)}
                             style={styles.hidePasswordButton}
                         >
-                            <Text style={styles.hidePasswordButtonText}>
-                            {hidePassword ? 'Show' : 'Hide'}
-                            </Text>
+                        {hidePassword ? (
+                            <Ionicons name="eye-outline" size={24} color="black" />
+                            ) : (
+                            <Ionicons name="eye-off-outline" size={24} color="black" />
+                            )}
                         </TouchableOpacity>
                         </View>
                     </View>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('forgotPassword')}>
-                        <Text style={{ marginTop: 20, color: '#ededed' }}>Forgot your Password?</Text>
+                    <TouchableOpacity style={{ left: 100 }} onPress={() => navigation.navigate('forgotPassword')}>
+                        <Text style={{ color: '#222831', fontWeight: '600' }}>Forgot Password?</Text>
                     </TouchableOpacity>
 
                     <View style={styles.btnContainer}>
-                        <TouchableOpacity style={{ ...styles.btnStyles, backgroundColor: '#444382' }} onPress={() => handleLogin()}>
-                            <Text style={{ fontSize: 18, color: '#ededed' }}>Log in</Text>
+                        <TouchableOpacity style={ styles.btnStyles } onPress={() => handleLogin()}>
+                            <Text style={{ fontSize: 18, fontWeight: '600', color: '#222831' }}>Sign in</Text>
                         </TouchableOpacity>
+                        {loading && <ActivityIndicator size="small" color="#fff" style={styles.loading}/>}
 
-                        <Text style={{ marginTop: 30, color: '#ededed' }}>Don't have an Account?</Text>
-                        <TouchableOpacity style={{ ...styles.btnStyles, borderColor: '#444382', borderWidth: 1.5, marginTop: 10 }} onPress={() => handleNavigation()}>
-                        <Text style={{ fontSize: 18, color: '#ededed'}}>Sign Up</Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 30}}>
+                        <Text style={{ color: '#222831', fontWeight: '500' }}>Don't have an Account?</Text>
+                        <TouchableOpacity onPress={() => handleNavigation()}>
+                        <Text style={{ paddingLeft: 5, fontSize: 16, fontWeight: '700', color: '#00ADB5'}}>Sign Up</Text>
                         </TouchableOpacity>
+                        </View>
+                        
                     </View>
                 </View>
             </View>
@@ -131,35 +151,54 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: '50%',
+        height: '170%',
         width: '100%',
-        bottom: screenHeight/10
+        bottom: screenHeight
     },
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         width: screenWidth,
-        elevation: 5,
-                shadowColor: 'black',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
     },
     inputStyle: {
-        padding: 10,
-        width: '90%',
-        borderRadius: 15,
-        marginTop: 10,
-        backgroundColor: "#E3E3E3"
+        flex: 1,
+        paddingVertical: 12,
+        fontSize: 16,
+        paddingLeft: 10,
+    },
+    inputRoot: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: "#FAF9F6",
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        marginBottom: 20,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
+    },
+    input: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '80%',
     },
     btnStyles: {
+        backgroundColor: '#8BE8E5',
         padding: 15,
         width: '100%',
         paddingHorizontal: 60,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        marginTop: 20
+        marginTop: 20,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
     },
     btnContainer: {
         justifyContent: 'center',
@@ -167,34 +206,16 @@ const styles = StyleSheet.create({
         width: '90%',
         marginTop: 20,
     },
-    inputRoot: {
-        borderRadius: 8,
-        padding: 5,
-        width: '90%',
-        marginTop: 25,
-        backgroundColor: "#E3E3E3"
-    },
-    passwordInputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '90%',
-    },
-    inputStyle: {
-        padding: 10,
-        width: '85%',
-        borderRadius: 15,
-        backgroundColor: "#E3E3E3",
-    },
     hidePasswordButton: {
-        // ... hide password button styles ...
-        marginLeft: 40,
-        },
-    
-
-    hidePasswordButtonText: {
-        // ... hide password button text styles ...
-        Color: "#E3E3E3",
-        fontSize: 12,
+        paddingHorizontal: 10,
     },
+    loading: {
+        position: 'absolute',
+        justifyContent: 'center',
+        opacity: "0.3",
+        backgroundColor: "black",
+        height: '1100%',
+        width: screenWidth,
+        paddingBottom: "100%"
+    }
 })

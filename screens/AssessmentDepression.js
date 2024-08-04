@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, ImageBackground } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 const AssessmentDepression = ({ navigation }) => {
   const [selectedButton, setSelectedButton] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -39,6 +41,22 @@ const AssessmentDepression = ({ navigation }) => {
     navigation.navigate('AssessmentResultDepression', { result, totalScore });
   };
 
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < questionText.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
+  const handleGoToQuestion = (questionIndex) => {
+    setCurrentQuestionIndex(questionIndex);
+  };
+
   const questionText = [
     'I could not seem to experience any positive feeling at all',
     'I found it difficult to work up the initiative to do things',
@@ -49,43 +67,83 @@ const AssessmentDepression = ({ navigation }) => {
     'I felt that life was meaningless'
   ];
 
+  const currentQuestion = questionText[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / questionText.length) * 100;
+
   return (
-    <ImageBackground source={require('../assets/bgMain.png')} style={styles.backgroundImage}>
-      <Text style={styles.title}>Depression</Text>
-      <ScrollView contentContainerStyle={styles.container}>
-        {questionText.map((question, index) => (
-          <View key={index} style={styles.questionContainer}>
-            <Text style={styles.question}>
-              {index + 1}. {question}
-            </Text>
-            <View style={styles.buttonContainer}>
-              {[
-                { label: 'Never', value: 0 },
-                { label: 'Sometimes', value: 1 },
-                { label: 'Often', value: 2 },
-                { label: 'Almost Always', value: 3 },
-              ].map((answer, buttonIndex) => (
-                <TouchableOpacity
-                  key={buttonIndex}
-                  onPress={() => handleAnswerChange(answer.value, index + 1)}
-                  style={[
-                    styles.answerButton,
-                    selectedButton[index + 1] === answer.value && styles.selectedAnswerButton,
-                  ]}
-                >
-                  <Text style={styles.answerText}>{answer.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+    <ImageBackground source={require('../assets/bgMain.jpg')} style={styles.backgroundImage}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Depression Assessment</Text>
+        <View style={styles.progressBar}>
+          <View style={{ width: `${progress}%`, backgroundColor: '#00ADB5', height: 10, borderRadius: 5 }} />
+        </View>
+
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>
+            {currentQuestionIndex + 1}. {currentQuestion}
+          </Text>
+          <View style={styles.buttonContainer}>
+            {[
+              { label: 'Never', value: 0 },
+              { label: 'Sometimes', value: 1 },
+              { label: 'Often', value: 2 },
+              { label: 'Almost Always', value: 3 },
+            ].map((answer, buttonIndex) => (
+              <TouchableOpacity
+                key={buttonIndex}
+                onPress={() => handleAnswerChange(answer.value, currentQuestionIndex)}
+                style={[
+                  styles.answerButton,
+                  selectedButton[currentQuestionIndex] === answer.value && styles.selectedAnswerButton,
+                ]}
+              >
+                <Text style={styles.answerButtonText}>{answer.label}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
-        ))}
-        <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        </View>
+
+        <View style={styles.buttonGroup}>
+          {currentQuestionIndex !== 0 && (
+            <TouchableOpacity onPress={handlePreviousQuestion} style={styles.previousButton}>
+              <AntDesign name="left" size={23} color="#00ADB5" />
+              <Text style={styles.navigationText}>Previous</Text>
+            </TouchableOpacity>
+          )}
+          {currentQuestionIndex < questionText.length - 1 ? (
+            <TouchableOpacity onPress={handleNextQuestion} style={styles.nextButton}>
+              <Text style={styles.navigationText}>Next</Text>
+              <AntDesign name="right" size={23} color="#00ADB5" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
+              <Text style={styles.navigationText}>Submit</Text>
+              <AntDesign name="right" size={23} color="#00ADB5" />
+            </TouchableOpacity>
+          )}
+        </View>
+        
+        <Text style={styles.title2}>Go to Question:</Text>
+        <View style={styles.goToButtonContainer}>
+          {questionText.map((answer, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.goToButton,
+                index === currentQuestionIndex && styles.selectedGoToButton,
+              ]}
+              onPress={() => handleGoToQuestion(index)}
+            >
+              <Text style={styles.answerButtonText}>{index + 1}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        
+      </View>
     </ImageBackground>
   );
-};       
+};
+
 export default AssessmentDepression;
 
 const styles = StyleSheet.create({
@@ -99,66 +157,113 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: 24,
-    color: '#ededed',
-    textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 50,
-    paddingBottom: 20,
+    fontSize: 28,
+    color: '#222831',
+    paddingLeft: 15,
+    paddingTop: 90,
+    paddingBottom: 15, 
+    fontWeight: '500'
   },
   questionContainer: {
     justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
-    elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    height: '50%',
   },
   question: {
     fontSize: 18,
     marginBottom: 10,
-    color: '#ededed',
+    color: '#222831',
+    fontWeight: '500'
   },
   buttonContainer: {
     justifyContent: 'center',
     flexDirection: 'column',
   },
   answerButton: {
-    backgroundColor: '#444382',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#FAF9F6',
+    borderColor: '#8BE8E5',
+    borderWidth: 2,
+    padding: 10,
     borderRadius: 10,
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   selectedAnswerButton: {
-    backgroundColor: '#655FF3', // Change the color of the selected button
+    backgroundColor: '#8BE8E5'
   },
-  answerText: {
+  answerButtonText: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#ededed',
+    color: '#222831',
+    fontWeight: '600',
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
   submitButton: {
-    backgroundColor: '#655FF3',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop: 10,
+    flexDirection: 'row',
+    marginTop: 20,
     marginBottom: 20,
   },
-  submitButtonText: {
-    color: '#fff',
+  nextButton: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  previousButton: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 20,
+    paddingRight: 100
+  },
+  navigationText: {
+    color: '#00ADB5',
+    fontSize: 20,
+    textAlign:'center',
+    fontWeight: '600'
+  },
+  goToButtonContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  goToButton: {
+    backgroundColor: '#FAF9F6',
+    borderColor: '#8BE8E5',
+    borderWidth: 2,
+    padding: 8,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
+  },
+  selectedGoToButton: {
+  backgroundColor: '#8BE8E5',
+},
+  title2: {
     fontSize: 18,
-    textAlign:'center'
+    color: '#222831',
+    paddingLeft: 15,
+    paddingTop: 20,
+    paddingBottom: 10, 
+    fontWeight: '500'
+  },
+  progressBar: {
+    alignSelf: 'center',
+    width: '90%',
+    backgroundColor: '#d3d3d3',
+    borderRadius: 10,
+    marginBottom: 20,
   },
 });

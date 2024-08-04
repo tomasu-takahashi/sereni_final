@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { auth, db } from '../firebase';
 import { set, ref } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign, Fontisto, Ionicons } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -62,39 +63,47 @@ const Register = () => {
     <ImageBackground
       style={styles.backgroundImage}
       resizeMode="cover"
-      source={require("../assets/bgLogin.png")}
+      source={require("../assets/bg.jpg")}
     >
-      <KeyboardAvoidingView style={styles.root} behavior="padding">
+      <View style={styles.root} behavior="padding">
           <View style={styles.container}>
-            <View style={styles.inputContainer}>
-            
-            <TouchableOpacity style={{...styles.imgRoot, alignSelf: 'center'}}>
-                <Text style={{ fontSize: 64, color: '#ededed' }}>+</Text>
-            </TouchableOpacity>
 
+          <Text style={styles.title}>Welcome!</Text>
+          <Text style={styles.title2}>Let's Create your Account</Text>
+
+            <View style={styles.inputContainer}>
               <View style={styles.inputRoot}>
+              <AntDesign name="user" size={24} color="black"/>
+              <View style={styles.InputContainer}>
                 <TextInput
                   value={fullname}
                   placeholder="Full Name"
                   onChangeText={text => setFullName(text)}
                   keyboardType="default"
                   autoCorrect={false}
+                  clearButtonMode='always'
                   style={styles.inputStyle}
                 />
               </View>
+              </View>
 
               <View style={styles.inputRoot}>
+              <Fontisto name="email" size={24} color="black" />
+              <View style={styles.InputContainer}>
                 <TextInput
                   value={email}
                   placeholder="Email"
                   onChangeText={text => setEmail(text)}
                   keyboardType="email-address"
+                  clearButtonMode='always'
                   style={styles.inputStyle}
                 />
               </View>
+              </View>
 
               <View style={styles.inputRoot}>
-                <View style={styles.passwordInputContainer}>
+              <AntDesign name="lock" size={24} color="black" />
+              <View style={styles.InputContainer}>
                   <TextInput
                     value={password}
                     placeholder="Password"
@@ -102,19 +111,23 @@ const Register = () => {
                     secureTextEntry={hidePassword}
                     style={styles.inputStyle}
                   />
+                  
                   <TouchableOpacity
                     onPress={() => setHidePassword(!hidePassword)}
                     style={styles.hidePasswordButton}
                   >
-                    <Text style={styles.hidePasswordButtonText}>
-                      {hidePassword ? 'Show' : 'Hide'}
-                    </Text>
+                  {hidePassword ? (
+                      <Ionicons name="eye-outline" size={24} color="black" />
+                    ) : (
+                      <Ionicons name="eye-off-outline" size={24} color="black" />
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>
 
               <View style={styles.inputRoot}>
-                <View style={styles.passwordInputContainer}>
+              <AntDesign name="lock" size={24} color="black" />
+              <View style={styles.InputContainer}>        
                   <TextInput
                     value={confirmPassword}
                     placeholder="Confirm Password"
@@ -126,29 +139,33 @@ const Register = () => {
                     onPress={() => setHidePassword(!hidePassword)}
                     style={styles.hidePasswordButton}
                   >
-                    <Text style={styles.hidePasswordButtonText}>
-                      {hidePassword ? 'Show' : 'Hide'}
-                    </Text>
+                  {hidePassword ? (
+                      <Ionicons name="eye-outline" size={24} color="black" />
+                    ) : (
+                      <Ionicons name="eye-off-outline" size={24} color="black" />
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <SafeAreaView>
-              <View style={styles.btnContainer2}>
-                <TouchableOpacity
-                  style={{ ...styles.btnStyles2, backgroundColor: '#444382' }}
-                  onPress={() => handleSignup()}
-                >
-                  <Text style={{ fontSize: 18, color: '#ededed' }}>Register</Text>
+              
+              <View style={styles.btnContainer}>
+                <TouchableOpacity style={ styles.btnStyles } onPress={() => handleSignup()}>
+                  <Text style={{ fontSize: 18, fontWeight: '600', color: '#222831' }}>Register</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                  <Text style={{ marginTop: 20, color: '#ededed' }}>Already have an Account?</Text>
-                </TouchableOpacity>
+
+
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 30}}>
+                  <Text style={{ color: '#222831', fontWeight: '500' }}>Already have an Account?</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                    <Text style={{ paddingLeft: 5, fontSize: 16, fontWeight: '600', color: '#00ADB5'}}>Sign In</Text>
+                  </TouchableOpacity>
+                </View>
+                
               </View>
-              </SafeAreaView>
             </View>
           </View>
-      </KeyboardAvoidingView>
+          </View>
     </ImageBackground>
   );
 };
@@ -163,49 +180,54 @@ const styles = StyleSheet.create({
     height: screenHeight,
     width: screenWidth
   },
-  imgRoot: {
-    borderWidth: 2,
-    borderColor: '#ddd',
-    height: 200,
-    width: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 30,
-    borderRadius: '10%',
-    backgroundColor: '#fff',
-},
   container: {
-    width: '100%',
-    height: '125%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
-    padding: 20,
-    bottom: screenHeight/10
+    height: '100%',
+  },
+  title: {
+    fontWeight: '600',
+    fontSize: 30,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    alignSelf: 'flex-start',
+  },
+  title2: {
+    fontWeight: '600',
+    fontSize: 25,
+    paddingBottom: 50,
+    paddingLeft: 20,
+    alignSelf: 'flex-start',
   },
   inputContainer: {
-    width: '100%',
-    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: screenWidth,
+  },
+  inputRoot: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#FAF9F6",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: 20,
     elevation: 5,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3
   },
-  inputRoot: {
+  InputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    width: '80%',
   },
   inputStyle: {
     flex: 1,
     paddingVertical: 12,
     fontSize: 16,
+    paddingLeft: 10,
   },
   passwordInputContainer: {
     flex: 1,
@@ -216,32 +238,26 @@ const styles = StyleSheet.create({
   hidePasswordButton: {
     paddingHorizontal: 10,
   },
-  hidePasswordButtonText: {
-    fontSize: 14,
-    color: '#777',
-  },
-  userTypeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    margin: 20,
-  },
-  btnContainer2: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  btnStyles2: {
-    width: '100%',
-    height: 50,
+  btnContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
-    borderRadius: 10,
+    width: '90%',
+    marginTop: 20,
+  },
+  btnStyles: {
+    backgroundColor: '#8BE8E5',
+    padding: 15,
+    width: '100%',
+    paddingHorizontal: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    marginTop: 20,
     elevation: 5,
-
-                shadowColor: 'black',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
 });
 

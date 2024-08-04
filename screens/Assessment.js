@@ -1,75 +1,86 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ImageBackground, Image, ScrollView } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
+const Assessment = ({ setStatus }) => {
+    const navigation = useNavigation();
+    const [buttonPressed, setButtonPressed] = useState(false);
+    const [secondButtonPressed, setSecondButtonPressed] = useState(false);
 
-const Assessment = () => {
-  const navigation = useNavigation();
-  const handlePress = () => {
-    // Define what happens when the button is pressed
-    console.log('Button pressed!');
-    // Add your logic here
-  };
-  const handleCategoryPress = (category) => {
-    // Redirect to the respective JS file based on the selected category
-    switch (category) {
-      case 'guideQuestions':
-        navigation.navigate('AssessmentGuideQuestions');
-        break;
-      case 'selectTopic':
-        navigation.navigate('AssessmentTopic');
-        break;
-      default:
-        break;
+    const handleNavigation = () => {
+      navigation.navigate('AssessmentGuideQuestions');
     }
-  };
 
-  return (
-    <ImageBackground
+    const handleSecondNavigation = () => {
+      setButtonPressed(true);
+      setSecondButtonPressed(true);
+    }
+
+    return (
+
+      <ImageBackground
       style={styles.backgroundImage}
       resizeMode="cover"
-      source={require("../assets/bgMain.png")}
-    >
-        <View style={styles.root}>
-          <View style={styles.container}>
+      source={require("../assets/bgMain.jpg")}
+      >
+      
+        <View style={styles.container}>
+
+                <View>
+                    <ImageBackground
+                        style={{
+                            height: "86%",
+                            width: "100%",
+                            elevation: 5,
+                            shadowColor: 'black',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.5,
+                            shadowRadius: 10,
+                        }}
+                        resizeMode="contain"
+                        source={require("../assets/AssessmentGuide.png")}
+                    />
+                </View>
           <Text style={styles.AssessmentText}>Assessment Guide</Text>
 
-            <View style={styles.categoryButton}>
-            <Text style={styles.text}>Selecting this option will redirect you to our guide questions to know what are you feeling. Is it either Anxiety, Depression, or Stress.</Text>
-              <View style={styles.wrapper}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleCategoryPress('guideQuestions')}>
-                  <Text style={styles.text}>Proceed</Text>
-                </TouchableOpacity>
-              </View>
+            {!buttonPressed && (
+                <>
+                  <Text style={styles.text1}>Sereni will redirect you to a guide questions to identify what are you experiencing. Is it ANXIETY, DEPRESSION, or STRESS.</Text>
+                  <Text style={styles.text2}>After identifying your result, Sereni will redirect you to another assessment, A assessment to identify what level are you experiencing</Text>
+                </>
+            )}
+            <View style={styles.wrapper}>
+                {buttonPressed ? (
+                    <TouchableOpacity
+                        style={styles.startButton}
+                        onPress={() => handleNavigation()}>
+                        <Text style={styles.buttonText}>Get Started</Text>
+                        <AntDesign name="right" size={23} color="#00ADB5" />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity
+                        style={styles.nextButton}
+                        onPress={() => handleSecondNavigation()}
+                        disabled={buttonPressed}>
+                        <Text style={styles.buttonText}>Next</Text>
+                        <AntDesign name="right" size={23} color="#00ADB5" />
+                    </TouchableOpacity>
+                )}
             </View>
-
-            <View style={styles.categoryButton}>
-            <Text style={styles.text}>Selecting this option will redirect you to where you select your own topic </Text>
-              <View style={styles.wrapper}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => handleCategoryPress('selectTopic')}>
-                  <Text style={styles.text}>Proceed</Text>
-                </TouchableOpacity>
+            {secondButtonPressed && (
+              <>
+                <Text style={styles.text3}>DISCLAIMER:</Text>
+                <Text style={styles.text4}>Sereni is a self-assessment tool and is not a substitute for professional advice, diagnosis, or treatment. Always see
+                    your healthcare provider for any health concerns.</Text>
+              </>
+            )}
               </View>
-            </View>
-
-          </View>
-        </View>
-    </ImageBackground>
-  );
+      </ImageBackground>
+    );
 };
 
-export default Assessment;
-
 const styles = StyleSheet.create({
-  root: {
-    height: screenHeight,
-    width: screenWidth,
-  },
   backgroundImage: {
     flex: 1,
     width: '100%',
@@ -78,69 +89,76 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-    paddingBottom: '50%',
-  },
-  AssessmentText: {
-    marginTop: 20,
-    marginBottom: '15%',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 24,
-    wordWrap: 'break-word',
-  },
-  categoryButton: {
+    alignSelf: 'center',
     width: '100%',
-    height: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    padding: 10,
+    height: '100%',
     borderRadius: 10,
-    marginBottom: '10%',
-    elevation: 5,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3
   },
-  categoryButtonText: {
-    fontSize: 24,
-    color: '#FFF',
-    backgroundColor: '#655FF3',
+  AssessmentText: { 
+    position: 'absolute',
+    top: 390,
+    justifyContent: 'center',
+    margin: 20,
+    color: '#222831',
+    fontSize: 34,
+    paddingTop: 10,
+    fontWeight: '700'
   },
   wrapper: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    backgroundColor: '#655FF3',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 12,
+  nextButton: {
+    position: 'relative',
+    top: 10,
+    left: 130,
     borderRadius: 7,
-    width: '100%',
-    minWidth: 260,
+    flexDirection: 'row',
   },
-  text: {
-    color: 'white',
+  startButton: {
+    position: 'relative',
+    top: 10,
+    left: 100,
+    borderRadius: 7,
+    flexDirection: 'row',
+  },
+  buttonText: {
+    color: '#00ADB5',
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: '600',
+    paddingRight: 2
+  },
+  text1: {
+    position: 'absolute',
+    bottom: 160, 
+    color: '#222831',
     fontSize: 18,
-    textAlign: 'center',
+    margin: 20
   },
-  headerContainer: {
-    flex: 1,
-    height: screenHeight,
-    width: screenWidth,
+  text2: {
+    position: 'absolute',
+    bottom: 60, 
+    color: '#222831',
+    fontSize: 18,
+    margin: 20
   },
-  heading: {
-    fontSize: 24,
-    color: '#ededed',
-    textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 50,
-    paddingBottom: 20,
+  text3: {
+    position: 'absolute',
+    bottom: 200, 
+    color: '#222831',
+    fontSize: 20,
+    margin: 20,
+    fontWeight: '600'
+  },
+  text4: {
+    position: 'absolute',
+    bottom: 80, 
+    color: '#222831',
+    fontSize: 18,
+    margin: 20
   },
 });
+
+export default Assessment;

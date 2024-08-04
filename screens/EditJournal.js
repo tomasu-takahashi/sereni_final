@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ref, set, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { db } from '../firebase';
+import { AntDesign } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -39,6 +40,7 @@ const EditJournal = () => {
             })
             .then(() => {
                 navigation.navigate('dashboard');
+                Alert.alert('Saved');
             })
             .catch((error) => {
                 alert(error);
@@ -52,45 +54,52 @@ const EditJournal = () => {
         console.log(noteRefKey);
         try {
             await remove(noteRef);
-            console.log('Note deleted successfully.');
+            Alert.alert('Note Deleted');
             navigation.navigate('dashboard');
         } catch (error) {
             console.error('Error deleting note:', error);
             alert(error.message);
-        }
-        
+        }  
     };
 
     return (
         <ImageBackground
         style={styles.backgroundImage}
         resizeMode="cover"
-        source={require("../assets/bgMain.png")}
+        source={require("../assets/bgMain.jpg")}
         >
+
+        <View style={styles.header}>
+            <TouchableOpacity style={styles.backButtonStyle} onPress={() => navigation.navigate('dashboard')}>
+                <AntDesign name="left" size={21} color="#222831" />
+                <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.saveButtonStyle} onPress={handleUpdate}>
+            <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '600', paddingRight: 5 }}>Save</Text>
+            </TouchableOpacity>
+        </View>
+
         <View style={styles.container}>
-        <View style={styles.heading}></View>
             <TextInput
                 placeholder='Title'
-                placeholderTextColor="#ededed"
+                placeholderTextColor="#B4B4B8"
                 value={title}
+                returnKeyType='done'
                 onChangeText={(text) => setTitle(text)}
                 style={styles.inputTitle}
             />
             <TextInput
                 placeholder='Enter Journal'
-                placeholderTextColor="#ededed"
+                placeholderTextColor="#B4B4B8"
                 value={note}
                 onChangeText={(text) => setNote(text)}
                 style={styles.inputNote}
                 multiline={true}
+                returnKeyType='done'
+                blurOnSubmit={true}
             />
-            <View style={styles.buttonView}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleUpdate}
-                >
-                    <Text style={styles.buttonText}>Update</Text>
-                </TouchableOpacity>
+            
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => handleDelete()}
@@ -98,7 +107,7 @@ const EditJournal = () => {
                     <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        
         </ImageBackground>
     );
 }
@@ -115,70 +124,78 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
+        backgroundColor: '#EEEEEE'
     },
-    heading: {
-        color: '#ededed',
-        textAlign: 'center',
-        padding: 30,
-        paddingBottom: 20,
+    header: {
+        justifyContent: 'flex-start',
+        paddingTop: '20%',
+        paddingLeft: 10,
+        paddingBottom: 10,
+        flexDirection: 'row',
+    },
+    backButtonStyle: {
+        position: 'relative',
+        flexDirection: 'row',
+    },
+    saveButtonStyle: {
+        position: 'relative',
+        left: '65%',
+        flexDirection: 'row',
     },
     inputTitle: {
-        backgroundColor: 'rgba(21, 21, 21, 0.5)',
+        marginTop: 20,
+        paddingLeft: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 32,
+        fontWeight: '600',
+        color: '#222831',
+        backgroundColor: '#FAF9F6',
+        borderRadius: 15,
         margin: 10,
-        shadowColor: '#000',
+        padding: 7,
+        elevation: 5,
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-        shadowRadius: 2,
-        elevation: 5,
+        shadowRadius: 3
+    },
+    inputNote: {
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 20,
-        fontWeight: 'bold',
-        padding: 10,
-        height: 50,
-        borderRadius: 10,
-        color: '#ededed'
+        marginTop: 10,
+        paddingLeft: 20,
+        height: 510,
+        color: '#222831',
+        backgroundColor: '#FAF9F6',
+        borderRadius: 15,
+        margin: 10,
+        paddingTop: 15,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
     },
-    inputNote: {
-        backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 5,
-    fontSize: 18,
-    margin: 10,
-    padding: 10,
-    paddingTop: 10,
-    height: 570,
-    borderRadius: 10,
-    color: '#ededed',
-    },
-    buttonView: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
+    
     button: {
-        backgroundColor: '#655FF3',
-        paddingTop: 20,
-        paddingBottom: 20,
-        padding: 50,
-        margin: 20,
+        backgroundColor: '#8BE8E5',
+        padding: 15,
+        margin: 15,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
         marginTop: 10,
         elevation: 5,
-            shadowColor: 'black',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.3,
-            shadowRadius: 3
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
     },
     buttonText: {
-        color: '#ededed',
+        color: '#222831',
         fontSize: 18,
+        fontWeight: '600',
     }
 })

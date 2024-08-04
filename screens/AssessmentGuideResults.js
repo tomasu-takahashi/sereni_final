@@ -1,91 +1,60 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 const AssessmentGuideResults = ({ route, navigation }) => {
     const [selectedButton, setSelectedButton] = useState({});
     const { result } = route.params;
     console.log(result);
     
-    const topicAssessment = () => {
+    const topicAssessment = (imageSource) => {
       console.log('REDIRECTTT',result);
       switch (result) {
         case 'Anxiety':
-          navigation.navigate('AssessmentAnxiety');
+          navigation.navigate('AssessmentAnxiety', { imageSource: require('../assets/anxiety.png') });
           break;
         case 'Depression':
-          navigation.navigate('AssessmentDepression');
+          navigation.navigate('AssessmentDepression', { imageSource: require('../assets/depression.png') });
           break;
         case 'Stress':
-          navigation.navigate('AssessmentStress');
+          navigation.navigate('AssessmentStress', { imageSource: require('../assets/stress.png') });
           break;
-        default:
-          //no error page
-          navigation.navigate('AssessmentGuideQuestions');
+        case 'Healthy':
+          navigation.navigate('dashboard', { imageSource: require('../assets/healthy.png') });
           break;
       }
     }
-    
-    
-
-  const handleRetakeTest = () => {
-    // Reset the selectedButton state to an empty object
-    setSelectedButton({});
-    // Navigate back to the assessment screen
-    navigation.navigate('AssessmentGuideQuestions');
-  };
-
-  const handleClose = () => {
-    // Navigate to the home screen
-    navigation.navigate('dashboard');
-  };
-
-//   const handleShowActivities = () => {
-//     // Toggle the showActivities state to show/hide the activities
-//     setShowActivities(!showActivities);
-//   };
-
-//   const handleShowVerse = () => {
-//     // Toggle the showVerse state to show/hide the bible verse
-//     setShowVerse(!showVerse);
-//   };
-
 
   return (
-    <ImageBackground source={require('../assets/bgMain.png')} style={styles.backgroundImage}>
-      <Text style={styles.title}>Your Assessment Result</Text>
+    <ImageBackground source={require('../assets/bgMain.jpg')} style={styles.backgroundImage}>
       <View style={styles.container}>
+        
+        {result === 'Anxiety' && <Image source={require('../assets/anxiety.png')} style={styles.resultImage} />}
+        {result === 'Depression' && <Image source={require('../assets/depression.png')} style={styles.resultImage} />}
+        {result === 'Stress' && <Image source={require('../assets/stress.png')} style={styles.resultImage} />}
+        {result === 'Healthy' && <Image source={require('../assets/healthy.png')} style={styles.healthyResultImage} />}
+
+        <Text style={result === 'Healthy' ? {...styles.title, display: 'flex'} : styles.title}>
+          {result === 'Healthy' ? 'You are' : 'You are experiencing'}
+        </Text>
+
         <View style={styles.resultContainer}>
           <Text style={styles.resultText}>{result}</Text>
         </View>
-        {/* <ScrollView contentContainerStyle={styles.messageContainer}>
-          <Text style={styles.messageText}>{message}</Text>
-        {showVerse && (
-          <View contentContainerStyle={styles.verseContainer}>
-            <Text style={styles.messageText}>{bibleVerse}</Text>
-          </View>
-        )}
-        </ScrollView>
-        <TouchableOpacity style={styles.showButton} onPress={handleShowActivities}>
-          <Text style={styles.buttonText}>
-          {showActivities ? 'Show Results' : 'Show Recommended Activities'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.showButton} onPress={handleShowVerse}>
-          <Text style={styles.buttonText}>
-            {showVerse ? 'Hide Bible Verse' : 'Show Bible Verse'}
-          </Text>
-        </TouchableOpacity> */}
+
       </View>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={topicAssessment}>
-          <Text style={styles.buttonText}>PROCEED ANXIETY TEST</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleRetakeTest}>
-          <Text style={styles.buttonText}>Take Test Again</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.exitButton} onPress={handleClose}>
-          <Text style={styles.buttonText}>Exit</Text>
-        </TouchableOpacity>
+        {result === 'Healthy' ? (
+          <TouchableOpacity style={styles.exitButton} onPress={() => navigation.navigate('dashboard')}>
+            <Text style={styles.buttonText}>Exit</Text>
+            <AntDesign name="right" size={23} color="#00ADB5" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.button} onPress={topicAssessment}>
+            <Text style={styles.buttonText}>Proceed to Next Test</Text>
+            <AntDesign name="right" size={23} color="#00ADB5" />
+          </TouchableOpacity>
+        )}
       </View>
     </ImageBackground>
   );
@@ -106,108 +75,74 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 24,
-    color: '#ededed',
-    textAlign: 'center',
-    backgroundColor: '#2C2B56',
-    padding: 50,
-    paddingBottom: 20,
+    fontSize: 28,
+    color: '#222831',
+    textAlign: 'flex-start',
+    paddingTop: 20,
+    color: '#222831',
+    marginLeft: 20
   },
   resultContainer: {
     justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 15,
-    elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    alignItems: 'flex-start',
   },
   resultText: {
-    fontSize: 26,
-    color: '#ededed',
-    textAlign: 'center'
+    fontSize: 45,
+    color: '#222831',
+    textAlign: 'center',
+    fontWeight: '500',
+    marginLeft: 20
   },
-  verseContainer: {
-    justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    padding: 10,
-    borderRadius: 10,
+  healthyResultImage: {
+    alignSelf: 'center',
+    position: 'relative',
+    top: 40,
+    width: 380,
+    height: 500,
+    resizeMode: 'contain',
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
-  messageContainer: {
-    justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 15,
+  resultImage: {
+    alignSelf: 'center',
+    position: 'relative',
+    top: 40,
+    width: 500,
+    height: 500,
+    resizeMode: 'contain',
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
-  },
-  messageText: {
-    color: '#ededed',
-    fontSize: 18,
-  },
-  bibleVerseContainer: {
-    justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 15,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   buttonContainer: {
-    padding: 10,
-    paddingBottom: 20
-  },
-  button: {
-    backgroundColor: '#655FF3',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    margin: 10,
-    elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
-  },
-  showButton: {
-    backgroundColor: '#C1A9CF',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    margin: 10,
-    elevation: 5,
-
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   exitButton: {
-    backgroundColor: '#444382',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    margin: 10,
-    elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    position: 'relative',
+    top: 120,
+    left: 130,
+    borderRadius: 7,
+    flexDirection: 'row',
+  },
+  button: {
+    position: 'relative',
+    top: 120,
+    left: 55,
+    borderRadius: 7,
+    flexDirection: 'row',
   },
   buttonText: {
-    color: 'white',
-    fontSize: 18,
+    color: '#00ADB5',
+    fontSize: 20,
     textAlign: 'center',
+    fontWeight: '600',
+    paddingRight: 2
   },
 });

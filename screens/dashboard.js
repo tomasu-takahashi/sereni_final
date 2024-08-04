@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from "../firebase";
-import BottomSheet from './BottomSheet';
+import Logout from './Logout';
+import { FontAwesome } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -23,37 +24,101 @@ const dashboard = ({ fullname }) => {
   };
 
   return (
-    // <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.png")}>
+    <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.jpg")}>
       <View style={styles.root}>
         <View style={styles.container}>
-          <View style={styles.BibleVerseContainer}>
+
+          <View style={styles.titleContainer}>
+          <Text style={styles.title}>Hello, User!</Text>
+          
+          <TouchableOpacity onPress={() => setStatus(true)}>
+            <FontAwesome 
+              name="sign-out" 
+              size={30} 
+              color='rgba(115, 169, 173, 1)'
+              style={{
+                bottom: 6,
+                left: '93%',
+                position: 'absolute',
+                
+              }}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.bibleContainer} onPress={handleNavigateToResult}>
+          
+          <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "100%",
+                  width: "80%",
+                  left: '50%',
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/bibleVerseIcon.png")}
+            />
+          </SafeAreaView>
+
             <Text style={styles.BibleVerseText1}>Search Your</Text>
             <Text style={styles.BibleVerseText2}>Bible Verse</Text>
-              <TouchableOpacity style={styles.button} onPress={() => setStatus(true)}>
-                <Text style={styles.buttonText}>Search</Text>
-              </TouchableOpacity>
-              
-          </View>
-
-          <View style={styles.TakeSurveyContainer}>
-            <Text style={styles.TakeSurveyText}>How are you feeling recently?</Text>
-            <Text style={styles.TakeSurveyText}>Do you want to take a test?</Text>
-            <TouchableOpacity style={styles.TakeSurveyButton} onPress={handleNavigateToTabAssessment}>
-              <Text style={styles.buttonText}>Take Test</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.myJournalContainer}>
-            <Text style={styles.myJournalText}>Do you want to create your Journal?</Text>
-            <TouchableOpacity style={styles.myJournalButton} onPress={handleNavigateToTabJournal}>
-              <Text style={styles.buttonText}>My Journal</Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
+            
           </View>
           
+          <TouchableOpacity style={styles.TakeSurveyContainer} onPress={handleNavigateToTabAssessment}>
+          <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "100%",
+                  width: "60%",
+                  left: 5,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/assessmentIcon.png")}
+            />
+          </SafeAreaView>
+          <Text style={styles.SurveyText}>Assessment</Text>
+            <Text style={styles.TakeSurveyText}>How are you feeling recently?</Text>
+            <Text style={styles.TakeSurveyText2}>Take Assessment?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.myJournalContainer} onPress={handleNavigateToTabJournal}>
+          <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "100%",
+                  width: "70%",
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/journalIcon.png")}
+            />
+          </SafeAreaView>
+            
+          <Text style={styles.myJournalTitleText}>Journal</Text>
+            <Text style={styles.myJournalText}>Note how you feel?</Text>
+            <Text style={styles.myJournalText2}>Create your Journal?</Text>
+          </TouchableOpacity>
+          
+        {status && <Logout setStatus={setStatus}/>}
         </View>
-        {status && <BottomSheet setStatus={setStatus}/>}
       </View>
-    // </ImageBackground>
+     </ImageBackground>
   );
 };
 
@@ -63,7 +128,6 @@ const styles = StyleSheet.create({
   root: {
     height: screenHeight,
     width: screenWidth,
-    backgroundColor: '#FFFFFF',
   },
   backgroundImage: {
     flex: 1,
@@ -76,15 +140,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   BibleVerseText1: {
-    color: '#ededed',
+    position: 'absolute',
+    top: '10%',
+    right: '68%',
+    color: '#222831',
     fontSize: 20,
-    paddingTop: 27,
-    paddingRight: 190,
+    paddingTop: 12,
   },
   BibleVerseText2: {
-    color: '#ededed',
+    position: 'absolute',
+    top: '40%',
+    right: '46%',
+    color: '#222831',
     fontSize: 36,
-    paddingRight: 130,
+    fontWeight: '500',
+  },
+  title: {
+    color: '#222831',
+    fontSize: 36,
+    fontWeight: '600',
+    paddingTop: 50
   },
   searchContainer: {
     borderRadius: 8,
@@ -99,7 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3E3E3',
   },
   button: {
-    backgroundColor: '#90C8AC',
+    backgroundColor: '#8BE8E5',
     padding: 15,
     width: '100%',
     paddingHorizontal: 120,
@@ -114,15 +189,31 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   buttonText: {
-    color: '#ededed',
+    color: '#222831',
     fontSize: 18,
+    fontWeight: '600',
   },
-  BibleVerseContainer: {
+  bibleContainer: {
+    width: '103%',
+    height: '55%',
+    position: 'relative',
+    alignSelf: 'center',
+    marginTop: 20,
+    backgroundColor: '#C7F6FF',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  titleContainer: {
     width: '100%',
-    height: '24%',
-    alignItems: 'center',
-    backgroundColor: 'rgba(115, 169, 173, 0.5)',
-    borderRadius: 25,
+    height: '35%',
+    alignSelf: 'center',
+    backgroundColor: '#FAF9F6',
+    borderRadius: 15,
     padding: 20,
     elevation: 5,
     shadowColor: 'black',
@@ -131,44 +222,52 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   TakeSurveyContainer: {
-    alignItems: 'center',
-    marginTop: 15,
-    backgroundColor: 'rgba(103, 95, 243, 0.2)',
+    position: 'relative',
+    width: '95%',
+    height: '24%',
+    alignSelf: 'center',
+    marginTop: 22,
+    backgroundColor: '#B9EDDD',
     borderRadius: 10,
-    padding: 20,
     elevation: 5,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
+  },
+  SurveyText: {
+    position: 'absolute',
+    top: '5%',
+    left: '41%',
+    color: '#222831',
+    fontSize: 36,
+    fontWeight: '600',
+    paddingTop: 10
   },
   TakeSurveyText: {
-    color: '#ededed',
-    fontSize: 18,
-    marginBottom: 5,
+    color: '#222831',
+    position: 'absolute',
+    top: '35%',
+    left: '37%',
+    fontSize: 16,
+    marginBottom: 2,
   },
-  TakeSurveyButton: {
-    backgroundColor: '#655FF3',
-    padding: 15,
-    width: '100%',
-    paddingHorizontal: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-    marginTop: 10,
-    elevation: 5,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+  TakeSurveyText2: {
+    color: '#222831',
+    position: 'absolute',
+    top: '80%',
+    left: '54%',
+    fontSize: 18,
+    fontWeight: '500',
   },
   myJournalContainer: {
+    position: 'relative',
     width: '95%',
-    alignItems: 'center',
-    marginTop: 15,
-    backgroundColor: 'rgba(103, 95, 243, 0.5)',
+    height: '24%',
+    alignSelf: 'center',
+    marginTop: 22,
+    backgroundColor: '#FFEEBB',
     borderRadius: 10,
-    padding: 20,
     elevation: 5,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
@@ -176,12 +275,32 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   myJournalText: {
-    color: '#ededed',
+    color: '#222831',
+    position: 'absolute',
+    top: '35%',
+    left: '57%',
+    fontSize: 16,
+    marginBottom: 2,
+  },
+  myJournalText2: {
+    color: '#222831',
+    position: 'absolute',
+    top: '80%',
+    left: '48%',
     fontSize: 18,
-    marginBottom: 5,
+    fontWeight: '500',
+  },
+  myJournalTitleText: {
+    position: 'absolute',
+    top: '5%',
+    left: '62%',
+    color: '#222831',
+    fontSize: 36,
+    fontWeight: '600',
+    paddingTop: 10
   },
   myJournalButton: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#8BE8E5',
     padding: 15,
     width: '100%',
     paddingHorizontal: 100,
@@ -213,10 +332,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 3
-  },
-  btnText: {
-    color: "white",
-    fontSize: 18,
   },
   verseItem: {
     marginBottom: 10,

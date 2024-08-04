@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, ImageBackground } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 const AssessmentGuideQuestions = ({ navigation }) => {
   const [selectedButton, setSelectedButton] = useState({});
@@ -44,15 +45,17 @@ const AssessmentGuideQuestions = ({ navigation }) => {
       });
     });
 
-    let result = '';
     let highestScore = Math.max(anxietyScore, depressionScore, stressScore);
+    let result = '';
     console.log('HIGHESTTT',highestScore)
-    if (highestScore === anxietyScore) {
-      result = 'Anxiety';
+    if (highestScore === 0) {
+      result = 'Healthy';
     } else if (highestScore === depressionScore) {
       result = 'Depression';
     } else if (highestScore === stressScore) {
       result = 'Stress';
+    } else if (highestScore === anxietyScore) {
+      result = 'Anxiety';
     }
     console.log(result);
   
@@ -97,8 +100,14 @@ const AssessmentGuideQuestions = ({ navigation }) => {
   ];
 
   return (
-    <ImageBackground source={require('../assets/bgMain.png')} style={styles.backgroundImage}>
-      <Text style={styles.title}>Guide Questions</Text>
+    <ImageBackground source={require('../assets/bgMain.jpg')} style={styles.backgroundImage}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButtonStyle} onPress={() => navigation.navigate('dashboard')}>
+            <AntDesign name="left" size={21} color="#222831" />
+            <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView contentContainerStyle={styles.container}>
         {questionText.map((questionArray, topicIndex) => (
           <View key={topicIndex} style={styles.topicContainer}>
@@ -147,67 +156,88 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  header: {
+    justifyContent: 'flex-start',
+    paddingTop: '20%',
+    paddingLeft: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+  },
+  backButtonStyle: {
+    position: 'relative',
+    flexDirection: 'row',
+  },
   title: {
     fontSize: 24,
-    color: '#ededed',
+    color: '#222831',
     textAlign: 'center',
-    backgroundColor: '#2C2B56',
+    backgroundColor: '#EEEEEE',
     padding: 50,
-    paddingBottom: 20,
+    paddingBottom: 10,
+    fontWeight: '500'
   },
   questionContainer: {
     justifyContent: 'center',
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
+    backgroundColor: '#CDF0EA',
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   question: {
     fontSize: 18,
     marginBottom: 10,
-    color: '#ededed',
+    color: '#222831',
+    fontWeight: '500'
   },
   buttonContainer: {
     justifyContent: 'center',
     flexDirection: 'column',
   },
   answerButton: {
-    backgroundColor: '#444382',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    backgroundColor: '#FAF9F6',
+    borderColor: '#8BE8E5',
+    borderWidth: 2,
+    padding: 10,
     borderRadius: 10,
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   selectedAnswerButton: {
-    backgroundColor: '#655FF3', // Change the color of the selected button
+    backgroundColor: '#8BE8E5', // Change the color of the selected button
   },
   answerText: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#ededed',
+    color: '#222831',
+    fontWeight: '600'
   },
   submitButton: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#8BE8E5',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 15,
     marginTop: 10,
     marginBottom: 20,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   submitButtonText: {
-    color: '#fff',
+    color: '#222831',
     fontSize: 18,
-    textAlign:'center'
+    textAlign:'center',
+    fontWeight: '600'
   },
 });

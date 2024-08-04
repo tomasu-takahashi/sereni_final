@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, TextInput, ImageBackground, Alert } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, TextInput, ImageBackground, Alert, ActivityIndicator, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { EvilIcons, AntDesign } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -11,16 +12,17 @@ const bibleVerse = () => {
   const bibleVersionID = '55212e3cf5d04d49-01';
   const [results, setResults] = useState([]);
   const [search, setSearch] = useState('');
-  const [showLoad, setShowLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getResults = async () => {
     if (!search) {
-      Alert.alert('No Input');
+      Alert.alert('Enter a Text');
       return;
     }
+
     setResults([]);
+    setLoading(true);
     console.log('fetching data...');
-    setShowLoad(true);
     const response = await fetch(
       `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/search?query=${search}`,
       {
@@ -31,31 +33,36 @@ const bibleVerse = () => {
     );
 
     if (response.status === 200) {
-      setShowLoad(false);
+      setLoading(false);
       const data = await response.json();
       const verses = data.data.verses;
       console.log(verses);
       setResults(verses);
     }
   };
-
+  
   const renderedItems = results.map((verse, index) => (
     <View style={styles.verseItem} key={index}>
       <View style={styles.verseContent}>
-        <Text style={[styles.bold, styles.colorPrimary, { fontSize: 18, color: '#ededed' }]}>{verse.reference}</Text>
-        <Text style={{ fontSize: 16, color: '#ededed' }}>{verse.text}</Text>
+        <Text style={[styles.bold, styles.colorPrimary, { fontSize: 18, color: '#222831', fontWeight:'700', paddingBottom: 5 }]}>{verse.reference}</Text>
+        <Text style={{ fontSize: 16, color: '#222831', fontWeight: '500' }}>{verse.text}</Text>
       </View>
     </View>
   ));
 
   return (
-    <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.png")}>
+    <ImageBackground style={styles.backgroundImage} resizeMode="cover" source={require("../assets/bgMain.jpg")}>
       <View style={styles.root}>
+      <View style={styles.topHeader}>
+            <TouchableOpacity style={styles.backButtonStyle} onPress={() => navigation.navigate('dashboard')}>
+                <AntDesign name="left" size={21} color="#222831" />
+                <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
+            </TouchableOpacity>
+      </View>
+
           <View style={styles.BibleVerseContainer}>
-          <View style={styles.header}>
-            <Text style={styles.heading}>Bible Verse</Text>
-          </View>
             <View style={styles.searchContainer}>
+            <EvilIcons name="search" size={24} color="black" />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search"
@@ -65,9 +72,14 @@ const bibleVerse = () => {
               />
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={getResults}>
+            <TouchableOpacity style={styles.button} onPress={() => {
+              Keyboard.dismiss();
+              getResults();
+            }}>
               <Text style={styles.buttonText}>Search</Text>
             </TouchableOpacity>
+
+            {loading && <ActivityIndicator size="small" color="#000" style={styles.loading}/>}
 
             <ScrollView style={styles.renderedItemsContainer}>{renderedItems}</ScrollView>
           </View>
@@ -89,32 +101,40 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  header: {
-    alignItems: 'center',
-    marginTop: 20,
-    margin: 10
+  topHeader: {
+    justifyContent: 'flex-start',
+    paddingTop: '20%',
+    paddingLeft: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
   },
-  heading: {
-    fontSize: 24,
-    color: '#ededed',
-    marginLeft: 10,
+  backButtonStyle: {
+    position: 'relative',
+    flexDirection: 'row',
   },
   searchContainer: {
     borderRadius: 8,
     padding: 15,
     width: '100%',
-    backgroundColor: '#E3E3E3',
+    backgroundColor: '#FAF9F6',
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   searchInput: {
-    width: '100%',
+    width: '94%',
     borderRadius: 15,
-    backgroundColor: '#E3E3E3',
+    paddingLeft: 5,
+    backgroundColor: '#FAF9F6',
   },
   button: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#8BE8E5',
     padding: 10,
     width: '100%',
-    paddingHorizontal: 120,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
@@ -126,15 +146,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   buttonText: {
-    color: '#ededed',
+    color: '#222831',
     fontSize: 18,
+    fontWeight: '600'
   },
   BibleVerseContainer: {
     height: '100%',
     width: '100%',
     alignItems: 'center',
     borderRadius: 10,
-    padding: 20,
+    padding: 10,
     elevation: 5,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
@@ -143,8 +164,8 @@ const styles = StyleSheet.create({
   },
   verseItem: {
     marginBottom: 10,
-    padding: 20,
-    backgroundColor: 'rgb(27, 26, 69)',
+    padding: 10,
+    backgroundColor: '#CDF0EA',
     borderRadius: 10,
   },
   verseContent: {
@@ -153,5 +174,13 @@ const styles = StyleSheet.create({
   renderedItemsContainer: {
     flex: 1,
     marginTop: 10,
+    marginBottom: 140,
   },
+  loading: {
+    position: 'absolute',
+    justifyContent: 'center',
+    height: '110%',
+    width: screenWidth,
+    paddingBottom: "100%"
+  }
 });

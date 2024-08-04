@@ -4,6 +4,7 @@ import { db } from '../firebase'; // Import the database object from Firebase.js
 import { ref, push, set } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native'
 import { getAuth } from "firebase/auth";
+import { AntDesign } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -54,28 +55,39 @@ const AddJournal = () => {
     <ImageBackground
         style={styles.backgroundImage}
         resizeMode="cover"
-        source={require("../assets/bgMain.png")}
+        source={require("../assets/bgMain.jpg")}
         >
+
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButtonStyle} onPress={() => navigation.navigate('dashboard')}>
+            <AntDesign name="left" size={21} color="#222831" />
+            <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.saveButtonStyle} onPress={handleAdd}>
+          <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '600', paddingRight: 5 }}>Save</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.container}>
-      <View style={styles.heading}></View>
       <TextInput
         style={styles.inputTitle}
         placeholder="Title"
-        placeholderTextColor="#ededed"
+        placeholderTextColor="#B4B4B8"
         value={title}
+        returnKeyType='done'
         onChangeText={(Text) => setTitle(Text)}
       />
       <TextInput
         style={styles.inputNote}
         placeholder="Enter Journal"
-        placeholderTextColor="#ededed"
+        placeholderTextColor="#B4B4B8"
         value={note}
         onChangeText={(Text) => setNote(Text)}
         multiline={true}
+        returnKeyType='done'
+        blurOnSubmit={true}
       />
-      <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
-        <Text style={styles.buttonText}>Add</Text>
-      </TouchableOpacity>
     </View>
     </ImageBackground>
   );
@@ -86,54 +98,67 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+    backgroundColor: '#EEEEEE'
+  },
+  header: {
+    justifyContent: 'flex-start',
+    paddingTop: '20%',
+    paddingLeft: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+  },
+  backButtonStyle: {
+    position: 'relative',
+    flexDirection: 'row',
+  },
+  saveButtonStyle: {
+    position: 'relative',
+    left: '65%',
+    flexDirection: 'row',
   },
   container: {
     flex: 1,
     height: screenHeight,
     width: screenWidth,
   },
-  heading: {
-    color: '#ededed',
-    textAlign: 'center',
-    padding: 30,
-    paddingBottom: 20,
-  },
   inputTitle: {
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    margin: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 5,
+    marginTop: 20,
+    paddingLeft: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 32,
+    fontWeight: '600',
+    color: '#222831',
+    backgroundColor: '#FAF9F6',
+        borderRadius: 15,
+        margin: 10,
+        padding: 7,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
+  },
+  inputNote: {
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 20,
-    fontWeight: 'bold',
-    padding: 10,
-    height: 50,
-    borderRadius: 10,
-    color: '#ededed',
-},
-inputNote: {
-    backgroundColor: 'rgba(21, 21, 21, 0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 5,
-    fontSize: 18,
-    margin: 10,
-    padding: 10,
-    paddingTop: 10,
-    height: 570,
-    borderRadius: 10,
-    color: '#ededed',
+    marginTop: 10,
+    paddingLeft: 20,
+    height: 550,
+    color: '#222831',
+    backgroundColor: '#FAF9F6',
+        borderRadius: 15,
+        margin: 10,
+        padding: 7,
+        elevation: 5,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3
 },
   addButton: {
-    backgroundColor: '#655FF3',
+    backgroundColor: '#8BE8E5',
     padding: 15,
     margin: 20,
     justifyContent: 'center',
@@ -147,8 +172,9 @@ inputNote: {
           shadowRadius: 3
   },
   buttonText: {
-    color: '#ededed',
+    color: '#222831',
     fontSize: 18,
+    fontWeight: '600'
   },
 });
 
