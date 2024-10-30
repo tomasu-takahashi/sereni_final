@@ -4,13 +4,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './screens/Login';
-import Logout from './screens/Logout';
+import LogOut from './screens/LogOut';
 import Register from './screens/Register';
 import dashboard from './screens/dashboard';
 import Assessment from './screens/Assessment';
 import MyJournal from './screens/MyJournal';
+import recycleBin from './screens/recycleBin';
 import AddJournal from './screens/AddJournal';
 import EditJournal from './screens/EditJournal';
+import professionalInformation from './screens/professionalInformation';
+import AssessmentGuide from './screens/AssessmentGuide';
+import AssessmentHistory from './screens/AssessmentHistory';
 import AssessmentAnxiety from './screens/AssessmentAnxiety';
 import AssessmentDepression from './screens/AssessmentDepression';
 import AssessmentStress from './screens/AssessmentStress';
@@ -28,7 +32,8 @@ import React, { useEffect } from 'react';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+const App = () => {
+
   useEffect(()=> {
     LogBox.ignoreAllLogs();
   }, [])    
@@ -37,11 +42,14 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Logout' component={Logout} />
+        <Stack.Screen name='LogOut' component={LogOut} />
         <Stack.Screen name='forgotPassword' component={forgotPassword} />
         <Stack.Screen name='Register' component={Register} />
         <Stack.Screen name='dashboard' component={BottomTab} />
+        <Stack.Screen name='professionalInformation' component={professionalInformation} />
         <Stack.Screen name='Assessment' component={Assessment} />
+        <Stack.Screen name='AssessmentGuide' component={AssessmentGuide} />
+        <Stack.Screen name='AssessmentHistory' component={AssessmentHistory} />
         <Stack.Screen name='AssessmentGuideQuestions' component={AssessmentGuideQuestions} />
         <Stack.Screen name='AssessmentGuideResults' component={AssessmentGuideResults} />
         <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
@@ -53,6 +61,7 @@ export default function App() {
         <Stack.Screen name='MyJournal' component={MyJournal} />
         <Stack.Screen name='AddJournal' component={AddJournal} />
         <Stack.Screen name='EditJournal' component={EditJournal} />
+        <Stack.Screen name='recycleBin' component={recycleBin} />
         <Stack.Screen name='bibleVerse' component={bibleVerse} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -101,3 +110,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;

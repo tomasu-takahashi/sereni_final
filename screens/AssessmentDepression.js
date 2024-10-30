@@ -26,7 +26,7 @@ const AssessmentDepression = ({ navigation }) => {
 
     let result = '';
     if (totalScore >= 0 && totalScore <= 4) {
-      result = 'Normal';
+      result = 'Low';
     } else if (totalScore >= 5 && totalScore <= 6) {
       result = 'Mild';
     } else if (totalScore >= 7 && totalScore <= 10) {

@@ -26,7 +26,7 @@ const AssessmentStress = ({ navigation }) => {
 
     let result = '';
     if (totalScore >= 0 && totalScore <= 7) {
-      result = 'Normal';
+      result = 'Low';
     } else if (totalScore >= 8 && totalScore <= 9) {
       result = 'Mild';
     } else if (totalScore >= 10 && totalScore <= 12) {
@@ -170,10 +170,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
-    height: '50%',
+    height: '40%',
   },
   question: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 10,
     color: '#222831',
     fontWeight: '500'
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   progressBar: {
     alignSelf: 'center',
     width: '90%',
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#8BE8E5',
     borderRadius: 10,
     marginBottom: 20,
   },

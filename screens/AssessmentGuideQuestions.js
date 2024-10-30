@@ -30,10 +30,14 @@ const AssessmentGuideQuestions = ({ navigation }) => {
     let anxietyScore = 0;
     let depressionScore = 0;
     let stressScore = 0;
-
+  
+    let allQuestionsAnswered = true;
   
     Object.entries(selectedButton).forEach(([topicIndex, answers]) => {
       Object.values(answers).forEach((answer, questionIndex) => {
+        if (!answer) {
+          allQuestionsAnswered = false;
+        }
         console.log('topic: ',topicIndex,' score: ',answer);
         if (topicIndex === '0') {
           anxietyScore += answer;
@@ -44,11 +48,16 @@ const AssessmentGuideQuestions = ({ navigation }) => {
         }
       });
     });
-
+  
+    if (allQuestionsAnswered) {
+      Alert.alert('Please answer all questions before submitting.');
+      return;
+    }
+  
     let highestScore = Math.max(anxietyScore, depressionScore, stressScore);
     let result = '';
     console.log('HIGHESTTT',highestScore)
-    if (highestScore === 0) {
+    if (anxietyScore === 0 && depressionScore === 0 && stressScore === 0) {
       result = 'Healthy';
     } else if (highestScore === depressionScore) {
       result = 'Depression';
@@ -109,12 +118,12 @@ const AssessmentGuideQuestions = ({ navigation }) => {
       </View>
 
       <ScrollView contentContainerStyle={styles.container}>
-        {questionText.map((questionArray, topicIndex) => (
-          <View key={topicIndex} style={styles.topicContainer}>
-            {questionArray.map((question, questionIndex) => (
-              <View key={questionIndex} style={styles.questionContainer}>
-                <Text style={styles.question}>{question}</Text>
-                <View style={styles.buttonContainer}>
+      {questionText.map((questionArray, topicIndex) => (
+      <View key={topicIndex} style={styles.topicContainer}>
+        {questionArray.map((question, questionIndex) => (
+          <View key={questionIndex} style={styles.questionContainer}>
+            <Text style={styles.question}>{topicIndex * questionArray.length + questionIndex + 1}. {question}</Text>
+            <View style={styles.buttonContainer}>
                   {[
                     { label: 'Not true', value: 0 },
                     { label: 'A little true', value: 1 },

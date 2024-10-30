@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { ref, set, remove } from "firebase/database";
+import { ref, set, remove, get } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { db } from '../firebase';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
+
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -15,6 +16,7 @@ const EditJournal = () => {
     const [title, setTitle] = useState(route.params.item.title);
     const [noteRefKey, setNoteRefKey] = useState(route.params.item.noteRefKey);
     const [userId, setUserId] = useState('');
+    const [lastEdit, setLastEdit] = useState(route.params.item.lastEdit);
     const auth = getAuth();
         const user = auth.currentUser;
         const uid = user.uid;
@@ -39,6 +41,9 @@ const EditJournal = () => {
                 lastEdit: currentTime,
             })
             .then(() => {
+                // Update the note's lastEdit time in the local state
+                setLastEdit(currentTime);
+
                 navigation.navigate('dashboard');
                 Alert.alert('Saved');
             })
@@ -49,17 +54,46 @@ const EditJournal = () => {
     };
     
     const handleDelete = async () => {
-        const noteRef = ref(db, 'notes/' + uid + '/' + noteRefKey);
+        Alert.alert(
+            'Are you sure you want to delete this note?',
+            '',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    onPress: async () => {
+                        const noteRef = ref(db, 'notes/' + uid + '/' + noteRefKey);
+                        const deletedNoteRef = ref(db, 'deletedNotes/' + uid + '/' + noteRefKey);
+    
+                        try {
+                            // Get the current note data
+                            const noteData = await get(noteRef).then((snapshot) => snapshot.val());
 
-        console.log(noteRefKey);
-        try {
-            await remove(noteRef);
-            Alert.alert('Note Deleted');
-            navigation.navigate('dashboard');
-        } catch (error) {
-            console.error('Error deleting note:', error);
-            alert(error.message);
-        }  
+                            // Delete the note from the original location
+                            await remove(noteRef);
+
+                            // Store the deleted note in the deletedNotes node
+                            await set(deletedNoteRef, {
+                            ...noteData,
+                            deletedAt: new Date().getTime(),
+                            });
+
+                            await remove(noteRef);
+                            Alert.alert('Note Deleted');
+                            navigation.navigate('dashboard');
+                        } catch (error) {
+                            console.error('Error deleting note:', error);
+                            alert(error.message);
+                        }  
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
     };
 
     return (
@@ -75,8 +109,15 @@ const EditJournal = () => {
                 <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => handleDelete()}
+                >
+                    <FontAwesome6 name="trash" size={25} color="#00ADB5" />
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.saveButtonStyle} onPress={handleUpdate}>
-            <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '600', paddingRight: 5 }}>Save</Text>
+            <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '700', right: 23 }}>Save</Text>
             </TouchableOpacity>
         </View>
 
@@ -99,13 +140,7 @@ const EditJournal = () => {
                 returnKeyType='done'
                 blurOnSubmit={true}
             />
-            
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => handleDelete()}
-                >
-                    <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
+            <Text style={{ fontSize: 15, color: '#222831', fontWeight: '600', left: 13 }}>Last Edited: {new Date(lastEdit).toLocaleString()}</Text>
             </View>
         
         </ImageBackground>
@@ -143,7 +178,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     inputTitle: {
-        marginTop: 20,
+        marginTop: 5,
         paddingLeft: 20,
         alignItems: 'center',
         justifyContent: 'center',
@@ -164,9 +199,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 20,
-        marginTop: 10,
+        marginTop: 3,
         paddingLeft: 20,
-        height: 510,
+        height: 570,
         color: '#222831',
         backgroundColor: '#FAF9F6',
         borderRadius: 15,
@@ -180,18 +215,10 @@ const styles = StyleSheet.create({
     },
     
     button: {
-        backgroundColor: '#8BE8E5',
-        padding: 15,
-        margin: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 15,
-        marginTop: 10,
-        elevation: 5,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3
+        left: 180,
+        bottom: 4,
     },
     buttonText: {
         color: '#222831',

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, ImageBackground } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
-import Carousel from 'react-native-snap-carousel';
 
 const AssessmentAnxiety = ({ navigation }) => {
   const [selectedButton, setSelectedButton] = useState({});
@@ -27,7 +26,7 @@ const AssessmentAnxiety = ({ navigation }) => {
 
     let result = '';
     if (totalScore >= 0 && totalScore <= 3) {
-      result = 'Normal';
+      result = 'Low';
     } else if (totalScore >= 4 && totalScore <= 5) {
       result = 'Mild';
     } else if (totalScore >= 6 && totalScore <= 7) {
@@ -169,10 +168,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
-    height: '50%',
+    height: '43%',
   },
   question: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 10,
     color: '#222831',
     fontWeight: '500'

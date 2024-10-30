@@ -31,13 +31,15 @@ const AddJournal = () => {
     // Add the journal entry to the database
     const noteRef = ref(db, 'notes/' + uid);
     const noteRefKey = push(noteRef).key;
+    const currentTime = new Date().getTime();
     const newNoteRef = ref(db, 'notes/' + uid +'/'+ noteRefKey);
 
     set(newNoteRef, {
       title,
       note,
       userId,
-      noteRefKey
+      noteRefKey,
+      lastEdit: currentTime,
     })
       .then(() => {
         setTitle('');
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   inputTitle: {
-    marginTop: 20,
+    marginTop: 5,
     paddingLeft: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -130,32 +132,32 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#222831',
     backgroundColor: '#FAF9F6',
-        borderRadius: 15,
-        margin: 10,
-        padding: 7,
-        elevation: 5,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3
+    borderRadius: 15,
+    margin: 10,
+    padding: 7,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   inputNote: {
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 20,
-    marginTop: 10,
+    marginTop: 3,
     paddingLeft: 20,
-    height: 550,
+    height: 570,
     color: '#222831',
     backgroundColor: '#FAF9F6',
-        borderRadius: 15,
-        margin: 10,
-        padding: 7,
-        elevation: 5,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 3
+    borderRadius: 15,
+    margin: 10,
+    paddingTop: 15,
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
 },
   addButton: {
     backgroundColor: '#8BE8E5',
@@ -166,10 +168,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 10,
     elevation: 5,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3
   },
   buttonText: {
     color: '#222831',

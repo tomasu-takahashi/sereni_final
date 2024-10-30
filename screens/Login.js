@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: '170%',
+        height: '160%',
         width: '100%',
         bottom: screenHeight
     },
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '90%',
-        marginTop: 20,
+        top: 50,
     },
     hidePasswordButton: {
         paddingHorizontal: 10,

@@ -6,7 +6,7 @@ import { FlashList } from '@shopify/flash-list';
 import { ref, onValue } from 'firebase/database';
 import { auth } from 'firebase/auth';
 import { getAuth } from "firebase/auth";
-import { EvilIcons, AntDesign } from '@expo/vector-icons';
+import { EvilIcons, AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
@@ -61,11 +61,33 @@ const MyJournal = () => {
     });
   }, [counter]);
 
-  const updateNote = (note) => {
-    const notesRef = ref(db, 'notes/' + uid + '/' + note.noteRefKey);
-    update(notesRef, {
-      lastEdit: new Date().getTime(),
-    });
+  const handleUpdate = () => {
+    if (title && note.length > 0) {
+      const currentTime = new Date().getTime();
+      set(ref(db, 'notes/' + uid + '/' + noteRefKey), {
+        title,
+        note,
+        uid,
+        noteRefKey,
+        lastEdit: currentTime,
+      })
+      .then(() => {
+        // Update the note's lastEdit time in the local state
+        const updatedNotes = notes.map(n => {
+          if (n.noteRefKey === noteRefKey) {
+            return { ...n, lastEdit: currentTime };
+          }
+          return n;
+        });
+        setNotes(updatedNotes);
+  
+        navigation.navigate('dashboard');
+        Alert.alert('Saved');
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    }
   };
 
   const filteredNotes = notes.filter(note =>
@@ -79,8 +101,14 @@ const MyJournal = () => {
       resizeMode="cover"
       source={require("../assets/bgMain.jpg")}
     >
-      <View style={styles.container}>
+      
+      <View style={styles.header}>
         <Text style={styles.title}>My Journal</Text>
+        <TouchableOpacity style={styles.Button2} onPress={() => navigation.navigate('recycleBin')}>
+        <FontAwesome6 name="trash" size={25} color="#00ADB5" />
+        </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
         <View style={styles.searchContainer}>
             <EvilIcons name="search" size={24} color="black" />
               <TextInput
@@ -91,7 +119,11 @@ const MyJournal = () => {
               />
             </View>
         {filteredNotes.length === 0 ? (
-          <Text style={styles.noEntryText}>No Journal Entry</Text>
+          <View>
+            <Text style={styles.noEntryText}>No Journal Entry</Text>
+            <Text style={styles.noEntryText2}>Press + button to create new Journal</Text>
+          </View>
+          
         ) : (
           <FlashList
             data={filteredNotes.sort((a, b) => new Date(b.lastEdit) - new Date(a.lastEdit))}
@@ -113,6 +145,7 @@ const MyJournal = () => {
       <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate('AddJournal')}>
       <AntDesign name="plus" size={30} color="black" />
       </TouchableOpacity>
+
     </ImageBackground>
   );
 };
@@ -123,6 +156,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  header: {
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
   title: {
     color: '#222831',
     fontSize: 36,
@@ -133,7 +170,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 10,
     height: screenHeight,
     width: screenWidth,
   },
@@ -153,6 +189,12 @@ const styles = StyleSheet.create({
           shadowOpacity: 0.3,
           shadowRadius: 3
   },
+  Button2: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        left: 120,
+        top: 20,
+    },
   noteView: {
     backgroundColor: '#FAF9F6',
     padding: 15,
@@ -181,6 +223,13 @@ const styles = StyleSheet.create({
     color: '#222831',
     textAlign: 'center',
     marginTop: 100,
+    fontWeight: 600
+  },
+  noEntryText2: {
+    fontSize: 16,
+    color: '#222831',
+    textAlign: 'center',
+    marginTop: 10,
     fontWeight: 600
   },
   searchContainer: {

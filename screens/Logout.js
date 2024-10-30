@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Pressable, Alert } from 'react-native';
 import { auth } from "../firebase";
 
-const Logout = ({ setStatus }) => {
+const LogOut = ({ setStatus }) => {
     const slide = React.useRef(new Animated.Value(300)).current;
     const navigation = useNavigation();
     const [user, setUser] = useState(auth.currentUser);
@@ -45,9 +45,23 @@ const Logout = ({ setStatus }) => {
     };
 
     const handleLogout = () => {
-      auth.signOut()
-        .then(() => navigation.navigate("Login"))
-        .catch((error) => alert(error.message));
+      Alert.alert(
+        'Are you sure you want to log out?',
+        '',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => {
+            auth.signOut()
+              .then(() => navigation.navigate("Login"))
+              .catch((error) => alert(error.message));
+          }},
+        ],
+        { cancelable: false }
+      );
     };
 
     return (
@@ -55,7 +69,7 @@ const Logout = ({ setStatus }) => {
         <Pressable style={{ width: '100%', height: '35%'}}>
         <Animated.View style={[styles.bottomSheet, { transform: [{ translateY: slide }]}]}>
         <View style={styles.container}>
-          <Text style={styles.AssessmentText}>Log out Account</Text>
+          <Text style={styles.AssessmentText}>Do you want to Log out your Account?</Text>
               <View style={styles.wrapper}>
                 <Text style={styles.email}>{user?.email || ''}</Text>
                 <TouchableOpacity
@@ -105,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 10,
     color: '#222831',
-    fontSize: 24,
+    fontSize: 19,
     wordWrap: 'break-word',
     fontWeight: '500'
   },
@@ -147,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Logout;
+export default LogOut;

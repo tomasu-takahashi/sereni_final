@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, 
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from "../firebase";
-import Logout from './Logout';
+import LogOut from './LogOut';
 import { FontAwesome } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
@@ -29,7 +29,7 @@ const dashboard = ({ fullname }) => {
         <View style={styles.container}>
 
           <View style={styles.titleContainer}>
-          <Text style={styles.title}>Hello, User!</Text>
+          <Text style={styles.title}>Sereni</Text>
           
           <TouchableOpacity onPress={() => setStatus(true)}>
             <FontAwesome 
@@ -89,7 +89,7 @@ const dashboard = ({ fullname }) => {
           </SafeAreaView>
           <Text style={styles.SurveyText}>Assessment</Text>
             <Text style={styles.TakeSurveyText}>How are you feeling recently?</Text>
-            <Text style={styles.TakeSurveyText2}>Take Assessment?</Text>
+            <Text style={styles.TakeSurveyText2}>Go to Assessment</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.myJournalContainer} onPress={handleNavigateToTabJournal}>
@@ -112,10 +112,10 @@ const dashboard = ({ fullname }) => {
             
           <Text style={styles.myJournalTitleText}>Journal</Text>
             <Text style={styles.myJournalText}>Note how you feel?</Text>
-            <Text style={styles.myJournalText2}>Create your Journal?</Text>
+            <Text style={styles.myJournalText2}>Go to My Journal</Text>
           </TouchableOpacity>
           
-        {status && <Logout setStatus={setStatus}/>}
+        {status && <LogOut setStatus={setStatus}/>}
         </View>
       </View>
      </ImageBackground>
@@ -156,10 +156,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   title: {
-    color: '#222831',
-    fontSize: 36,
+    color: 'rgba(115, 169, 173, 1)',
+    fontSize: 45,
     fontWeight: '600',
-    paddingTop: 50
+    paddingTop: 45
   },
   searchContainer: {
     borderRadius: 8,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     height: '55%',
     position: 'relative',
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: '#C7F6FF',
     borderRadius: 10,
     padding: 10,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     color: '#222831',
     position: 'absolute',
     top: '80%',
-    left: '48%',
+    left: '57%',
     fontSize: 18,
     fontWeight: '500',
   },
