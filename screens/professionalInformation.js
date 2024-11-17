@@ -17,14 +17,14 @@ const professionalInformation = () => {
           <Text style={styles.title}>List of Professionals</Text>
           <ScrollView>
 
-            <TouchableOpacity style={styles.listContainer}>
+          <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional0')}>
             <SafeAreaView>
             <ImageBackground
                 style={{
                   height: "130%",
-                  width: "58%",
-                  left: '5%',
+                  width: "55%",
                   bottom: '45%',
+                  right: 10,
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOffset: { width: 0, height: 2 },
@@ -32,12 +32,334 @@ const professionalInformation = () => {
                   shadowRadius: 3,
                 }}
               resizeMode="contain"
-              source={require("../assets/professional.png")}
+              source={require("../assets/professional3.png")}
             />
           </SafeAreaView>
-              <Text style={styles.listText}>Sir Bob</Text>
+              <Text style={styles.listText}>Mark T. Ortibano</Text>
               <Text style={styles.listText2}>Psychologist</Text>
-              <Text style={styles.listText3}>UNO-R</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional1')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional2.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Chris Feli Joy P. Tajonera</Text>
+              <Text style={styles.listText2}>Guidance Director</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional2')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional6.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Mark Jasson F. Garcelan</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional3')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional2.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Madeline Urpiana</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional4')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional1.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Rey Mark Maalihan</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional5')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional2.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Brendly Ann Mateo</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional6')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional2.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Leni Rose Julag-ay</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional7')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional2.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Trisha Marie Vergara</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional8')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional6.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Lino Sumbillo Jr.</Text>
+              <Text style={styles.listText2}>Guidance Counselor</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional9')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional4.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Christina Marie Ferraris</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional10')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional7.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Emmanuel Jaype</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional11')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional5.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Lorence Macahilig</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional12')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional5.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Jilean Mark Tan</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer1} onPress={() => navigation.navigate('professional13')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional4.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Krishaline Francisco</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.listContainer} onPress={() => navigation.navigate('professional14')}>
+            <SafeAreaView>
+            <ImageBackground
+                style={{
+                  height: "130%",
+                  width: "55%",
+                  bottom: '45%',
+                  right: 10,
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional1.png")}
+            />
+          </SafeAreaView>
+              <Text style={styles.listText}>Carlos Gabriel Castro</Text>
+              <Text style={styles.listText2}>Guidance Staff/Associate</Text>
+              {/* <Text style={styles.listText3}>UNO-R</Text> */}
             </TouchableOpacity>
 
           </ScrollView>
@@ -78,11 +400,26 @@ const styles = StyleSheet.create({
     },
     listContainer: {
       width: '100%',
-      height: '500%',
+      height: 120,
       position: 'relative',
       alignSelf: 'center',
-      marginTop: 10,
+      marginBottom: 20,
       backgroundColor: '#C7F6FF',
+      borderRadius: 10,
+      padding: 10,
+      elevation: 5,
+      shadowColor: 'black',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 3,
+  },
+  listContainer1: {
+      width: '100%',
+      height: 120,
+      position: 'relative',
+      alignSelf: 'center',
+      marginBottom: 20,
+      backgroundColor: '#ffdbd6',
       borderRadius: 10,
       padding: 10,
       elevation: 5,
@@ -94,17 +431,17 @@ const styles = StyleSheet.create({
   listText: {
     color: '#222831',
     position: 'absolute',
-    top: '25%',
-    left: '57%',
-    fontSize: 32,
+    top: '35%',
+    left: '30%',
+    fontSize: 23,
     marginBottom: 2,
   },
   listText2: {
     color: '#222831',
     position: 'absolute',
-    top: '60%',
-    left: '57%',
-    fontSize: 18,
+    top: '68%',
+    left: '30%',
+    fontSize: 17,
     fontWeight: '500',
   },
   listText3: {

@@ -119,7 +119,7 @@ const Login = () => {
                         <TouchableOpacity style={ styles.btnStyles } onPress={() => handleLogin()}>
                             <Text style={{ fontSize: 18, fontWeight: '600', color: '#222831' }}>Sign in</Text>
                         </TouchableOpacity>
-                        {loading && <ActivityIndicator size="small" color="#fff" style={styles.loading}/>}
+                        {/* {loading && <ActivityIndicator size="small" color="#fff" style={styles.loading}/>} */}
 
                         <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 30}}>
                         <Text style={{ color: '#222831', fontWeight: '500' }}>Don't have an Account?</Text>

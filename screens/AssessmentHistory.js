@@ -62,15 +62,19 @@ const navigation = useNavigation();
     </View>
     <View style={styles.container}>
       <Text style={styles.title}>Assessment History</Text>
-      <FlatList
-        data={assessmentResults}
-        renderItem={({ item, index }) => (
-          <View style={styles.listItemContainer}>
-            {renderItem({ item, index })}
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {assessmentResults.length > 0 ? (
+        <FlatList
+          data={assessmentResults}
+          renderItem={({ item, index }) => (
+            <View style={styles.listItemContainer}>
+              {renderItem({ item, index })}
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text style={styles.noDataText}>No Assessment history available.</Text>
+      )}
     </View>
     </ImageBackground>
   );
@@ -120,7 +124,13 @@ const styles = StyleSheet.create({
     resultText: {
       fontSize: 20,
       padding: 5,
-    
+    },
+    noDataText: {
+      fontSize: 20,
+      color: '#222831',
+      textAlign: 'center',
+      padding: 20,
+      top: '25%'
     },
   });
 export default AssessmentHistory;

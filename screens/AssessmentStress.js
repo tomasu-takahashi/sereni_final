@@ -32,9 +32,9 @@ const AssessmentStress = ({ navigation }) => {
     } else if (totalScore >= 10 && totalScore <= 12) {
       result = 'Moderate';
     } else if (totalScore >= 13 && totalScore <= 16) {
-      result = 'Severe';
+      result = 'High';
     } else if (totalScore >= 17) {
-      result = 'Extremely Severe';
+      result = 'Severe';
     }
 
     // Redirect to the AssessmentResult component and pass the result and totalScore as props

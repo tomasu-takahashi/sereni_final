@@ -1,0 +1,161 @@
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
+const professional11 = () => {
+    const navigation = useNavigation();
+    return (
+        <ImageBackground source={require('../assets/bgMain.jpg')} style={styles.backgroundImage}>
+        <View style={styles.topHeader}>
+                <TouchableOpacity style={styles.backButtonStyle} onPress={() => navigation.navigate('professionalInformation')}>
+                    <AntDesign name="left" size={21} color="#222831" />
+                    <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
+                </TouchableOpacity>
+        </View>
+        <View style={styles.container}>
+        
+            <ImageBackground
+                style={{
+                  height: "115%",
+                  width: "80%",
+                  left: '18%',
+                  bottom: '48%',
+                  elevation: 5,
+                  shadowColor: 'black',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 3,
+                }}
+              resizeMode="contain"
+              source={require("../assets/professional5.png")}
+            />
+            <Text style={styles.title}>Lorence Macahilig</Text>
+          
+              <Text style={styles.Text}>MA Guidance & Counseling</Text>
+              <Text style={styles.Text2}>Guidance Staff/Associate</Text>
+              <Text style={styles.Text3}>Clinics:</Text>
+              <Text style={styles.Text4}>UNO-R College SDPC</Text>
+              <Text style={styles.Text5}>UNO-R, #51 Lizares Ave. Bacolod City, Negros Occidental, 6100</Text>
+              {/* <Text style={styles.Text6}>0910-258-2297 or 0930-169-9331</Text>
+              <Text style={styles.Text7}>CityMD Specialists Clinic</Text>
+              <Text style={styles.Text8}>Central City Walk Robinsons-Mandalagan, Bacolod City, Negros Occidental</Text>
+              <Text style={styles.Text9}>0906-489-3160</Text> */}
+            
+        </View>
+        </ImageBackground>
+      );
+}
+
+export default professional11
+
+const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
+    topHeader: {
+        justifyContent: 'flex-start',
+        paddingTop: '20%',
+        paddingLeft: 10,
+        flexDirection: 'row',
+    },
+    backButtonStyle: {
+        position: 'relative',
+        flexDirection: 'row',
+    },
+    container: {
+        flex: 1,
+        padding: 10,
+    },
+    title: {
+        color: '#222831',
+        fontSize: 32,
+        fontWeight: '600',
+        bottom: '78%',
+        paddingTop: 10,
+        paddingBottom: 20,
+        paddingLeft: 10
+    },
+    Text: {
+        color: '#222831',
+        position: 'absolute',
+        top: '45%',
+        left: '6%',
+        fontSize: 18,
+        marginBottom: 2,
+        fontWeight: '600'
+    },
+    Text2: {
+        color: '#222831',
+        position: 'absolute',
+        top: '50%',
+        left: '6%',
+        fontSize: 18,
+        fontWeight: '500',
+    },
+    Text3: {
+        color: '#222831',
+        position: 'absolute',
+        top: '60%',
+        left: '6%',
+        fontSize: 26,
+        marginBottom: 2,
+        fontWeight: '600'
+    },
+    Text4: {
+        color: '#222831',
+        position: 'absolute',
+        top: '67%',
+        left: '6%',
+        fontSize: 20,
+        marginBottom: 2,
+        fontWeight: '600'
+    },
+    Text5: {
+        color: '#222831',
+        position: 'absolute',
+        top: '71%',
+        left: '6%',
+        fontSize: 14,
+        marginBottom: 2,
+        fontWeight: '400'
+    },
+    Text6: {
+        color: '#222831',
+        position: 'absolute',
+        top: '79%',
+        left: '6%',
+        fontSize: 14,
+        marginBottom: 2,
+        fontWeight: '400'
+    },
+    Text7: {
+        color: '#222831',
+        position: 'absolute',
+        top: '83%',
+        left: '6%',
+        fontSize: 20,
+        marginBottom: 2,
+        fontWeight: '600'
+    },
+    Text8: {
+        color: '#222831',
+        position: 'absolute',
+        top: '87%',
+        left: '6%',
+        fontSize: 14,
+        marginBottom: 2,
+        fontWeight: '400'
+    },
+    Text9: {
+        color: '#222831',
+        position: 'absolute',
+        top: '92%',
+        left: '6%',
+        fontSize: 14,
+        marginBottom: 2,
+        fontWeight: '400'
+    },
+})

@@ -7,12 +7,31 @@ import Login from './screens/Login';
 import LogOut from './screens/LogOut';
 import Register from './screens/Register';
 import dashboard from './screens/dashboard';
+import goals from './screens/goals';
+import goalsAnxiety from './screens/goalsAnxiety';
+import goalsDepression from './screens/goalsDepression';
+import goalsStress from './screens/goalsStress';
 import Assessment from './screens/Assessment';
 import MyJournal from './screens/MyJournal';
 import recycleBin from './screens/recycleBin';
 import AddJournal from './screens/AddJournal';
 import EditJournal from './screens/EditJournal';
 import professionalInformation from './screens/professionalInformation';
+import professional0 from './screens/professional0';
+import professional1 from './screens/professional1';
+import professional2 from './screens/professional2';
+import professional3 from './screens/professional3';
+import professional4 from './screens/professional4';
+import professional5 from './screens/professional5';
+import professional6 from './screens/professional6';
+import professional7 from './screens/professional7';
+import professional8 from './screens/professional8';
+import professional9 from './screens/professional9';
+import professional10 from './screens/professional10';
+import professional11 from './screens/professional11';
+import professional12 from './screens/professional12';
+import professional13 from './screens/professional13';
+import professional14 from './screens/professional14';
 import AssessmentGuide from './screens/AssessmentGuide';
 import AssessmentHistory from './screens/AssessmentHistory';
 import AssessmentAnxiety from './screens/AssessmentAnxiety';
@@ -46,7 +65,26 @@ const App = () => {
         <Stack.Screen name='forgotPassword' component={forgotPassword} />
         <Stack.Screen name='Register' component={Register} />
         <Stack.Screen name='dashboard' component={BottomTab} />
+        <Stack.Screen name='goals' component={goals} />
+        <Stack.Screen name='goalsAnxiety' component={goalsAnxiety} />
+        <Stack.Screen name='goalsDepression' component={goalsDepression} />
+        <Stack.Screen name='goalsStress' component={goalsStress} />
         <Stack.Screen name='professionalInformation' component={professionalInformation} />
+        <Stack.Screen name='professional0' component={professional0} />
+        <Stack.Screen name='professional1' component={professional1} />
+        <Stack.Screen name='professional2' component={professional2} />
+        <Stack.Screen name='professional3' component={professional3} />
+        <Stack.Screen name='professional4' component={professional4} />
+        <Stack.Screen name='professional5' component={professional5} />
+        <Stack.Screen name='professional6' component={professional6} />
+        <Stack.Screen name='professional7' component={professional7} />
+        <Stack.Screen name='professional8' component={professional8} />
+        <Stack.Screen name='professional9' component={professional9} />
+        <Stack.Screen name='professional10' component={professional10} />
+        <Stack.Screen name='professional11' component={professional11} />
+        <Stack.Screen name='professional12' component={professional12} />
+        <Stack.Screen name='professional13' component={professional13} />
+        <Stack.Screen name='professional14' component={professional14} />
         <Stack.Screen name='Assessment' component={Assessment} />
         <Stack.Screen name='AssessmentGuide' component={AssessmentGuide} />
         <Stack.Screen name='AssessmentHistory' component={AssessmentHistory} />
@@ -81,6 +119,8 @@ function BottomTab() {
             iconName = focused ? 'bulb-sharp' : 'bulb-outline';
           } else if (route.name === 'My Journal') {
             iconName = focused ? 'bookmark' : 'bookmark-outline';
+          } else if (route.name === 'Goals') {
+            iconName = focused ? 'trophy' : 'trophy-outline';
           } 
           return <Ionicons name={iconName} size={size} color={'rgba(115, 169, 173, 1)'} />;
         },
@@ -95,6 +135,7 @@ function BottomTab() {
       >
         <Tab.Screen name='Home' component={dashboard} options={{headerShown: false, headerStyle: {backgroundColor:'#F4D03F', height: '4.8%',}}} />
         <Tab.Screen name='Assessment' component={Assessment} options={{headerShown: false}}/>
+        <Tab.Screen name='Goals' component={goals} options={{headerShown: false}}/>
         <Tab.Screen name='My Journal' component={MyJournal} options={{headerShown: false}}/>
       </Tab.Navigator>
       <StatusBar style='' />

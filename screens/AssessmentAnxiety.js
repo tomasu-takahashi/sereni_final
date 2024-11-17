@@ -32,9 +32,9 @@ const AssessmentAnxiety = ({ navigation }) => {
     } else if (totalScore >= 6 && totalScore <= 7) {
       result = 'Moderate';
     } else if (totalScore >= 8 && totalScore <= 9) {
-      result = 'Severe';
+      result = 'High';
     } else if (totalScore >= 10) {
-      result = 'Extremely Severe';
+      result = 'Severe';
     }
     
     navigation.navigate('AssessmentResultAnxiety', { result, totalScore });
