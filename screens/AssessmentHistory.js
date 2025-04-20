@@ -48,7 +48,16 @@ const navigation = useNavigation();
   const renderItem = ({ item, index }) => (
     <View style={styles.result}>
       <Text style={styles.resultText}>Result: {item.result}</Text>
-      <Text style={styles.resultText}>Assessment Taken: {new Date(item.assessmentTaken).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+      <Text style={styles.resultText1}>
+        Assessment Taken:{"\n"}
+        {new Date(item.assessmentTaken).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </Text>
     </View>
   );
 
@@ -123,6 +132,10 @@ const styles = StyleSheet.create({
     },
     resultText: {
       fontSize: 20,
+      padding: 5,
+    },
+    resultText1: {
+      fontSize: 16,
       padding: 5,
     },
     noDataText: {

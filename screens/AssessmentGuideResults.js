@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { db } from '../firebase';
+import { getAuth } from "firebase/auth";
+import { ref, push, set } from 'firebase/database';
 
 const AssessmentGuideResults = ({ route, navigation }) => {
     const [selectedButton, setSelectedButton] = useState({});
@@ -24,6 +27,34 @@ const AssessmentGuideResults = ({ route, navigation }) => {
           break;
       }
     }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+      if (user) {
+        setUserId(user.uid);
+      }
+    }, [user]);
+
+    useEffect(() => {
+      if (userId && result === 'Healthy') {
+        const resultRef = ref(db, `users/${userId}/assessmentResults`);
+        const newResultRef = push(resultRef);
+        const resultData = {
+          result: result,
+          assessmentTaken: new Date().getTime()
+        };
+
+        set(newResultRef, resultData).then(() => {
+          console.log('Data saved successfully!');
+        }).catch((error) => {
+          console.error('Error saving data:', error);
+        });
+      }
+    }, [userId, result]);
 
   return (
     <ImageBackground source={require('../assets/bgMain.jpg')} style={styles.backgroundImage}>
