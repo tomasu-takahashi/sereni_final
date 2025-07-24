@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground, 
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from "../firebase";
-import LogOut from './LogOut';
+import Logout from './Logout';
 import { FontAwesome } from '@expo/vector-icons';
 
 const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
@@ -115,7 +115,7 @@ const dashboard = ({ fullname }) => {
             <Text style={styles.myJournalText2}>Go to My Journal</Text>
           </TouchableOpacity>
           
-        {status && <LogOut setStatus={setStatus}/>}
+        {status && <Logout setStatus={setStatus}/>}
         </View>
       </View>
      </ImageBackground>

@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './screens/Login';
-import LogOut from './screens/LogOut';
+import Logout from './screens/Logout';
 import Register from './screens/Register';
 import dashboard from './screens/dashboard';
 import goals from './screens/goals';
@@ -61,7 +61,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='LogOut' component={LogOut} />
+        <Stack.Screen name='LogOut' component={Logout} />
         <Stack.Screen name='forgotPassword' component={forgotPassword} />
         <Stack.Screen name='Register' component={Register} />
         <Stack.Screen name='dashboard' component={BottomTab} />
