@@ -43,7 +43,8 @@
     "tough-cookie": "^5.1.2",
     "undici": "^7.12.0",
     "webpack-dev-middleware": "^7.4.2",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0"
