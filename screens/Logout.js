@@ -88,13 +88,9 @@ const LogOut = ({ setStatus }) => {
 
 const styles = StyleSheet.create({
   backdrop: {
-    position: 'absolute',
+    ...StyleSheet.absoluteFillObject,
     flex: 1,
-    top: 0,
-    left: 0,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    width: '100%',
-    height: '100%',
     justifyContent: 'flex-end'
   },
   bottomSheet: {

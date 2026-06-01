@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Pressable, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { db } from '../firebase'; // Import the database object from Firebase.js
 import { FlashList } from '@shopify/flash-list';
@@ -7,9 +7,6 @@ import { ref, onValue } from 'firebase/database';
 import { auth } from 'firebase/auth';
 import { getAuth } from "firebase/auth";
 import { EvilIcons, AntDesign, FontAwesome6 } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
-
 
 const MyJournal = () => {
   const [notes, setNotes] = useState([]);
@@ -170,13 +167,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    height: screenHeight,
-    width: screenWidth,
+    width: '100%',
   },
   Button: {
     backgroundColor: '#8BE8E5',
-    width: "18%",
-    padding: 18,
+    width: 64,
+    height: 64,
     marginRight: 20,
     marginBottom: 20,
     justifyContent: 'center',
@@ -192,8 +188,9 @@ const styles = StyleSheet.create({
   Button2: {
         justifyContent: 'center',
         alignItems: 'center',
-        left: 120,
-        top: 20,
+        marginLeft: 'auto',
+        marginRight: 20,
+        marginTop: 58,
     },
   noteView: {
     backgroundColor: '#FAF9F6',

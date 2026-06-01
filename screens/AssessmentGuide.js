@@ -24,20 +24,10 @@ const AssessmentGuide = ({ setStatus }) => {
       resizeMode="cover"
       source={require("../assets/bgMain.jpg")}
       >
-      
         <View style={styles.container}>
-
                 <View>
                     <ImageBackground
-                        style={{
-                            height: "86%",
-                            width: "100%",
-                            elevation: 5,
-                            shadowColor: 'black',
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.5,
-                            shadowRadius: 10,
-                        }}
+                        style={styles.guideImage}
                         resizeMode="contain"
                         source={require("../assets/AssessmentGuide.png")}
                     />
@@ -94,7 +84,16 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
   },
-  AssessmentText: { 
+  guideImage: {
+    height: "86%",
+    width: "100%",
+    elevation: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+  },
+  AssessmentText: {
     position: 'absolute',
     top: 390,
     justifyContent: 'center',
@@ -132,21 +131,21 @@ const styles = StyleSheet.create({
   },
   text1: {
     position: 'absolute',
-    bottom: 220, 
+    bottom: 220,
     color: '#222831',
     fontSize: 18,
     margin: 20
   },
   text2: {
     position: 'absolute',
-    bottom: 120, 
+    bottom: 120,
     color: '#222831',
     fontSize: 18,
     margin: 20
   },
   text3: {
     position: 'absolute',
-    bottom: 280, 
+    bottom: 280,
     color: '#222831',
     fontSize: 20,
     margin: 20,
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
   },
   text4: {
     position: 'absolute',
-    bottom: 160, 
+    bottom: 160,
     color: '#222831',
     fontSize: 18,
     margin: 20

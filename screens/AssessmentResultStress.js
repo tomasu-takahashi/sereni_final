@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
     color: '#222831',
     textAlign: 'center',
     fontWeight: '500',
-    right: 1
   },
   verseContainer: {
     justifyContent: 'center',

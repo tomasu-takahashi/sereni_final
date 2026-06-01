@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ref, set, remove, get } from "firebase/database";
@@ -6,8 +6,6 @@ import { getAuth } from "firebase/auth";
 import { db } from '../firebase';
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const EditJournal = () => {
     const navigation = useNavigation();
@@ -117,7 +115,7 @@ const EditJournal = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.saveButtonStyle} onPress={handleUpdate}>
-            <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '700', right: 23 }}>Save</Text>
+            <Text style={{ fontSize: 18, color: '#00ADB5', fontWeight: '700' }}>Save</Text>
             </TouchableOpacity>
         </View>
 
@@ -140,7 +138,7 @@ const EditJournal = () => {
                 returnKeyType='done'
                 blurOnSubmit={true}
             />
-            <Text style={{ fontSize: 15, color: '#222831', fontWeight: '600', left: 13 }}>Last Edited: {new Date(lastEdit).toLocaleString()}</Text>
+            <Text style={styles.lastEditedText}>Last Edited: {new Date(lastEdit).toLocaleString()}</Text>
             </View>
         
         </ImageBackground>
@@ -152,8 +150,7 @@ export default EditJournal;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: screenHeight,
-        width: screenWidth,
+        width: '100%',
     },
     backgroundImage: {
         flex: 1,
@@ -162,9 +159,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEEEEE'
     },
     header: {
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingTop: '20%',
         paddingLeft: 10,
+        paddingRight: 10,
         paddingBottom: 10,
         flexDirection: 'row',
     },
@@ -174,7 +173,6 @@ const styles = StyleSheet.create({
     },
     saveButtonStyle: {
         position: 'relative',
-        left: '65%',
         flexDirection: 'row',
     },
     inputTitle: {
@@ -201,7 +199,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginTop: 3,
         paddingLeft: 20,
-        height: 570,
+        flex: 1,
+        minHeight: 320,
         color: '#222831',
         backgroundColor: '#FAF9F6',
         borderRadius: 15,
@@ -217,12 +216,16 @@ const styles = StyleSheet.create({
     button: {
         justifyContent: 'center',
         alignItems: 'center',
-        left: 180,
-        bottom: 4,
     },
     buttonText: {
         color: '#222831',
         fontSize: 18,
         fontWeight: '600',
+    },
+    lastEditedText: {
+        fontSize: 15,
+        color: '#222831',
+        fontWeight: '600',
+        marginHorizontal: 13,
     }
 })

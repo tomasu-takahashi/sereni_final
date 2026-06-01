@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
       color: '#222831',
       textAlign: 'center',
       padding: 20,
-      top: '25%'
+      marginTop: 80
     },
   });
 export default AssessmentHistory;

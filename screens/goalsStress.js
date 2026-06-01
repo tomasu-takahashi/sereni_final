@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#222831',
-        fontSize: 32,
+        fontSize: 26,
         fontWeight: '600',
         paddingTop: 10,
         paddingBottom: 20,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
       width: '100%',
-      height: 150,
+      minHeight: 150,
       alignSelf: 'center',
       marginTop: 15,
       backgroundColor: '#FFEEBB',
@@ -111,17 +111,11 @@ const styles = StyleSheet.create({
   },
   listText: {
     color: '#222831',
-    position: 'absolute',
-    top: '10%',
-    left: '5%',
-    fontSize: 32,
-    marginBottom: 2,
+    fontSize: 26,
+    marginBottom: 10,
   },
   listText2: {
     color: '#222831',
-    position: 'absolute',
-    top: '50%',
-    left: '5%',
     fontSize: 18,
     fontWeight: '500',
   },

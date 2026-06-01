@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   itemContainer: {
-    width: 350,
-    height: 530,
+    width: '100%',
+    minHeight: '70%',
     backgroundColor: '#CDF0EA',
     marginRight: 20,
     marginLeft: 10,

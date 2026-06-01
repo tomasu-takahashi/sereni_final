@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 
@@ -28,19 +28,11 @@ const Assessment = ({ setStatus }) => {
       source={require("../assets/bgMain.jpg")}
       >
       
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
 
-                <View>
+                <View style={styles.imageWrap}>
                     <ImageBackground
-                        style={{
-                            height: "86%",
-                            width: "100%",
-                            elevation: 5,
-                            shadowColor: 'black',
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.5,
-                            shadowRadius: 10,
-                        }}
+                        style={styles.assessmentImage}
                         resizeMode="contain"
                         source={require("../assets/AssessmentGuide.png")}
                     />
@@ -81,7 +73,7 @@ const Assessment = ({ setStatus }) => {
                     </TouchableOpacity>
             </View>
             
-              </View>
+              </ScrollView>
       </ImageBackground>
     );
 };
@@ -93,20 +85,29 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    flexGrow: 1,
     alignSelf: 'center',
     width: '100%',
-    height: '100%',
     borderRadius: 10,
+    paddingTop: 16,
+    paddingBottom: 24,
+  },
+  imageWrap: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  assessmentImage: {
+    aspectRatio: 1.25,
+    width: '100%',
+    height: 'auto',
+    elevation: 5,
   },
   ButtonContainer: {
-    position: 'absolute',
-    bottom: 185,
     width: '90%',
-    height: '70%',
+    minHeight: 82,
     alignSelf: 'center',
     padding: 10,
+    marginBottom: 12,
     backgroundColor: '#C7F6FF',
     borderRadius: 10,
     elevation: 5,
@@ -116,12 +117,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   ButtonContainer2: {
-    position: 'absolute',
-    bottom: 100,
     width: '90%',
-    height: '70%',
+    minHeight: 82,
     alignSelf: 'center',
     padding: 10,
+    marginBottom: 12,
     backgroundColor: '#B9EDDD',
     borderRadius: 10,
     elevation: 5,
@@ -131,10 +131,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   ButtonContainer3: {
-    position: 'absolute',
-    bottom: 15,
     width: '90%',
-    height: '70%',
+    minHeight: 82,
     alignSelf: 'center',
     padding: 10,
     backgroundColor: '#FFEEBB',
@@ -146,9 +144,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   AssessmentText: { 
-    position: 'absolute',
-    top: 390,
-    justifyContent: 'center',
     margin: 20,
     color: '#222831',
     fontSize: 38,
@@ -156,16 +151,13 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   },
   wrapper: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   arrow: {
     flexDirection: 'row',
     alignSelf: "flex-end",
-    position: 'absolute',
-    bottom: 23,
-    right: 5
+    marginTop: 'auto',
   },
   buttonText: {
     color: '#222831',
@@ -175,18 +167,14 @@ const styles = StyleSheet.create({
     paddingRight: 2
   },
   text1: {
-    position: 'absolute',
-    bottom: 10,
-    left: 11, 
     color: '#222831',
     fontSize: 16, 
+    marginTop: 8,
   },
   text2: {
-    position: 'absolute',
-    bottom: 10,
-    left: 11, 
     color: '#222831',
     fontSize: 16,
+    marginTop: 8,
   },
 });
 

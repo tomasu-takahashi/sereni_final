@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, SafeAreaView, ImageBackground, Linking, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground, Alert, KeyboardAvoidingView } from 'react-native';
 import React, { useState } from 'react';
 import {  sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, Fontisto } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const forgotPassword = () => {
 
@@ -85,17 +83,16 @@ export default forgotPassword
 
 const styles = StyleSheet.create({
     root: {
-        height: screenHeight,
-        width: screenWidth,
+        flex: 1,
+        width: '100%',
+        paddingHorizontal: 20,
     },
     header: {
         justifyContent: 'flex-start',
         paddingTop: '20%',
-        paddingLeft: 10,
     },
     titleHeader: {
         justifyContent: 'flex-start',
-        paddingLeft: 20,
         paddingTop: '10%',
     },
     title: {
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: screenWidth,
+        width: '100%',
     },
     inputRoot: {
         flexDirection: 'row',
@@ -125,6 +122,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FAF9F6",
         borderRadius: 10,
         paddingHorizontal: 10,
+        width: '100%',
         elevation: 5,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '80%',
+        flex: 1,
     },
     inputStyle: {
         flex: 1,
@@ -155,14 +153,11 @@ const styles = StyleSheet.create({
     },
     btnStyles: {
         position: 'relative',
-        top: 60,
-        left: 100,
         flexDirection: 'row',
     },
     btnContainer: {
         justifyContent: 'center',
-        alignItems: 'center',
-        width: '90%',
-        top: '450%'
+        alignItems: 'flex-end',
+        width: '100%',
     },
 })

@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, SafeAreaView, ImageBackground, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, ImageBackground, Image, Alert, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AntDesign, Fontisto, Ionicons } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const Login = () => {
 
@@ -55,19 +53,14 @@ const Login = () => {
         resizeMode="cover"
         source={require("../assets/bg.jpg")}
         >
-        <View style={styles.root}>
-            <SafeAreaView>
-                <View>
-                    <ImageBackground
-                        style={{
-                            height: "80%",
-                            width: screenWidth,
-                        }}
-                        resizeMode="contain"
-                        source={require("../assets/logo2.png")}
-                    />
-                </View>
-            </SafeAreaView>
+        <SafeAreaView style={styles.root}>
+            <View style={styles.logoContainer}>
+                <Image
+                    style={styles.logo}
+                    resizeMode="contain"
+                    source={require("../assets/logo2.png")}
+                />
+            </View>
                 
 
             <View style={styles.container}>
@@ -111,7 +104,7 @@ const Login = () => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={{ left: 100 }} onPress={() => navigation.navigate('forgotPassword')}>
+                    <TouchableOpacity style={styles.forgotPasswordLink} onPress={() => navigation.navigate('forgotPassword')}>
                         <Text style={{ color: '#222831', fontWeight: '600' }}>Forgot Password?</Text>
                     </TouchableOpacity>
 
@@ -131,7 +124,7 @@ const Login = () => {
                     </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
         </ImageBackground>
     )
 }
@@ -140,25 +133,36 @@ export default Login
 
 const styles = StyleSheet.create({
     root: {
-        height: screenHeight,
-        width: screenWidth,
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center',
+        paddingHorizontal: 28,
     },
     backgroundImage: {
         flex: 1,
         width: '100%',
         height: '100%',
     },
+    logoContainer: {
+        alignItems: 'center',
+        marginBottom: 28,
+        width: '65%',
+        aspectRatio: 1.55,
+        alignSelf: 'center',
+    },
+    logo: {
+        width: '100%',
+        height: '100%',
+    },
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: '160%',
         width: '100%',
-        bottom: screenHeight
     },
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: screenWidth,
+        width: '100%',
     },
     inputStyle: {
         flex: 1,
@@ -173,6 +177,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 10,
         marginBottom: 20,
+        width: '100%',
         elevation: 5,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '80%',
+        flex: 1,
     },
     btnStyles: {
         backgroundColor: '#8BE8E5',
@@ -203,19 +208,21 @@ const styles = StyleSheet.create({
     btnContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: '90%',
-        top: 50,
+        width: '100%',
+        marginTop: 30,
     },
     hidePasswordButton: {
         paddingHorizontal: 10,
     },
+    forgotPasswordLink: {
+        width: '100%',
+        alignItems: 'flex-end',
+    },
     loading: {
-        position: 'absolute',
         justifyContent: 'center',
         opacity: "0.3",
         backgroundColor: "black",
-        height: '1100%',
-        width: screenWidth,
-        paddingBottom: "100%"
+        width: '100%',
+        paddingVertical: 12,
     }
 })

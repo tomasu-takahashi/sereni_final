@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput, SafeAreaView, ImageBackground, Alert, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground, Alert, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { set, ref } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign, Fontisto, Ionicons } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const Register = () => {
   const navigation = useNavigation();
@@ -65,8 +63,11 @@ const Register = () => {
       resizeMode="cover"
       source={require("../assets/bg.jpg")}
     >
-      <View style={styles.root} behavior="padding">
-          <View style={styles.container}>
+      <ScrollView
+        style={styles.root}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
 
           <Text style={styles.title}>Welcome!</Text>
           <Text style={styles.title2}>Let's Create your Account</Text>
@@ -164,8 +165,7 @@ const Register = () => {
                 
               </View>
             </View>
-          </View>
-          </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -177,13 +177,15 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   root: {
-    height: screenHeight,
-    width: screenWidth
+    flex: 1,
+    width: '100%',
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
+    flexGrow: 1,
+    paddingHorizontal: 28,
+    paddingVertical: 48,
   },
   title: {
     fontWeight: '600',
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: screenWidth,
+    width: '100%',
   },
   inputRoot: {
     flexDirection: 'row',
@@ -211,6 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 20,
+    width: '100%',
     elevation: 5,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
@@ -221,7 +224,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '80%',
+    flex: 1,
   },
   inputStyle: {
     flex: 1,

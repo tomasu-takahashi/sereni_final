@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -13,14 +13,12 @@ const professional14 = () => {
                     <Text style={{ fontSize: 18, color: '#222831', fontWeight: '600', paddingRight: 5 }}>Back</Text>
                 </TouchableOpacity>
         </View>
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
         
             <ImageBackground
                 style={{
-                  height: "115%",
-                  width: "80%",
-                  left: '18%',
-                  bottom: '48%',
+                  aspectRatio: 1.4,
+                  width: '100%',
                   elevation: 5,
                   shadowColor: 'black',
                   shadowOffset: { width: 0, height: 2 },
@@ -42,7 +40,7 @@ const professional14 = () => {
               <Text style={styles.Text8}>Central City Walk Robinsons-Mandalagan, Bacolod City, Negros Occidental</Text>
               <Text style={styles.Text9}>0906-489-3160</Text> */}
             
-        </View>
+        </ScrollView>
         </ImageBackground>
       );
 }
@@ -66,94 +64,66 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     container: {
-        flex: 1,
+        flexGrow: 1,
         padding: 10,
     },
     title: {
         color: '#222831',
         fontSize: 32,
         fontWeight: '600',
-        bottom: '78%',
         paddingTop: 10,
         paddingBottom: 20,
         paddingLeft: 10
     },
     Text: {
         color: '#222831',
-        position: 'absolute',
-        top: '45%',
-        left: '6%',
         fontSize: 18,
         marginBottom: 2,
         fontWeight: '600'
     },
     Text2: {
         color: '#222831',
-        position: 'absolute',
-        top: '50%',
-        left: '6%',
         fontSize: 18,
         fontWeight: '500',
     },
     Text3: {
         color: '#222831',
-        position: 'absolute',
-        top: '60%',
-        left: '6%',
         fontSize: 26,
         marginBottom: 2,
         fontWeight: '600'
     },
     Text4: {
         color: '#222831',
-        position: 'absolute',
-        top: '67%',
-        left: '6%',
         fontSize: 20,
         marginBottom: 2,
         fontWeight: '600'
     },
     Text5: {
         color: '#222831',
-        position: 'absolute',
-        top: '71%',
-        left: '6%',
         fontSize: 14,
         marginBottom: 2,
         fontWeight: '400'
     },
     Text6: {
         color: '#222831',
-        position: 'absolute',
-        top: '79%',
-        left: '6%',
         fontSize: 14,
         marginBottom: 2,
         fontWeight: '400'
     },
     Text7: {
         color: '#222831',
-        position: 'absolute',
-        top: '83%',
-        left: '6%',
         fontSize: 20,
         marginBottom: 2,
         fontWeight: '600'
     },
     Text8: {
         color: '#222831',
-        position: 'absolute',
-        top: '87%',
-        left: '6%',
         fontSize: 14,
         marginBottom: 2,
         fontWeight: '400'
     },
     Text9: {
         color: '#222831',
-        position: 'absolute',
-        top: '92%',
-        left: '6%',
         fontSize: 14,
         marginBottom: 2,
         fontWeight: '400'

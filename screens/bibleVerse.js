@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, TextInput, ImageBackground, Alert, ActivityIndicator, Keyboard } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput, ImageBackground, Alert, ActivityIndicator, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { EvilIcons, AntDesign } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const bibleVerse = () => {
   const navigation = useNavigation();
@@ -92,9 +90,8 @@ export default bibleVerse;
 
 const styles = StyleSheet.create({
   root: {
-    height: screenHeight,
-    width: screenWidth,
     flex: 1,
+    width: '100%',
   },
   backgroundImage: {
     flex: 1,
@@ -177,10 +174,8 @@ const styles = StyleSheet.create({
     marginBottom: 140,
   },
   loading: {
-    position: 'absolute',
     justifyContent: 'center',
-    height: '110%',
-    width: screenWidth,
-    paddingBottom: "100%"
+    width: '100%',
+    paddingVertical: 20,
   }
 });

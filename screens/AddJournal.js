@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, Dimensions, ImageBackground, Alert } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import { db } from '../firebase'; // Import the database object from Firebase.js
 import { ref, push, set } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native'
 import { getAuth } from "firebase/auth";
 import { AntDesign } from '@expo/vector-icons';
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get('screen');
 
 const AddJournal = () => {
   const navigation = useNavigation();
@@ -103,9 +101,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEEEEE'
   },
   header: {
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingTop: '20%',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingBottom: 10,
     flexDirection: 'row',
   },
@@ -115,13 +115,11 @@ const styles = StyleSheet.create({
   },
   saveButtonStyle: {
     position: 'relative',
-    left: '65%',
     flexDirection: 'row',
   },
   container: {
     flex: 1,
-    height: screenHeight,
-    width: screenWidth,
+    width: '100%',
   },
   inputTitle: {
     marginTop: 5,
@@ -147,7 +145,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 3,
     paddingLeft: 20,
-    height: 570,
+    flex: 1,
+    minHeight: 320,
     color: '#222831',
     backgroundColor: '#FAF9F6',
     borderRadius: 15,
