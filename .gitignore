@@ -2,6 +2,7 @@
 
 # compiled output
 #/dist
+/dist
 /tmp
 /out-tsc
 # Only exists if Bazel was run
@@ -9,6 +10,7 @@
 
 # dependencies
 /node_modules
+.expo/
 
 # IDEs and editors
 /.idea

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -58,51 +58,55 @@ const App = () => {
   }, [])    
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='LogOut' component={Logout} />
-        <Stack.Screen name='forgotPassword' component={forgotPassword} />
-        <Stack.Screen name='Register' component={Register} />
-        <Stack.Screen name='dashboard' component={BottomTab} />
-        <Stack.Screen name='goals' component={goals} />
-        <Stack.Screen name='goalsAnxiety' component={goalsAnxiety} />
-        <Stack.Screen name='goalsDepression' component={goalsDepression} />
-        <Stack.Screen name='goalsStress' component={goalsStress} />
-        <Stack.Screen name='professionalInformation' component={professionalInformation} />
-        <Stack.Screen name='professional0' component={professional0} />
-        <Stack.Screen name='professional1' component={professional1} />
-        <Stack.Screen name='professional2' component={professional2} />
-        <Stack.Screen name='professional3' component={professional3} />
-        <Stack.Screen name='professional4' component={professional4} />
-        <Stack.Screen name='professional5' component={professional5} />
-        <Stack.Screen name='professional6' component={professional6} />
-        <Stack.Screen name='professional7' component={professional7} />
-        <Stack.Screen name='professional8' component={professional8} />
-        <Stack.Screen name='professional9' component={professional9} />
-        <Stack.Screen name='professional10' component={professional10} />
-        <Stack.Screen name='professional11' component={professional11} />
-        <Stack.Screen name='professional12' component={professional12} />
-        <Stack.Screen name='professional13' component={professional13} />
-        <Stack.Screen name='professional14' component={professional14} />
-        <Stack.Screen name='Assessment' component={Assessment} />
-        <Stack.Screen name='AssessmentGuide' component={AssessmentGuide} />
-        <Stack.Screen name='AssessmentHistory' component={AssessmentHistory} />
-        <Stack.Screen name='AssessmentGuideQuestions' component={AssessmentGuideQuestions} />
-        <Stack.Screen name='AssessmentGuideResults' component={AssessmentGuideResults} />
-        <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
-        <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression} />
-        <Stack.Screen name='AssessmentResultStress' component={AssessmentResultStress} />
-        <Stack.Screen name='AssessmentAnxiety' component={AssessmentAnxiety} />
-        <Stack.Screen name='AssessmentDepression' component={AssessmentDepression} />
-        <Stack.Screen name='AssessmentStress' component={AssessmentStress} />
-        <Stack.Screen name='MyJournal' component={MyJournal} />
-        <Stack.Screen name='AddJournal' component={AddJournal} />
-        <Stack.Screen name='EditJournal' component={EditJournal} />
-        <Stack.Screen name='recycleBin' component={recycleBin} />
-        <Stack.Screen name='bibleVerse' component={bibleVerse} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.appShell}>
+      <View style={styles.mobileFrame}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name='Login' component={Login} />
+            <Stack.Screen name='LogOut' component={Logout} />
+            <Stack.Screen name='forgotPassword' component={forgotPassword} />
+            <Stack.Screen name='Register' component={Register} />
+            <Stack.Screen name='dashboard' component={BottomTab} />
+            <Stack.Screen name='goals' component={goals} />
+            <Stack.Screen name='goalsAnxiety' component={goalsAnxiety} />
+            <Stack.Screen name='goalsDepression' component={goalsDepression} />
+            <Stack.Screen name='goalsStress' component={goalsStress} />
+            <Stack.Screen name='professionalInformation' component={professionalInformation} />
+            <Stack.Screen name='professional0' component={professional0} />
+            <Stack.Screen name='professional1' component={professional1} />
+            <Stack.Screen name='professional2' component={professional2} />
+            <Stack.Screen name='professional3' component={professional3} />
+            <Stack.Screen name='professional4' component={professional4} />
+            <Stack.Screen name='professional5' component={professional5} />
+            <Stack.Screen name='professional6' component={professional6} />
+            <Stack.Screen name='professional7' component={professional7} />
+            <Stack.Screen name='professional8' component={professional8} />
+            <Stack.Screen name='professional9' component={professional9} />
+            <Stack.Screen name='professional10' component={professional10} />
+            <Stack.Screen name='professional11' component={professional11} />
+            <Stack.Screen name='professional12' component={professional12} />
+            <Stack.Screen name='professional13' component={professional13} />
+            <Stack.Screen name='professional14' component={professional14} />
+            <Stack.Screen name='Assessment' component={Assessment} />
+            <Stack.Screen name='AssessmentGuide' component={AssessmentGuide} />
+            <Stack.Screen name='AssessmentHistory' component={AssessmentHistory} />
+            <Stack.Screen name='AssessmentGuideQuestions' component={AssessmentGuideQuestions} />
+            <Stack.Screen name='AssessmentGuideResults' component={AssessmentGuideResults} />
+            <Stack.Screen name='AssessmentResultAnxiety' component={AssessmentResultAnxiety} />
+            <Stack.Screen name='AssessmentResultDepression' component={AssessmentResultDepression} />
+            <Stack.Screen name='AssessmentResultStress' component={AssessmentResultStress} />
+            <Stack.Screen name='AssessmentAnxiety' component={AssessmentAnxiety} />
+            <Stack.Screen name='AssessmentDepression' component={AssessmentDepression} />
+            <Stack.Screen name='AssessmentStress' component={AssessmentStress} />
+            <Stack.Screen name='MyJournal' component={MyJournal} />
+            <Stack.Screen name='AddJournal' component={AddJournal} />
+            <Stack.Screen name='EditJournal' component={EditJournal} />
+            <Stack.Screen name='recycleBin' component={recycleBin} />
+            <Stack.Screen name='bibleVerse' component={bibleVerse} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </View>
   );
 }
 
@@ -144,6 +148,17 @@ function BottomTab() {
 }
 
 const styles = StyleSheet.create({
+  appShell: {
+    flex: 1,
+    alignItems: Platform.OS === 'web' ? 'center' : 'stretch',
+    backgroundColor: Platform.OS === 'web' ? '#eef5f4' : '#fff',
+  },
+  mobileFrame: {
+    flex: 1,
+    width: '100%',
+    maxWidth: Platform.OS === 'web' ? 430 : undefined,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
